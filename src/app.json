@@ -1,13 +1,13 @@
 {
   "pages": [
-    "pages/index/main",
-    "pages/logs/main",
-    "pages/counter/main"
+    "pages/schedule/main",
+    "pages/Individual/main",
+    "pages/team/main",
+    "pages/set/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarBackgroundColor": "#FFF5C4",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -17,27 +17,25 @@
     "borderStyle": "white",
 
     "list": [{
-      "text": "首页",
-      "pagePath": "pages/index/main",
+      "text": "日程",
+      "pagePath": "pages/schedule/main",
       "iconPath": "static/tabs/home.png",
       "selectedIconPath": "static/tabs/home-active.png"
     }, {
-      "text": "订单",
-      "pagePath": "pages/logs/main",
+      "text": "个人计划",
+      "pagePath": "pages/Individual/main",
       "iconPath": "static/tabs/orders.png",
       "selectedIconPath": "static/tabs/orders-active.png"
-    }],
-
-    "items": [{
-      "name": "首页",
-      "pagePath": "pages/index/main",
-      "icon": "static/tabs/home.png",
-      "activeIcon": "static/tabs/home-active.png"
     }, {
-      "name": "订单",
-      "pagePath": "pages/logs/main",
-      "icon": "static/tabs/orders.png",
-      "activeIcon": "static/tabs/orders-active.png"
+      "text": "团队计划",
+      "pagePath": "pages/team/main",
+      "iconPath": "static/tabs/orders.png",
+      "selectedIconPath": "static/tabs/orders-active.png"
+    }, {
+      "text": "设置",
+      "pagePath": "pages/set/main",
+      "iconPath": "static/tabs/orders.png",
+      "selectedIconPath": "static/tabs/orders-active.png"
     }],
     "position": "bottom"
   }

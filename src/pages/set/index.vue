@@ -35,7 +35,7 @@ export default {
       isLoading: false,
       user: {
         nickName: '用户名',
-        avatarUrl: '../../assets/image/profile.jpg',
+        avatarUrl: '../../static/images/profile.jpg',
       }
     }
   },

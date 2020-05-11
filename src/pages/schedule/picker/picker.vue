@@ -1,4 +1,4 @@
-<style scoped>
+<style scoped lang="scss">
 .picker {
   position: absolute;
   top: 0;
@@ -9,6 +9,9 @@
   background: #fffbe8;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  .algorithm {
+    font-size: 50px;
+}
 }
 .picker .algorithm {
 }
@@ -16,7 +19,7 @@
 
 <template>
   <div class="picker">
-    <div class="algorithm">{{algorithm}}</div>
+    <div class="algorithm">231243412</div>
     <div class="data">
       <span class="year">{{year}}</span>
       <span>年</span>

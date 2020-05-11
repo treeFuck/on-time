@@ -11,31 +11,31 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#999",
-    "backgroundColor": "#fafafa",
-    "selectedColor": "#333",
+    "color": "#FFD600",
+    "backgroundColor": "#FFF5C4",
+    "selectedColor": "#999",
     "borderStyle": "white",
 
     "list": [{
-      "text": "日程",
+      "text": "",
       "pagePath": "pages/schedule/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
+      "iconPath": "static/tabs/schedule.png",
+      "selectedIconPath": "static/tabs/schedule.png"
     }, {
-      "text": "个人计划",
+      "text": "",
       "pagePath": "pages/Individual/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "iconPath": "static/tabs/Individual.png",
+      "selectedIconPath": "static/tabs/Individual.png"
     }, {
-      "text": "团队计划",
+      "text": "",
       "pagePath": "pages/team/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "iconPath": "static/tabs/team.png",
+      "selectedIconPath": "static/tabs/team.png"
     }, {
-      "text": "设置",
+      "text": "",
       "pagePath": "pages/set/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "iconPath": "static/tabs/set.png",
+      "selectedIconPath": "static/tabs/set.png"
     }],
     "position": "bottom"
   }

@@ -5,8 +5,14 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    algorithm: '',
+    date: ''
   },
   mutations: {
+    changeDate(state, newDate) {
+      console.log("asdadsad")
+      state.date = newDate
+  }
   }
 })
 

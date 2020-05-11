@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/set/main",
     "pages/schedule/main",
     "pages/Individual/main",
-    "pages/team/main",
-    "pages/set/main"
+    "pages/team/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

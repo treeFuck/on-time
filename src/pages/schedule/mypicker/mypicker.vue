@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-.picker {
+.mypicker {
   position: absolute;
   top: 0;
   left: 0;
@@ -10,22 +10,19 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   .algorithm {
-    font-size: 50px;
-}
-}
-.picker .algorithm {
+  }
 }
 </style>
 
 <template>
-  <div class="picker">
-    <div class="algorithm">231243412</div>
+  <div class="mypicker">
+    <div class="algorithm">{{algorithm}}</div>
     <div class="data">
       <span class="year">{{year}}</span>
       <span>年</span>
       <span class="month">{{month}}</span>
       <span>月</span>
-      <span class="day">{{date}}</span>
+      <span class="day">{{day}}</span>
       <span>日</span>
     </div>
     <mp-datepicker ref="mpDatePicker" @onConfirm="onConfirm"></mp-datepicker>
@@ -38,24 +35,33 @@ import mpDatepicker from "mpvue-weui/src/date-picker";
 export default {
   data() {
     return {
-      algorithm: "",
-      date: ""
-    };
+    }
   },
   computed: {
+    algorithm() {
+      if(!store.state.algorithm){
+        return '暂无'
+      } else if(store.state.algorithm === '0') {
+        return '短作业优先'
+      } else if(store.state.date === '1') {
+        return '长作业优先';
+      } else if(store.state.date === '2') {
+        return '优先级调度'
+      }
+    },
     year() {
       if (!store.state.date) {
-        console.log("1")
+        console.log("1");
         return "";
       }
-      console.log("2")
+      console.log("2");
       return store.state.date.getFullYear();
     },
     month() {
       if (!store.state.date) {
         return "";
       }
-      return store.state.date.getMonth();
+      return store.state.date.getMonth()+1;
     },
     day() {
       if (!store.state.date) {
@@ -68,10 +74,7 @@ export default {
     mpDatepicker
   },
   mounted() {
-    console.log(this.year);
-    store.commit('changeDate', new Date())
-    console.log(this.year);
-    setTimeout(()=>{this.date = '1233'; console.log(this.date)},1000)
+    
   }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="schedule">
     <h1>日程模块</h1>
-    <picker></picker>
+    <mypicker></mypicker>
     
   </div>
 </template>
@@ -9,9 +9,13 @@
 <script>
 // Use Vuex
 import store from './store'
-import picker from './picker/picker'
+import mypicker from './mypicker/mypicker.vue'
 
 export default {
+  data() {
+    return {
+    }
+  },
   computed: {
   },
   methods: {
@@ -20,10 +24,9 @@ export default {
     }
   },
   components: {
-    picker
+    mypicker
   },
   mounted() {
-
   }
 }
 </script>

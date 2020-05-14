@@ -2,15 +2,13 @@
   <div class="set">
     <!-- 用户信息 -->
     <div class="userInfo">
-      <div class="avatar">
-        <img :src="user.avatarUrl" alt="">
-      </div>
+      <img class="avatar" :src="user.avatarUrl" alt="">
       <div class="nickName">{{user.nickName}}</div>
     </div>
     <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
     <div class="footer">
       <div v-if="!isLogged" class="login-button">
-        <mp-button @click="handleClick">登陆</mp-button>
+        <mp-button type="default" size="large" open-type="getUserInfo" @getuserinfo="handleClick">登陆</mp-button>
       </div>
       <div v-else class="set-box">
         
@@ -42,25 +40,35 @@ export default {
   computed: {
   },
   methods: {
-    handleClick() {
-      console.log('hello');
+    handleClick({target}) {
+      this.isLoading = true
+      const { nickName, avatarUrl } = target.userInfo
+      this.user.nickName = nickName
+      this.user.avatarUrl = avatarUrl
+      store.dispatch('Login', this.user)
+      this.isLoading = false
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .userInfo {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
+    margin: 20px;
+    height: 80vh;
+    .avatar {
+      border-radius: 100%;
+      width: 120px;
+      height: 120px;
+    }
+    .nickName {
+      margin-top: 10px;
+    }
   }
-  .avatar {
-    width: 100px;
-    height: 100px;
-  }
+  
   .loginBtn {
     width: 80%;
     border-radius: 10px;

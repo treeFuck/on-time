@@ -51,36 +51,48 @@ export default {
   },
   computed: {},
   methods: {
-    handleDate(obj) {
+    prefixInteger(num, n) {
+      return (Array(n).join(0) + num).slice(-n);
+    },
+    // 格式化发送给后台的日期字符串
+    handleTime(obj) {
       let date = obj;
       if (!date) {
         date = new Date();
       }
       let year = date.getFullYear();
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
+      let month = this.prefixInteger(date.getMonth() + 1, 2);
+      let day = this.prefixInteger(date.getDate(), 2);
       return `${year}-${month}-${day}`;
+    },
+    // 处理日程列表里面开始时间的显示格式
+    handleStartTime(scheduleList) {
+      let len = scheduleList.length;
+      for (let i = 0; i < len; i++) {
+        let time = new Date(scheduleList[i].startTime);
+        scheduleList[i].start_time = `${time.getHours()}:00`;
+      }
     },
     getSchedule() {
       let send = {
         algorithm: store.state.algorithm,
-        date: this.handleDate(store.state.date)
+        date: this.handleTime(store.state.date)
       };
       console.log("获取日程列表，发送：", send);
       setTimeout(() => {
-        this.scheduleList = [
+        let res = [
           {
             taskId: 1,
             taskName: "安康打卡",
             lasting: 20,
-            startTime: "07:00",
+            startTime: "2020-12-11 07:00:00",
             status: 1
           },
           {
             taskId: 2,
             taskName: "测试测试测试测试测试",
             lasting: 20,
-            startTime: "08:00",
+            startTime: "2020-12-11 08:00:00",
             status: 0
           },
           {
@@ -88,10 +100,12 @@ export default {
             taskName:
               "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
             lasting: 20,
-            startTime: "08:30",
+            startTime: "2020-12-11 08:30:00",
             status: 1
           }
         ];
+        this.handleStartTime(res);
+        this.scheduleList = res;
       }, 1000);
     }
   },

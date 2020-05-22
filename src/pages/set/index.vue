@@ -16,7 +16,7 @@
       <div v-if="!isLogged" class="login-button">
         <mp-button type="default" size="large" open-type="getUserInfo" @getuserinfo="handleClick">登陆</mp-button>
       </div>
-      <div v-else class="set-box">功能暂定</div>
+      <div v-else class="set-box">设置功能暂定</div>
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
       isLogged: false,
       isLoading: false,
       user: {
-        nickName: "用户名",
+        nickName: "请先登录",
         avatarUrl: "../../static/images/avatar.png"
       }
     };
@@ -49,6 +49,7 @@ export default {
       this.user.nickName = nickName;
       this.user.avatarUrl = avatarUrl;
       store.dispatch("Login", this.user);
+      this.isLogged = true
       this.isLoading = false;
     },
     share() {
@@ -89,7 +90,7 @@ export default {
       background-size: 1em auto;
     }
     .edit {
-      background: url(../../../static/images/share.png) no-repeat center;
+      background: url(../../../static/images/edit.png) no-repeat center;
       background-size: 1em auto;
     }
     .avatar-box {
@@ -110,10 +111,10 @@ export default {
   }
 }
 
-.loginBtn {
-  margin-top: 50vh;
-  width: 80%;
-  border-radius: 10px;
-  padding: 10px 20px;
+.footer {
+  .set-box {
+    text-align: center;
+  }
 }
+
 </style>

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/schedule/main",
     "pages/set/main",
+    "pages/schedule/main",
     "pages/Individual/main",
     "pages/team/main"
   ],

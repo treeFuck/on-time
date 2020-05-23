@@ -1,5 +1,13 @@
 <template>
   <div class="set">
+    <mp-modal
+      ref="mpModal"
+      title="修改名称"
+      content="<h1>asdsa</h1>"
+      :showCancel="true"
+      @confirm="confirm"
+      @cancel="cancel"
+    />
     <!-- 用户信息 -->
     <div class="userInfo">
       <div class="icon">
@@ -25,11 +33,13 @@
 // Use Vuex
 import store from "./store";
 import mpButton from "mpvue-weui/src/button";
+import mpModal from "mpvue-weui/src/modal";
 
 export default {
   name: "SetPage",
   components: {
-    mpButton
+    mpButton,
+    mpModal
   },
   data() {
     return {
@@ -49,14 +59,15 @@ export default {
       this.user.nickName = nickName;
       this.user.avatarUrl = avatarUrl;
       store.dispatch("Login", this.user);
-      this.isLogged = true
+      this.isLogged = true;
       this.isLoading = false;
     },
     share() {
       console.log("点击分享");
     },
     edit() {
-      console.log('点击编辑');
+      console.log("点击编辑");
+      this.$refs.mpModal.show()
     }
   }
 };
@@ -81,7 +92,7 @@ export default {
     width: 100%;
     height: 70px;
     box-sizing: border-box;
-    
+
     .btn {
       width: 30%;
     }
@@ -116,5 +127,4 @@ export default {
     text-align: center;
   }
 }
-
 </style>

@@ -24,7 +24,7 @@
       background-size: auto 100%;
       background-image: url(../../../../static/images/fish3.png);
     }
-    .name {
+    .algorithm {
       display: inline-block;
       width: 55%;
       font-size: 18px;
@@ -62,12 +62,12 @@
 <template>
   <div class="mylist">
     <div class="top">
-      <div class="date">4月5日</div>
-      <div class="name">今天啥也不想干</div>
+      <div class="date">{{date}}</div>
+      <div class="algorithm">{{algorithm}}</div>
     </div>
     <div class="dataCon">
       <div class="list" :class="{'done': item.status}" v-for="(item, index) in scheduleList" :key="index">
-        <span class="startTime">{{item.startTime}}</span>
+        <span class="startTime">{{item.start_time}}</span>
         <span class="taskName">
           {{item.taskName}}
           <span class="lastTime">（预计耗时：{{item.lasting}}分钟）</span>
@@ -78,12 +78,34 @@
 </template>
 
 <script>
+import store from "../store";
+
 export default {
   props: {
     scheduleList: Object
   },
   data() {
     return {};
+  },
+  computed: {
+    algorithm() {
+      if (store.state.algorithm == 0) {
+        return "短作业优先";
+      } else if (store.state.algorithm == 1) {
+        return "长作业优先";
+      } else if (store.state.algorithm == 2) {
+        return "优先级调度";
+      }
+    },
+    date() {
+      let time = store.state.date;
+      if(!time) {
+        time = new Date();
+      }
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      return `${month}月${day}日`;
+    },
   },
   methods: {},
   mounted() {

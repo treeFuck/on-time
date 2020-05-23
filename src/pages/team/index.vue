@@ -1,8 +1,8 @@
 <template>
   <div class="team">
     <div class="list">
-      <div class="member" v-for="(item, index) in memberList" :key="index">{{item.nickName}}</div>
-      <PlanList :toDoList="todoList" :memberList="memberList" />
+      <TeamCard :state="'create'" />
+      <TeamCard :state="'edit'" />
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@
 // Use Vuex
 import store from './store'
 import PlanList from './component/PlanList'
+import TeamCard from './component/TeamCard'
 export default {
   data() {
     return {
@@ -31,7 +32,8 @@ export default {
     }
   },
   components: {
-    PlanList
+    PlanList,
+    TeamCard
   },
   computed: {
   },

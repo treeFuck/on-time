@@ -20,22 +20,22 @@
       "text": "",
       "pagePath": "pages/schedule/main",
       "iconPath": "static/tabs/schedule.png",
-      "selectedIconPath": "static/tabs/schedule.png"
+      "selectedIconPath": "static/tabs/schedule2.png"
     }, {
       "text": "",
       "pagePath": "pages/Individual/main",
       "iconPath": "static/tabs/Individual.png",
-      "selectedIconPath": "static/tabs/Individual.png"
+      "selectedIconPath": "static/tabs/Individual2.png"
     }, {
       "text": "",
       "pagePath": "pages/team/main",
       "iconPath": "static/tabs/team.png",
-      "selectedIconPath": "static/tabs/team.png"
+      "selectedIconPath": "static/tabs/team2.png"
     }, {
       "text": "",
       "pagePath": "pages/set/main",
       "iconPath": "static/tabs/set.png",
-      "selectedIconPath": "static/tabs/set.png"
+      "selectedIconPath": "static/tabs/set2.png"
     }],
     "position": "bottom"
   }

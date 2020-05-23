@@ -28,32 +28,60 @@
       display: inline-block;
       width: 55%;
       font-size: 18px;
+      font-weight: bold;
     }
   }
   .dataCon {
     .list {
       display: flex;
       align-items: center;
-      margin: 0.5em 0;
-      .startTime {
+      margin: 1em auto;
+      padding: 0.5em 0;
+      width: 90%;
+      border-radius: 8px;
+      background-color: #fff5c4;
+      box-shadow: 2px 3px 5px 0px #eee;
+      .left {
         display: inline-block;
         width: 25%;
         text-align: center;
-        color: #111;
-        font-weight: bold;
+        .startTime {
+          font-size: 18px;
+          color: #111;
+          font-weight: bold;
+          line-height: 1em;
+        }
+        .no-done {
+          .need {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.5em;
+          }
+          .lastTime {
+            color: #ff8b77;
+            font-size: 12px;
+            line-height: 1em;
+          }
+        }
+        .done {
+          height: 1.5em;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: auto 80%;
+          background-image: url(../../../../static/images/clock.png);
+        }
       }
-      .taskName {
+      .right {
         display: inline-block;
         width: 75%;
         text-align: left;
-        color: #666;
-        .lastTime {
-          color: #999;
+        .taskName {
+          color: #666;
         }
       }
-    }
-    .done {
+      .done {
         text-decoration: line-through;
+      }
     }
   }
 }
@@ -66,12 +94,27 @@
       <div class="algorithm">{{algorithm}}</div>
     </div>
     <div class="dataCon">
+<<<<<<< HEAD
       <div class="list" :class="{'done': item.status}" v-for="(item, index) in scheduleList" :key="index">
         <span class="startTime">{{item.start_time}}</span>
         <span class="taskName">
           {{item.taskName}}
           <span class="lastTime">（预计耗时：{{item.lasting}}分钟）</span>
         </span>
+=======
+      <div class="list" v-for="(item, index) in scheduleList" :key="index">
+        <div class="left">
+          <div class="startTime">{{item.start_time}}</div>
+          <div class="no-done" v-show="!item.status">
+            <div class="need">需要</div>
+            <div class="lastTime">{{item.lasting}} 分钟</div>
+          </div>
+          <div class="done" v-show="item.status"></div>
+        </div>
+        <div class="right" :class="{'done': item.status}">
+          <div class="taskName">{{item.taskName}}</div>
+        </div>
+>>>>>>> 7a673edb17b41af7ba88c89d82bdc0b413194434
       </div>
     </div>
   </div>
@@ -99,13 +142,21 @@ export default {
     },
     date() {
       let time = store.state.date;
+<<<<<<< HEAD
       if(!time) {
+=======
+      if (!time) {
+>>>>>>> 7a673edb17b41af7ba88c89d82bdc0b413194434
         time = new Date();
       }
       let month = time.getMonth() + 1;
       let day = time.getDate();
       return `${month}月${day}日`;
+<<<<<<< HEAD
     },
+=======
+    }
+>>>>>>> 7a673edb17b41af7ba88c89d82bdc0b413194434
   },
   methods: {},
   mounted() {

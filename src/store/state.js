@@ -3,7 +3,8 @@ const state = {
     user: {
         openid: '',
         avatarUrl: '',
-        nickName: ''
+        nickName: '',
+        teamId: ''
     }
 }
 

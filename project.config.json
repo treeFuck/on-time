@@ -9,14 +9,8 @@
 		"newFeature": true,
 		"coverView": true,
 		"autoAudits": false,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
-=======
->>>>>>> 15091ac4f827578517123c21f5cbefccd1082f93
-=======
->>>>>>> 7a673edb17b41af7ba88c89d82bdc0b413194434
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -24,19 +18,9 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-<<<<<<< HEAD
-<<<<<<< HEAD
-		}
-=======
 		},
 		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
->>>>>>> 15091ac4f827578517123c21f5cbefccd1082f93
-=======
-		},
-		"useCompilerModule": false,
-		"userConfirmedUseCompilerModuleSwitch": false
->>>>>>> 7a673edb17b41af7ba88c89d82bdc0b413194434
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",

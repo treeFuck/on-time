@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/schedule/main",
     "pages/team/main",
     "pages/set/main",
-    "pages/schedule/main",
     "pages/Individual/main"
   ],
   "window": {
@@ -15,7 +15,6 @@
     "backgroundColor": "#FFF5C4",
     "selectedColor": "#999",
     "borderStyle": "white",
-
     "list": [{
       "text": "",
       "pagePath": "pages/schedule/main",

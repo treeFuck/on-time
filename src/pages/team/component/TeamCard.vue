@@ -32,25 +32,23 @@
       <img src="../user.png" alt />
       <img src="../user.png" alt />
     </div>
-    <div class="btn-box">
-      <button v-if="state === 'create'" @click="createTeam"
-      :class="state === 'create' ? 'createColor2' : 'editColor2'">
-        <span>完成</span>
-      </button>
-      <button v-if="state !== 'create'" @click="deleteTeam"
-      :class="state === 'create' ? 'createColor2' : 'editColor2'">
-        <span>删除</span>
-      </button>
-      <button v-if="state !== 'create'" @click="editTeam"
-      :class="state === 'create' ? 'createColor2' : 'editColor2'">
-        <span>完成</span>
-      </button>
+    <div v-if="state === 'create'" class="btn-box">
+      <my-button @click="createTeam" :color="'red'">完成</my-button>
+    </div>
+    <div v-else class="btn-box">
+      <my-button @click="deleteTeam" :color="'yellow'">删除</my-button>
+      <my-button @click="editTeam" :color="'yellow'">完成</my-button>
     </div>
   </div>
 </template>
 
 <script>
+import myButton from '../../../components/myButton'
 export default {
+  name: 'TeamCard',
+  components: {
+    myButton
+  },
   props: {
     state: String
   },
@@ -158,11 +156,7 @@ export default {
   .btn-box {
     padding-top: 1em;
     display: flex;
-    justify-content: space-between;
-    button {
-      border-radius: 5pt;
-      font-weight: bold;
-    }
+    justify-content: center;
   }
 }
 </style>

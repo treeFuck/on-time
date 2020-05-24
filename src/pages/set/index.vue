@@ -18,14 +18,18 @@
         <div class="edit btn" @click="edit"></div>
       </div>
       <div class="nickName">{{user.nickName}}</div>
+      <div class="set-box">设置功能暂定</div>
     </div>
     <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
     <div class="footer">
       <div v-if="!isLogged" class="login-button">
+        <myButton :color="'yellow'" open-type="getUserInfo" @getuserinfo="handleClick">登录</myButton>
         <mp-button type="default" size="large" open-type="getUserInfo" @getuserinfo="handleClick">登陆</mp-button>
       </div>
-      <div v-else class="set-box">设置功能暂定</div>
     </div>
+    <div class="about">
+        <p>关于作者</p>
+      </div>
   </div>
 </template>
 
@@ -34,12 +38,14 @@
 import store from "./store";
 import mpButton from "mpvue-weui/src/button";
 import mpModal from "mpvue-weui/src/modal";
+import myButton from "../../components/myButton";
 
 export default {
   name: "SetPage",
   components: {
     mpButton,
-    mpModal
+    mpModal,
+    myButton
   },
   data() {
     return {
@@ -54,6 +60,7 @@ export default {
   computed: {},
   methods: {
     handleClick({ target }) {
+      console.log("点击登录");
       this.isLoading = true;
       const { nickName, avatarUrl } = target.userInfo;
       this.user.nickName = nickName;
@@ -67,7 +74,10 @@ export default {
     },
     edit() {
       console.log("点击编辑");
-      this.$refs.mpModal.show()
+      this.$refs.mpModal.show();
+    },
+    test(e) {
+      console.log("hello");
     }
   }
 };
@@ -115,6 +125,9 @@ export default {
         height: 120px;
       }
     }
+    .set-box {
+      text-align: center;
+    }
   }
 
   .nickName {
@@ -123,8 +136,19 @@ export default {
 }
 
 .footer {
-  .set-box {
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+.about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../../../static/images/fish1.png) no-repeat center;
+    background-size: 110pt auto;
+    font-size: 14pt;
+    height: 101pt;
+    padding-top: 10px;
+    color: #ffd600;
+  }
 </style>

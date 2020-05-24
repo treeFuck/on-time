@@ -3,7 +3,8 @@
     "pages/team/main",
     "pages/set/main",
     "pages/schedule/main",
-    "pages/Individual/main"
+    "pages/Individual/main",
+    "pages/about/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

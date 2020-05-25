@@ -34,6 +34,7 @@
     </div>
     <mylist v-if="scheduleList" :scheduleList="scheduleList"></mylist>
     <mypicker></mypicker>
+    <movableFish></movableFish>
   </div>
 </template>
 
@@ -42,7 +43,7 @@
 import store from "./store";
 import mylist from "./mylist/mylist.vue";
 import mypicker from "./mypicker/mypicker.vue";
-
+import movableFish from '../../components/movableFish.vue';
 export default {
   data() {
     return {
@@ -111,7 +112,8 @@ export default {
   },
   components: {
     mylist,
-    mypicker
+    mypicker,
+    movableFish
   },
   mounted() {
     this.getSchedule();

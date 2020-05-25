@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     createTeam() {
-      return 
+      return false
     },
     exitTeam() {},
     addMember() {},

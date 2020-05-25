@@ -1,15 +1,10 @@
 {
   "pages": [
-    "pages/schedule/main",
-    "pages/team/main",
     "pages/set/main",
-<<<<<<< HEAD
+    "pages/team/main",
     "pages/schedule/main",
     "pages/Individual/main",
     "pages/about/main"
-=======
-    "pages/Individual/main"
->>>>>>> 10df9b5744c08b169e073b7997af394ed94d89e4
   ],
   "window": {
     "backgroundTextStyle": "light",

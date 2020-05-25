@@ -13,23 +13,29 @@
       <div class="icon">
         <div class="share btn" @click="share"></div>
         <div class="avatar-box btn">
-          <img class="avatar" :src="user.avatarUrl" alt />
+          <img class="avatar" :src="avatarUrl" alt />
         </div>
         <div class="edit btn" @click="edit"></div>
       </div>
-      <div class="nickName">{{user.nickName}}</div>
+      <div class="nickName">{{nickName}}</div>
       <div class="set-box">设置功能暂定</div>
     </div>
     <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
     <div class="footer">
       <div v-if="!isLogged" class="login-button">
         <myButton :color="'yellow'" open-type="getUserInfo" @getuserinfo="handleClick">登录</myButton>
-        <mp-button type="default" size="large" open-type="getUserInfo" @getuserinfo="handleClick">登陆</mp-button>
+        <mp-button
+          btnClass="btn-class"
+          type="default"
+          size="large"
+          open-type="getUserInfo"
+          @getuserinfo="handleClick"
+        >登陆</mp-button>
       </div>
     </div>
     <div class="about">
-        <p>关于作者</p>
-      </div>
+      <p>关于作者</p>
+    </div>
   </div>
 </template>
 
@@ -50,24 +56,32 @@ export default {
   data() {
     return {
       isLogged: false,
-      isLoading: false,
-      user: {
-        nickName: "请先登录",
-        avatarUrl: "../../static/images/avatar.png"
-      }
+      isLoading: false
     };
   },
-  computed: {},
+  computed: {
+    nickName() {
+      return this.$store.state.userInfo.nickName;
+    },
+    avatarUrl() {
+      return this.$store.state.userInfo.avatarUrl;
+    }
+  },
   methods: {
-    handleClick({ target }) {
-      console.log("点击登录");
-      this.isLoading = true;
-      const { nickName, avatarUrl } = target.userInfo;
-      this.user.nickName = nickName;
-      this.user.avatarUrl = avatarUrl;
-      store.dispatch("Login", this.user);
-      this.isLogged = true;
-      this.isLoading = false;
+    async handleClick({ target }) {
+      try {
+        this.isLoading = true;
+
+        const { nickName, avatarUrl } = target.userInfo;
+
+        // store.dispatch("Login", this.user);  // 页面的store
+        this.$store.dispatch("Login", { nickName, avatarUrl }); // 全局store
+
+        this.isLogged = true;
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
     share() {
       console.log("点击分享");
@@ -141,14 +155,18 @@ export default {
   align-items: center;
 }
 .about {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url(../../../static/images/fish1.png) no-repeat center;
-    background-size: 110pt auto;
-    font-size: 14pt;
-    height: 101pt;
-    padding-top: 10px;
-    color: #ffd600;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(../../../static/images/fish1.png) no-repeat center;
+  background-size: 110pt auto;
+  font-size: 14pt;
+  height: 101pt;
+  padding-top: 10px;
+  color: #ffd600;
+}
+
+.btn-class {
+  background-color: #fff4f0;
+}
 </style>

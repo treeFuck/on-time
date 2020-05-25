@@ -25,6 +25,7 @@
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
 	"appid": "wx512e190ce5effdd8",
+	"cloudfunctionRoot": "static/functions/",
 	"projectname": "on-time",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},

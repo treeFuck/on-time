@@ -1,7 +1,7 @@
 <style scoped lang="scss">
 .mylist {
   position: relative;
-  margin: 8.5em auto 0 auto;
+  margin: 4em auto;
   padding: 2em 0 1em 0;
   width: 95%;
   font-size: 16px;
@@ -32,6 +32,8 @@
     }
   }
   .dataCon {
+    // max-height: 60vh;
+    // overflow-y: auto;
     .list {
       display: flex;
       align-items: center;
@@ -39,7 +41,7 @@
       padding: 0.5em 0;
       width: 90%;
       border-radius: 8px;
-      background-color: #fff5c4;
+      background-color: rgba(255,245,196,1);
       box-shadow: 2px 3px 5px 0px #eee;
       .left {
         display: inline-block;

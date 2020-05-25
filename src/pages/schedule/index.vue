@@ -1,8 +1,8 @@
 <style scoped lang="scss">
 .xiala {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 20%;
+  left: 25%;
   width: 2em;
   height: 90%;
   .line {
@@ -34,7 +34,6 @@
     </div>
     <mylist v-if="scheduleList" :scheduleList="scheduleList"></mylist>
     <mypicker></mypicker>
-    <movableFish></movableFish>
   </div>
 </template>
 
@@ -43,7 +42,6 @@
 import store from "./store";
 import mylist from "./mylist/mylist.vue";
 import mypicker from "./mypicker/mypicker.vue";
-import movableFish from '../../components/movableFish.vue';
 export default {
   data() {
     return {
@@ -103,6 +101,38 @@ export default {
             lasting: 20,
             startTime: "2020-12-11 08:30:00",
             status: 1
+          },
+          {
+            taskId: 3,
+            taskName:
+              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+            lasting: 20,
+            startTime: "2020-12-11 08:30:00",
+            status: 1
+          },
+          {
+            taskId: 4,
+            taskName:
+              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+            lasting: 20,
+            startTime: "2020-12-11 08:30:00",
+            status: 1
+          },
+          {
+            taskId: 5,
+            taskName:
+              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+            lasting: 20,
+            startTime: "2020-12-11 08:30:00",
+            status: 1
+          },
+          {
+            taskId: 6,
+            taskName:
+              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+            lasting: 20,
+            startTime: "2020-12-11 08:30:00",
+            status: 1
           }
         ];
         this.handleStartTime(res);
@@ -112,8 +142,7 @@ export default {
   },
   components: {
     mylist,
-    mypicker,
-    movableFish
+    mypicker
   },
   mounted() {
     this.getSchedule();

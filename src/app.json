@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/Individual/main",
+    "pages/schedule/main",
     "pages/set/main",
     "pages/team/main",
-    "pages/schedule/main",
-    "pages/Individual/main",
     "pages/about/main"
   ],
   "window": {

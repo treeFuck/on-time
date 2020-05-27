@@ -214,6 +214,95 @@
   }
   ```
 
+###  5.5 获取团队列表
+
++ URL：{{base_url}}/group/getGroupList
+
++ 请求方式：GET
+
++ 请求格式：application/json
+
++ 备注：请求头带上authorization字段
+
++ 请求数据：无
+
++ 响应数据：
+
+  ```
+  {
+    	"message": "success",
+    	"code": "1",
+    	"data": {
+    		"teamLength": 1,
+    		"teamList": [
+    		{
+              teamName: "软工团队计划",
+              teamId: 1,
+              members: [{
+                  id: 1,
+                  nickName: '政',
+                  avatar: 头像地址
+                },
+                {
+                  id: 2,
+                  nickName: '钻',
+                  avatar: 头像地址
+  
+                },
+                {
+                  id: 3,
+                  nickName: '豪',
+                  avatar: 头像地址
+                },
+                {
+                  id: 4,
+                  nickName: '沛',
+                  avatar: 头像地址
+  
+                },
+                {
+                  id: 5,
+                  nickName: '兰',
+                  avatar: 头像地址
+                },
+                {
+                  id: 6,
+                  nickName: '树',
+                  avatar: 头像地址
+                }
+              ],
+              taskList: [{
+                taskName: "测试计划八八零的六零",
+                lasting: 30,
+                startTime: "2020-05-10 20:21:00",
+                endTime: "2020-05-11 20:21:00",
+                priority: 3,
+                status: 0,
+                members: [{
+                    id: 2,
+                    nickName: '钻',
+                    avatar: 头像地址
+                  },
+                  {
+                    id: 5,
+                    nickName: '兰',
+                    avatar: 头像地址
+                  }
+                ]
+            }]
+         }
+     ]
+  }
+  ```
+
+  ###  5.6 更新团队计划
+
+  ###  5.7 删除团队计划
+
+  ###  5.8 新建团队计划
+
+
+
 ## 六、日程表
 
 ### 6.1 修改子任务状态

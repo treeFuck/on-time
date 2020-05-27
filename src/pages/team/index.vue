@@ -32,7 +32,7 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <planList v-if="teamList" :teamList="teamList"></planList>
+    <team-list v-if="teamList" :teamList="teamList"></team-list>
     <mypicker></mypicker>
   </div>
 </template>
@@ -40,7 +40,7 @@
 <script>
 // Use Vuex
 import store from "./store";
-import planList from "./planList/planList.vue";
+import teamList from "./teamList/teamList.vue";
 import mypicker from "./mypicker/mypicker.vue";
 export default {
   data() {
@@ -60,7 +60,7 @@ export default {
         })
       });
     },
-    getplanData() {
+    getTeamData() {
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);
@@ -69,11 +69,11 @@ export default {
     }
   },
   components: {
-    planList,
+    teamList,
     mypicker
   },
   mounted() {
-    this.getplanData();
+    this.getTeamData();
   }
 };
 </script>

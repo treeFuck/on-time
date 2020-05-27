@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/team/main",
+    "pages/set/main",
     "pages/Individual/main",
     "pages/schedule/main",
-    "pages/set/main",
-    "pages/team/main",
+    "pages/teamEdit/main",
     "pages/about/main"
   ],
   "window": {

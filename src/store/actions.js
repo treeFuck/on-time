@@ -9,8 +9,10 @@ const actions = {
             commit('SET_USERINFO', userInfo)
 
             //将用户信息保存到localStroage
-            console.log(JSON.stringify(userInfo));
-            localStorage.setItem('userInfo', JSON.stringify(userInfo))
+            wx.setStorage({
+                key: 'userInfo',
+                data: userInfo
+            })
         } catch (error) {
             console.error(error)
         }

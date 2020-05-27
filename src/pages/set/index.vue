@@ -1,5 +1,6 @@
 <template>
   <div class="set">
+    <!-- <mp-loading :showLoading="isLoading" loadingText="加载中..."></mp-loading> -->
     <mp-modal
       ref="mpModal"
       title="修改名称"
@@ -33,7 +34,7 @@
         >登陆</mp-button>
       </div>
     </div>
-    <div class="about">
+    <div class="about" @click="about">
       <p>关于作者</p>
     </div>
   </div>
@@ -44,6 +45,7 @@
 import store from "./store";
 import mpButton from "mpvue-weui/src/button";
 import mpModal from "mpvue-weui/src/modal";
+import mpLoading from 'mpvue-weui/src/loading';
 import myButton from "../../components/myButton";
 
 export default {
@@ -51,7 +53,8 @@ export default {
   components: {
     mpButton,
     mpModal,
-    myButton
+    myButton,
+    mpLoading
   },
   data() {
     return {
@@ -92,6 +95,9 @@ export default {
     },
     test(e) {
       console.log("hello");
+    },
+    about() {
+      wx.navigateTo({ url: '/pages/about/main' })
     }
   }
 };

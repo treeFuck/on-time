@@ -3,7 +3,6 @@
   position: fixed;
   left: 3%;
   width: 94%;
-  height: 4em;
   padding: 1em 0;
   font-size: 16px;
   background: #FFF5C4;
@@ -95,6 +94,8 @@
       <span class="day">{{day}}</span>
       <span>日</span>
     </div>
+    <task-form />
+
     <mp-picker
       ref="algorithmPicker"
       @onConfirm="confirmAlgorithm"
@@ -108,11 +109,12 @@
 import store from "../store";
 import mpDatepicker from "mpvue-weui/src/date-picker";
 import mpPicker from "mpvue-weui/src/picker";
+import taskForm from '../taskForm/taskForm'
 
 export default {
   data() {
     return {
-      mypickerShow: false,
+      mypickerShow: true,
       algorithmArray: [
         {
           label: "短作业优先",
@@ -177,7 +179,8 @@ export default {
   },
   components: {
     mpDatepicker,
-    mpPicker
+    mpPicker,
+    taskForm
   },
   mounted() {}
 };

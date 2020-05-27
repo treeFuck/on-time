@@ -43,6 +43,7 @@ const store = new Vuex.Store({
             avatar: "https://wx.qlogo.cn/mmopen/vi_32/V3QWY3NwfEndcsZTWGTTLLUbhKVJ8oPWjAn8MZNwL8Bjxxstr0KQUHoxD0stWDck1ic5QaCARzI7Fe3wRVYfv4A/132"
           }
         ],
+        
         taskList: [{
           taskName: "测试计划八八零的六零",
           lasting: 30,

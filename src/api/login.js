@@ -1,10 +1,10 @@
 import request from '../utils/request'
 
-export function login({ nickName, avatarUrl }) {
+export function login({ nickName, avatarUrl, openid }) {
   return request({
     url: '/login',
     method: 'post',
-    params: { nickName, avatarUrl }
+    params: { nickName, avatarUrl, openid }
   })
 }
 

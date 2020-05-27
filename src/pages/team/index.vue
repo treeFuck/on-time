@@ -1,56 +1,79 @@
+<style scoped lang="scss">
+.xiala {
+  position: fixed;
+  top: 0;
+  left: 25%;
+  width: 2em;
+  height: 90%;
+  .line {
+    position: absolute;
+    top: 0;
+    right: 75%;
+    width: 2px;
+    height: 100%;
+    background: #ffe55e;
+  }
+  .gou {
+    display: block;
+    position: absolute;
+    bottom: -2em;
+    right: 0;
+    width: 2em;
+    height: 2em;
+    transform-style: preserve-3d;
+    transform: rotateY(-180deg);
+  }
+}
+</style>
+
 <template>
-  <div class="team">
-    <div class="list">
-      <TeamCard :state="'create'" />
-      <TeamCard :state="'edit'" />
+  <div class="Individual">
+    <div class="xiala">
+      <div class="line"></div>
+      <img class="gou" src="../../../static/images/gou.png" />
     </div>
+    <team-list v-if="teamList" :teamList="teamList"></team-list>
+    <mypicker></mypicker>
   </div>
 </template>
 
 <script>
 // Use Vuex
-import store from './store'
-import PlanList from './component/PlanList'
-import TeamCard from './component/TeamCard'
+import store from "./store";
+import teamList from "./teamList/teamList.vue";
+import mypicker from "./mypicker/mypicker.vue";
 export default {
   data() {
     return {
-      teamData: {
-        group_id: 1232,
-        group_name: '攻城狮',
-        creator_id: 'zuan',
-        limit: 5
-      },
-      toDoList: [],
-      memberList: [
-        {_id: 1, nickName: '钻', avatarUrl: '../user.png'},
-        {_id: 2, nickName: '树', avatarUrl: '../user.png'}, 
-        {_id: 3, nickName: '沛', avatarUrl: '../user.png'},
-        {_id: 4, nickName: '政', avatarUrl: '../user.png'}, 
-        {_id: 5, nickName: '兰', avatarUrl: '../user.png'}, 
-      ]
+      teamList: null
+    };
+  },
+  computed: {},
+  methods: {
+    // 处理日程列表里面开始时间的显示格式
+    handleStartTime(teamList) {
+      teamList.forEach(team => {
+        team.taskList.forEach(task=>{
+          let endTime = new Date(task.endTime);
+          task.end_clock = `${endTime.getHours()}:00`;
+          task.end_date = endTime.toLocaleDateString();
+        })
+      });
+    },
+    getTeamData() {
+      setTimeout(() => {
+        this.teamList = store.state.teamList;
+        this.handleStartTime(this.teamList);
+        console.table(this.teamList);
+      }, 1000);
     }
   },
   components: {
-    PlanList,
-    TeamCard
+    teamList,
+    mypicker
   },
-  computed: {
-  },
-  methods: {
-    createTeam() {
-      return false
-    },
-    exitTeam() {},
-    addMember() {},
-    removeMember() {}
-  },
-  created() {
-    
-  },
-}
+  mounted() {
+    this.getTeamData();
+  }
+};
 </script>
-
-<style>
-
-</style>

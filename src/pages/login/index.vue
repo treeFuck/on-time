@@ -126,17 +126,6 @@ export default {
     }
   },
   mounted() {
-    // 如果缓存里有token，自动登录
-    if (wx.getStorageSync("Authorization")) {
-      wx.switchTab({
-        // 登录成功， 跳转主页
-        url: "/pages/schedule/main"
-        // url: "/pages/Individual/main",
-        // url: "/pages/set/main",
-        // url: "/pages/team/main",
-        // url: "/pages/about/main"
-      });
-    }
   }
 };
 </script>

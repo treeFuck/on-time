@@ -13,8 +13,8 @@ const actions = {
                 "name": userInfo.nickName,
                 "wechatIcon": userInfo.avatarUrl
             });
-            // 保存token到vuex
-            commit('SET_AUTH', res.header.Authorization);
+            // 保存token到Storage
+            wx.setStorageSync("Authorization",res.header.Authorization)
             return 'success';
         } catch (error) {
             console.error(error);

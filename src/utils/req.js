@@ -7,8 +7,9 @@ function request(url, method, data) {
     let header = {
         'content-type': 'application/json' // 默认值
     }
-    if (store.state.Authorization) {
-        header.Authorization = store.state.Authorization
+    let Authorization = wx.getStorageSync("Authorization");
+    if (Authorization) {
+        header.Authorization = Authorization
     }
     return new Promise((resolve, reject) => {
         wx.request({

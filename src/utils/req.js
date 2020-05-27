@@ -17,7 +17,6 @@ function request(url, method, data) {
             data: data,
             header: header,
             success: (res) => {
-                console.log('微信对象', wx)
                 if (res.data.code == 1) {
                     resolve(res);
                 } else if (res.data.code == 3001) {

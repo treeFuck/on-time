@@ -49,7 +49,14 @@ export default {
       scheduleList: null
     };
   },
-  computed: {},
+  computed: {
+    algorithm() {
+      return store.state.algorithm
+    },
+    date() {
+      return this.handleTime(store.state.date)
+    }
+  },
   methods: {
     prefixInteger(num, n) {
       return (Array(n).join(0) + num).slice(-n);
@@ -75,70 +82,75 @@ export default {
     },
     getSchedule() {
       let send = {
-        algorithm: store.state.algorithm,
-        date: this.handleTime(store.state.date)
+        algorithm: this.algorithm,
+        date: this.date
       };
-      console.log("获取日程列表，发送：", send);
-      setTimeout(() => {
-        let res = [
-          {
-            taskId: 1,
-            taskName: "安康打卡",
-            lasting: 20,
-            startTime: "2020-12-11 07:00:00",
-            status: 1
-          },
-          {
-            taskId: 2,
-            taskName: "测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:00:00",
-            status: 0
-          },
-          {
-            taskId: 3,
-            taskName:
-              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:30:00",
-            status: 1
-          },
-          {
-            taskId: 3,
-            taskName:
-              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:30:00",
-            status: 1
-          },
-          {
-            taskId: 4,
-            taskName:
-              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:30:00",
-            status: 1
-          },
-          {
-            taskId: 5,
-            taskName:
-              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:30:00",
-            status: 1
-          },
-          {
-            taskId: 6,
-            taskName:
-              "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-            lasting: 20,
-            startTime: "2020-12-11 08:30:00",
-            status: 1
-          }
-        ];
-        this.handleStartTime(res);
-        this.scheduleList = res;
-      }, 1000);
+      this.$wxhttp
+        .post({
+          url: "/schedule/sortTask",
+          params: send
+        })
+        .then(res => {
+          console.log(res.data);
+          let res2 = [
+            {
+              taskId: 1,
+              taskName: "安康打卡",
+              lasting: 20,
+              startTime: "2020-12-11 07:00:00",
+              status: 1
+            },
+            {
+              taskId: 2,
+              taskName: "测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:00:00",
+              status: 0
+            },
+            {
+              taskId: 3,
+              taskName:
+                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:30:00",
+              status: 1
+            },
+            {
+              taskId: 3,
+              taskName:
+                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:30:00",
+              status: 1
+            },
+            {
+              taskId: 4,
+              taskName:
+                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:30:00",
+              status: 1
+            },
+            {
+              taskId: 5,
+              taskName:
+                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:30:00",
+              status: 1
+            },
+            {
+              taskId: 6,
+              taskName:
+                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
+              lasting: 20,
+              startTime: "2020-12-11 08:30:00",
+              status: 1
+            }
+          ];
+          this.handleStartTime(res2);
+          this.scheduleList = res2;
+        });
     }
   },
   components: {
@@ -147,11 +159,14 @@ export default {
   },
   mounted() {
     this.getSchedule();
-    this.$wxhttp.get({
-      url: '/group/getGroup',
-    }).then((res)=>{
-      console.log(res);
-    })
+  },
+  watch: {
+    algorithm(newVl, oldVl) {
+      this.getSchedule();
+    },
+    date(newVl, oldVl) {
+      this.getSchedule();
+    }
   }
 };
 </script>

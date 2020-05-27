@@ -6,6 +6,9 @@ const mutations = {
         state.userInfo.nickName = userInfo.nickName
         state.userInfo.avatarUrl = userInfo.avatarUrl
         state.userInfo.openid = userInfo.openid
+    },
+    SET_AUTH(state, Authorization) {
+        state.Authorization = Authorization;
     }
 }
 

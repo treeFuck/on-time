@@ -123,7 +123,7 @@
     <div class="plan" v-for="(plan, index1) in planData" :key="index1">
       <div class="handle">
         <div class="add"></div>
-        <div class="edit"></div>
+        <div class="edit" ></div>
         <div class="del"></div>
       </div>
       <div class="top">
@@ -167,7 +167,14 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    delPlan() {
+
+    },
+    editPlan() {
+
+    }
+  },
   mounted() {
     console.log(this.planData);
   }

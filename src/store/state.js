@@ -5,7 +5,8 @@ const state = {
         avatarUrl: '../../static/images/avatar.png',
         nickName: '请先登录',
         teamId: '123'
-    }
+    },
+    Authorization: null
 }
 
 export default state

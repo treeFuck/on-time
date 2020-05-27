@@ -1,9 +1,9 @@
 <style scoped lang="scss">
-.mypicker {
+.handlePlan {
   position: fixed;
   left: 3%;
   width: 94%;
-  height: 4em;
+  // height: 4em;
   padding: 1em 0;
   font-size: 16px;
   background: #FFF5C4;
@@ -34,43 +34,6 @@
       height: 2em;
     }
   }
-  .algorithm {
-    display: inline-block;
-    width: 35%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    background-image: url(../../../../static/images/fish1.png);
-    background-position: center;
-    background-size: auto 4em;
-    background-repeat: no-repeat;
-  }
-  .data {
-    display: inline-block;
-    width: 65%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    span {
-      display: inline-block;
-      height: 4em;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: auto 2.5em;
-    }
-    .year {
-      width: 4.5em;
-      background-image: url(../../../../static/images/fish1.png);
-    }
-    .month {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
-    }
-    .day {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
-    }
-  }
 }
 .mypickerShow {
   top: 0;
@@ -81,20 +44,22 @@
 </style>
 
 <template>
-  <div class="mypicker" :class="{'mypickerShow': mypickerShow, 'mypickerHide': !mypickerShow}">
+  <div class="handlePlan" :class="{'mypickerShow': mypickerShow, 'mypickerHide': !mypickerShow}">
     <div class="xiala">
       <div class="line"></div>
       <img @click="mypickerShow=!mypickerShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
-    <div class="algorithm" @click="pickAlgorithm">{{algorithm}}</div>
-    <div class="data" @click="pickDate">
-      <span class="year">{{year}}</span>
-      <span>年</span>
-      <span class="month">{{month}}</span>
-      <span>月</span>
-      <span class="day">{{day}}</span>
-      <span>日</span>
+    <div class="plan">
+      <div class="planNmae">
+        <span class="item"></span>
+        <input class="data">
+      </div>
+      <div class="taskList">
+        
+      </div>
     </div>
+
+
     <mp-picker
       ref="algorithmPicker"
       @onConfirm="confirmAlgorithm"

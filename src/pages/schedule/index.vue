@@ -42,6 +42,7 @@
 import store from "./store";
 import mylist from "./mylist/mylist.vue";
 import mypicker from "./mypicker/mypicker.vue";
+
 export default {
   data() {
     return {
@@ -146,6 +147,11 @@ export default {
   },
   mounted() {
     this.getSchedule();
+    this.$wxhttp.get({
+      url: '/group/getGroup',
+    }).then((res)=>{
+      console.log(res);
+    })
   }
 };
 </script>

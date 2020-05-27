@@ -33,7 +33,7 @@
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <planList v-if="planData" :planData="planData"></planList>
-    <mypicker></mypicker>
+    <handlePlan></handlePlan>
   </div>
 </template>
 
@@ -41,7 +41,7 @@
 // Use Vuex
 import store from "./store";
 import planList from "./planList/planList.vue";
-import mypicker from "./mypicker/mypicker.vue";
+import handlePlan from "./handlePlan/handlePlan.vue";
 export default {
   data() {
     return {
@@ -50,7 +50,7 @@ export default {
   },
   computed: {},
   methods: {
-    // 处理日程列表里面开始时间的显示格式
+    // 处理计划列表里面时间的显示格式
     handleStartTime(planData) {
       planData.forEach(plan => {
         plan.taskList.forEach(task=>{
@@ -146,7 +146,7 @@ export default {
   },
   components: {
     planList,
-    mypicker
+    handlePlan
   },
   mounted() {
     this.getplanData();

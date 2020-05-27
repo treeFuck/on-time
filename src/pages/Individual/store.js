@@ -5,15 +5,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    algorithm: 0,// 0：短作业优先, 1：长作业优先, 2：优先级调度
-    date: new Date()
+    type: 1, // 类型：0-->修改，1-->添加
+    plan: null
   },
   mutations: {
-    changeDate(state, newVl) {
-      state.date = newVl
+    changeType(state, newVl) {
+      state.type = newVl
     },
-    changeAlgorithm(state, newVl) {
-      state.algorithm = newVl;
+    changePlan(state, newVl) {
+      state.plan = newVl;
     }
   }
 })

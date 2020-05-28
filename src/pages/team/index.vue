@@ -64,7 +64,6 @@ export default {
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);
-        console.table(this.teamList);
       }, 1000);
     }
   },

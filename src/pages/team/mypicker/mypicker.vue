@@ -75,15 +75,15 @@
   top: 0;
 }
 .mypickerHide {
-  top: -6em;
+  top: -15em;
 }
 </style>
 
 <template>
-  <div class="mypicker" :class="{'mypickerShow': mypickerShow, 'mypickerHide': !mypickerShow}">
+  <div class="mypicker"  :style="offsetTop" >
     <div class="xiala">
       <div class="line"></div>
-      <img @click="mypickerShow=!mypickerShow" class="gou" src="../../../../static/images/gou.png" />
+      <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
     <div class="algorithm" @click="pickAlgorithm">{{algorithm}}</div>
     <div class="data" @click="pickDate">
@@ -128,7 +128,8 @@ export default {
           label: "优先级调度",
           value: 2
         }
-      ]
+      ],
+      top: 0
     };
   },
   methods: {
@@ -143,6 +144,10 @@ export default {
     },
     confirmDate(pick) {
       store.commit("changeDate", new Date(pick.value));
+    },
+    changeIsShow(event) {
+      this.mypickerShow = !this.mypickerShow
+      this.top = event.currentTarget.offsetTop
     }
   },
   computed: {
@@ -175,6 +180,9 @@ export default {
         return "";
       }
       return store.state.date.getDate();
+    },
+    offsetTop() {
+      return this.mypickerShow ? 'top: 0' : `top: -${this.top - 10}px`;
     }
   },
   components: {

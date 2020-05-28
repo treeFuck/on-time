@@ -205,9 +205,6 @@ export default {
     return {};
   },
   methods: {},
-  mounted() {
-    console.log(this.teamList);
-  }
 };
 </script>
 

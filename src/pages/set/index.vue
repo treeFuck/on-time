@@ -21,19 +21,6 @@
       <div class="nickName">{{nickName}}</div>
       <div class="set-box">设置功能暂定</div>
     </div>
-    <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
-    <div class="footer">
-      <div v-if="!isLogged" class="login-button">
-        <myButton :color="'yellow'" open-type="getUserInfo" @getuserinfo="handleClick">登录</myButton>
-        <mp-button
-          btnClass="btn-class"
-          type="default"
-          size="large"
-          open-type="getUserInfo"
-          @getuserinfo="handleClick"
-        >登陆</mp-button>
-      </div>
-    </div>
     <div class="about" @click="about">
       <p>关于作者</p>
     </div>
@@ -56,12 +43,6 @@ export default {
     myButton,
     mpLoading
   },
-  data() {
-    return {
-      isLogged: false,
-      isLoading: false
-    };
-  },
   computed: {
     nickName() {
       return this.$store.state.userInfo.nickName;
@@ -71,21 +52,6 @@ export default {
     }
   },
   methods: {
-    async handleClick({ target }) {
-      try {
-        this.isLoading = true;
-
-        const { nickName, avatarUrl } = target.userInfo;
-
-        // store.dispatch("Login", this.user);  // 页面的store
-        this.$store.dispatch("Login", { nickName, avatarUrl }); // 全局store
-
-        this.isLogged = true;
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     share() {
       console.log("点击分享");
     },

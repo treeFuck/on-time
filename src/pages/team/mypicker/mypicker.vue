@@ -90,7 +90,7 @@ import taskForm from '../taskForm/taskForm'
 export default {
   data() {
     return {
-      mypickerShow: true,
+      mypickerShow: false,
       algorithmArray: [
         {
           label: "短作业优先",

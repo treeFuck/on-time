@@ -8,7 +8,6 @@ export function login(userInfo) {
 }
 
 export async function getOpenid() {
-  console.log("getOpenid")
   try {
     const result = await wx.cloud.callFunction({
       name: "getOpenid"

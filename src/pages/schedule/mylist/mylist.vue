@@ -145,7 +145,7 @@ export default {
   },
   methods: {},
   mounted() {
-    console.log(this.scheduleList);
+    // console.log(this.scheduleList);
   }
 };
 </script>

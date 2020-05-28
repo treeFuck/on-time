@@ -125,6 +125,10 @@ export default {
         {
           label: "优先级调度",
           value: 2
+        },
+        {
+          label: "起止时间排序",
+          value: 3
         }
       ]
     };
@@ -151,6 +155,8 @@ export default {
         return "长作业优先";
       } else if (store.state.algorithm == 2) {
         return "优先级调度";
+      } else if (store.state.algorithm == 3) {
+        return "起止时间排序";
       }
     },
     date() {

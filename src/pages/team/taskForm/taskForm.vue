@@ -28,44 +28,56 @@
           <span>日</span>
         </picker>
         <picker class="picker" mode="time" :value="startTime.time.join(':')" @change="dateChange">
-          <span class="hour input">{{startTime.hour}}</span>
+          <span class="hour input">{{startTime.time[0]}}</span>
           <span>时</span>
-          <span class="minute input">{{startTime.minute}}</span>
+          <span class="minute input">{{startTime.time[1]}}</span>
           <span>分</span>
-          <span class="second input">{{startTime.second}}</span>
+          <span class="second input">{{startTime.time[2]}}</span>
           <span>秒</span>
         </picker>
       </div>
     </div>
-    <div class="estimatedTime"></div>
+    <div class="time-box">
+      <label for>预计时间 :</label>
+      <input type="text" v-model="estimatedTime" class="es">
+      <span>分</span>
+    </div>
     <div class="time-box">
       <label for>结束时间 :</label>
       <div class="right">
         <picker class="picker" mode="date" :value="endTime.t1" @change="dateChange">
-          <span class="year input">{{endTime.year}}</span>
+          <span class="year input">{{endTime.date[0]}}</span>
           <span>年</span>
-          <span class="month input">{{endTime.month}}</span>
+          <span class="month input">{{endTime.date[1]}}</span>
           <span>月</span>
-          <span class="day input">{{endTime.day}}</span>
+          <span class="day input">{{endTime.date[2]}}</span>
           <span>日</span>
         </picker>
         <picker class="picker" mode="time" :value="endTime" @change="dateChange">
-          <span class="hour input">{{endTime.hour}}</span>
+          <span class="hour input">{{endTime.time[0]}}</span>
           <span>时</span>
-          <span class="minute input">{{endTime.minute}}</span>
+          <span class="minute input">{{endTime.time[1]}}</span>
           <span>分</span>
-          <span class="second input">{{endTime.second}}</span>
+          <span class="second input">{{endTime.time[2]}}</span>
           <span>秒</span>
         </picker>
       </div>
     </div>
-    <div class="priority"></div>
+    <div class="priority">
+      <label for="">重要程度 :</label>
+      <div class="priorityList">
+        <span class="green"></span>
+        <span class="yellow"></span>
+        <span class="orange"></span>
+        <span class="red"></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import store from "../store";
-import { formatTime } from "../../../utils/index";
+import { formatTime, formatNumber } from "../../../utils/index";
 
 export default {
   computed: {
@@ -114,7 +126,7 @@ export default {
     return {
       taskName: "",
       startTime: null,
-      estimatedTime: 0,
+      estimatedTime: 60,
       endTime: null
     };
   },
@@ -128,6 +140,7 @@ export default {
     getNowDate(time) {
       const date = new Date();
       const str = formatTime(date);
+      console.log(str);
       const [t1, t2] = str.split(" ");
       const [year, month, day] = t1.split("/");
       const [hour, minute, second] = t2.split(":");
@@ -137,7 +150,7 @@ export default {
       };
       this.endTime = {
         date: [year, month, day],
-        time: [(Number(hour) + 1) % 24, minute, second]
+        time: [formatNumber((Number(hour) + 1) % 24), minute, second]
       };
     }
   },
@@ -201,6 +214,36 @@ export default {
       picker {
         margin-top: 10px;
       }
+    }
+    .es {
+      background-color: #fff;
+      padding: 0 10px;
+      border-radius: 5pt;
+      margin: 0 5px;
+      width: 24pt;
+      text-align: center;
+    }
+  }
+  .priority {
+    display: flex;
+    span {
+      display: inline-block;
+      width: 28pt;
+      height: 14pt;
+      border-radius: 5pt;
+      margin: 0 5px;
+    }
+    .green {
+      background-color: #69FF8C;
+    }
+    .yellow {
+      background-color: #F9FF69;
+    }
+    .orange {
+      background-color: #FFCF60;
+    }
+    .red {
+      background-color: #FF9460;
     }
   }
 

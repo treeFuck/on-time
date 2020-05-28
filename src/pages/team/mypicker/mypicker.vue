@@ -33,41 +33,23 @@
       height: 2em;
     }
   }
-  .algorithm {
-    display: inline-block;
-    width: 35%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    background-image: url(../../../../static/images/fish1.png);
-    background-position: center;
-    background-size: auto 4em;
-    background-repeat: no-repeat;
-  }
-  .data {
-    display: inline-block;
-    width: 65%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    span {
+  .input-box {
+    display: flex;
+    margin: 5px 0;
+    color: #A08600;
+    label {
+      width: 30%;
+      text-align: center;
+      padding-right: 5px;
+    }
+    input {
       display: inline-block;
-      height: 4em;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: auto 2.5em;
-    }
-    .year {
-      width: 4.5em;
-      background-image: url(../../../../static/images/fish1.png);
-    }
-    .month {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
-    }
-    .day {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
+      background-color: #fff;
+      border-radius: 5pt;
+      width: 63%;
+      box-sizing: border-box;
+      // padding: 5px;
+      text-align: center
     }
   }
 }
@@ -85,23 +67,17 @@
       <div class="line"></div>
       <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
-    <div class="algorithm" @click="pickAlgorithm">{{algorithm}}</div>
-    <div class="data" @click="pickDate">
-      <span class="year">{{year}}</span>
-      <span>年</span>
-      <span class="month">{{month}}</span>
-      <span>月</span>
-      <span class="day">{{day}}</span>
-      <span>日</span>
+    <div class="planForm">
+      <div class="input-box">
+        <label for="">*修改队名: </label>
+        <input type="text">
+      </div>
+      <div class="input-box">
+        <label for="">*修改计划: </label>
+        <input type="text">
+      </div>
     </div>
     <task-form />
-
-    <mp-picker
-      ref="algorithmPicker"
-      @onConfirm="confirmAlgorithm"
-      :pickerValueArray="algorithmArray"
-    ></mp-picker>
-    <mp-datepicker ref="datePicker" @onConfirm="confirmDate"></mp-datepicker>
   </div>
 </template>
 

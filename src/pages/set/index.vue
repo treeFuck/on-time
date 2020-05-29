@@ -21,22 +21,6 @@
       <div class="nickName">{{nickName}}</div>
       <div class="set-box">设置功能暂定</div>
     </div>
-<<<<<<< HEAD
-    <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
-    <div class="footer">
-      <!-- <div v-if="!isLogged" class="login-button">
-        <myButton :color="'yellow'" open-type="getUserInfo" @getuserinfo="handleClick">登录</myButton>
-        <mp-button
-          btnClass="btn-class"
-          type="default"
-          size="large"
-          open-type="getUserInfo"
-          @getuserinfo="handleClick"
-        >登陆</mp-button>
-      </div> -->
-    </div>
-=======
->>>>>>> 0d7f7b7a4cdcea09171d16ad0d56d72ccb32edb4
     <div class="about" @click="about">
       <p>关于作者</p>
     </div>

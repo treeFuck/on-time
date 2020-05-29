@@ -5,7 +5,7 @@
   width: 94%;
   padding: 1em 0;
   font-size: 16px;
-  background: #FFF5C4;
+  background: #fff5c4;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0 0 3px 1px #eee;
@@ -36,7 +36,7 @@
   .input-box {
     display: flex;
     margin: 5px 0;
-    color: #A08600;
+    color: #a08600;
     label {
       width: 30%;
       text-align: center;
@@ -49,7 +49,7 @@
       width: 63%;
       box-sizing: border-box;
       // padding: 5px;
-      text-align: center
+      text-align: center;
     }
   }
 }
@@ -62,22 +62,33 @@
 </style>
 
 <template>
-  <div class="mypicker"  :style="offsetTop" >
+  <div class="mypicker" :style="offsetTop">
     <div class="xiala">
       <div class="line"></div>
       <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
-    <div class="planForm">
+    <div class="updateForm" v-if="state === 'update'">
       <div class="input-box">
-        <label for="">*修改队名: </label>
-        <input type="text">
+        <label for>*修改队名:</label>
+        <input type="text" v-model="teamName" />
       </div>
       <div class="input-box">
-        <label for="">*修改计划: </label>
-        <input type="text">
+        <label for>*修改计划:</label>
+        <input type="text" v-model="planName" />
+      </div>
+    </div>
+    <div class="addForm" v-if="state === 'add'">
+      <div class="input-box">
+        <label for>*选择队伍:</label>
+        <input type="text" />
+      </div>
+      <div class="input-box">
+        <label for>*添加计划:</label>
+        <input type="text" />
       </div>
     </div>
     <task-form />
+    <!-- <my-button color="yellow">完成</my-button> -->
   </div>
 </template>
 
@@ -85,27 +96,19 @@
 import store from "../store";
 import mpDatepicker from "mpvue-weui/src/date-picker";
 import mpPicker from "mpvue-weui/src/picker";
-import taskForm from '../taskForm/taskForm'
+import taskForm from "../taskForm/taskForm";
+import myButton from "../../../components/myButton"
 
 export default {
+  props: {
+    state: String
+  },
   data() {
     return {
-      mypickerShow: false,
-      algorithmArray: [
-        {
-          label: "短作业优先",
-          value: 0
-        },
-        {
-          label: "长作业优先",
-          value: 1
-        },
-        {
-          label: "优先级调度",
-          value: 2
-        }
-      ],
-      top: 0
+      mypickerShow: true,
+      top: 0,
+      teamName: '突突突',
+      planName: '白宫行刺计划'
     };
   },
   methods: {
@@ -122,51 +125,21 @@ export default {
       store.commit("changeDate", new Date(pick.value));
     },
     changeIsShow(event) {
-      this.mypickerShow = !this.mypickerShow
-      this.top = event.currentTarget.offsetTop
+      this.mypickerShow = !this.mypickerShow;
+      this.top = event.currentTarget.offsetTop;
     }
   },
   computed: {
-    algorithm() {
-      if (store.state.algorithm == 0) {
-        return "短作业优先";
-      } else if (store.state.algorithm == 1) {
-        return "长作业优先";
-      } else if (store.state.algorithm == 2) {
-        return "优先级调度";
-      }
-    },
-    date() {
-      return store.state.date;
-    },
-    year() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getFullYear();
-    },
-    month() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getMonth() + 1;
-    },
-    day() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getDate();
-    },
     offsetTop() {
-      return this.mypickerShow ? 'top: 0' : `top: -${this.top - 10}px`;
+      return this.mypickerShow ? "top: 0px" : `top: -${this.top - 10}px`;
     }
   },
   components: {
-    mpDatepicker,
-    mpPicker,
-    taskForm
+    taskForm,
+    myButton
   },
-  mounted() {}
+  created() {
+  }
 };
 </script>
 

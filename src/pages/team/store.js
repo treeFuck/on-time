@@ -8,7 +8,7 @@ const store = new Vuex.Store({
     algorithm: 0, // 0：短作业优先, 1：长作业优先, 2：优先级调度
     date: new Date(),
     teamList: [{
-        teamName: "软工团队计划",
+        teamName: "富婆求子计划",
         teamId: 1,
         members: [{
             id: 1,
@@ -45,7 +45,7 @@ const store = new Vuex.Store({
         ],
         
         taskList: [{
-          taskName: "测试计划八八零的六零",
+          taskName: "购买富婆电话目录",
           lasting: 30,
           startTime: "2020-05-10 20:21:00",
           endTime: "2020-05-11 20:21:00",
@@ -65,7 +65,7 @@ const store = new Vuex.Store({
         }]
       },
       {
-        teamName: "测试计划八八零的六零",
+        teamName: "非洲挖矿计划",
         teamId: 8,
         members: [{
             id: 1,
@@ -101,7 +101,7 @@ const store = new Vuex.Store({
           }
         ],
         taskList: [{
-            taskName: "测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1",
+            taskName: "成功加入朱一旦的公司",
             lasting: 30,
             startTime: "2020-05-10 20:21:00",
             endTime: "2020-05-11 20:21:00",
@@ -120,7 +120,7 @@ const store = new Vuex.Store({
             ]
           },
           {
-            taskName: "测试子任务2",
+            taskName: "前往非洲",
             lasting: 40,
             startTime: "2020-05-10 16:21:00",
             endTime: "2020-05-11 20:21:00",
@@ -130,7 +130,7 @@ const store = new Vuex.Store({
         ]
       },
       {
-        teamName: "测试计划八八零的六零",
+        teamName: "日本下海计划",
         teamId: 8,
         members: [{
             id: 1,
@@ -166,7 +166,7 @@ const store = new Vuex.Store({
           }
         ],
         taskList: [{
-            taskName: "测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1",
+            taskName: "去日本",
             lasting: 30,
             startTime: "2020-05-10 20:21:00",
             endTime: "2020-05-11 20:21:00",
@@ -185,7 +185,7 @@ const store = new Vuex.Store({
             ]
           },
           {
-            taskName: "测试子任务2",
+            taskName: "去东京湾",
             lasting: 40,
             startTime: "2020-05-10 16:21:00",
             endTime: "2020-05-11 20:21:00",
@@ -204,7 +204,7 @@ const store = new Vuex.Store({
             ]
           },
           {
-            taskName: "测试子任务2",
+            taskName: "租借快艇",
             lasting: 40,
             startTime: "2020-05-10 16:21:00",
             endTime: "2020-05-11 20:21:00",
@@ -223,7 +223,7 @@ const store = new Vuex.Store({
             ]
           },
           {
-            taskName: "测试子任务2",
+            taskName: "下海",
             lasting: 40,
             startTime: "2020-05-10 16:21:00",
             endTime: "2020-05-11 20:21:00",

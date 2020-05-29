@@ -33,7 +33,7 @@
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <team-list v-if="teamList" :teamList="teamList"></team-list>
-    <mypicker></mypicker>
+    <mypicker state="add"></mypicker>
   </div>
 </template>
 

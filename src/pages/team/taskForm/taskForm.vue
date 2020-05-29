@@ -27,7 +27,7 @@
           <span class="day input">{{startTime.date[2]}}</span>
           <span>日</span>
         </picker>
-        <picker class="picker" mode="time" :value="startTime.time.join(':')" @change="dateChange">
+        <picker class="picker" mode="time" :value="startTime.time.join(':')" @change="startTimeChange">
           <span class="hour input">{{startTime.time[0]}}</span>
           <span>时</span>
           <span class="minute input">{{startTime.time[1]}}</span>
@@ -45,7 +45,7 @@
     <div class="time-box">
       <label for>结束时间 :</label>
       <div class="right">
-        <picker class="picker" mode="date" :value="endTime.t1" @change="dateChange">
+        <picker class="picker" mode="date" :value="endTime.t1" @change="endDateChange">
           <span class="year input">{{endTime.date[0]}}</span>
           <span>年</span>
           <span class="month input">{{endTime.date[1]}}</span>
@@ -53,7 +53,7 @@
           <span class="day input">{{endTime.date[2]}}</span>
           <span>日</span>
         </picker>
-        <picker class="picker" mode="time" :value="endTime" @change="dateChange">
+        <picker class="picker" mode="time" :value="endTime" @change="endTimeChange">
           <span class="hour input">{{endTime.time[0]}}</span>
           <span>时</span>
           <span class="minute input">{{endTime.time[1]}}</span>
@@ -134,8 +134,26 @@ export default {
     startDateChange(event) {
       const value = event.target.value
       const [year, month, day] = value.split('-')
-      this.startTime = { ...this.startTime, year, month, day }
+      this.startTime.date = [year, month, day]
       console.log(this.startTime);
+    },
+    startTimeChange(event) {
+      const value = event.target.value
+      const [hour, minute, second = '00'] = value.split(':')
+      this.startTime.time = [hour, minute, second]
+      console.log(this.startTime);
+    },
+    endDateChange(event) {
+      const value = event.target.value
+      const [year, month, day] = value.split('-')
+      this.endTime.date = [year, month, day]
+      console.log(this.endTime);
+    },
+    endTimeChange(event) {
+      const value = event.target.value
+      const [hour, minute, second = '00'] = value.split(':')
+      this.endTime.time = [hour, minute, second]
+      console.log(this.endTime);
     },
     getNowDate(time) {
       const date = new Date();
@@ -211,7 +229,7 @@ export default {
       padding: 5px 19px;
     }
     .right {
-      picker {
+      .picker {
         margin-top: 10px;
       }
     }

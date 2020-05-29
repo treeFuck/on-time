@@ -33,7 +33,7 @@
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <team-list v-if="teamList" :teamList="teamList"></team-list>
-    <mypicker></mypicker>
+    <mypicker state="add"></mypicker>
   </div>
 </template>
 
@@ -64,7 +64,6 @@ export default {
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);
-        console.table(this.teamList);
       }, 1000);
     }
   },

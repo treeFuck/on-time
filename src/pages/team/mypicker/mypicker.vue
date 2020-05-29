@@ -5,7 +5,7 @@
   width: 94%;
   padding: 1em 0;
   font-size: 16px;
-  background: #FFF5C4;
+  background: #fff5c4;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0 0 3px 1px #eee;
@@ -33,41 +33,23 @@
       height: 2em;
     }
   }
-  .algorithm {
-    display: inline-block;
-    width: 35%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    background-image: url(../../../../static/images/fish1.png);
-    background-position: center;
-    background-size: auto 4em;
-    background-repeat: no-repeat;
-  }
-  .data {
-    display: inline-block;
-    width: 65%;
-    height: 4em;
-    line-height: 4em;
-    text-align: center;
-    span {
+  .input-box {
+    display: flex;
+    margin: 5px 0;
+    color: #a08600;
+    label {
+      width: 30%;
+      text-align: center;
+      padding-right: 5px;
+    }
+    input {
       display: inline-block;
-      height: 4em;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: auto 2.5em;
-    }
-    .year {
-      width: 4.5em;
-      background-image: url(../../../../static/images/fish1.png);
-    }
-    .month {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
-    }
-    .day {
-      width: 2.5em;
-      background-image: url(../../../../static/images/fish2.png);
+      background-color: #fff;
+      border-radius: 5pt;
+      width: 63%;
+      box-sizing: border-box;
+      // padding: 5px;
+      text-align: center;
     }
   }
 }
@@ -75,33 +57,38 @@
   top: 0;
 }
 .mypickerHide {
-  top: -6em;
+  top: -15em;
 }
 </style>
 
 <template>
-  <div class="mypicker" :class="{'mypickerShow': mypickerShow, 'mypickerHide': !mypickerShow}">
+  <div class="mypicker" :style="offsetTop">
     <div class="xiala">
       <div class="line"></div>
-      <img @click="mypickerShow=!mypickerShow" class="gou" src="../../../../static/images/gou.png" />
+      <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
-    <div class="algorithm" @click="pickAlgorithm">{{algorithm}}</div>
-    <div class="data" @click="pickDate">
-      <span class="year">{{year}}</span>
-      <span>年</span>
-      <span class="month">{{month}}</span>
-      <span>月</span>
-      <span class="day">{{day}}</span>
-      <span>日</span>
+    <div class="updateForm" v-if="state === 'update'">
+      <div class="input-box">
+        <label for>*修改队名:</label>
+        <input type="text" v-model="teamName" />
+      </div>
+      <div class="input-box">
+        <label for>*修改计划:</label>
+        <input type="text" v-model="planName" />
+      </div>
+    </div>
+    <div class="addForm" v-if="state === 'add'">
+      <div class="input-box">
+        <label for>*选择队伍:</label>
+        <input type="text" />
+      </div>
+      <div class="input-box">
+        <label for>*添加计划:</label>
+        <input type="text" />
+      </div>
     </div>
     <task-form />
-
-    <mp-picker
-      ref="algorithmPicker"
-      @onConfirm="confirmAlgorithm"
-      :pickerValueArray="algorithmArray"
-    ></mp-picker>
-    <mp-datepicker ref="datePicker" @onConfirm="confirmDate"></mp-datepicker>
+    <!-- <my-button color="yellow">完成</my-button> -->
   </div>
 </template>
 
@@ -109,26 +96,19 @@
 import store from "../store";
 import mpDatepicker from "mpvue-weui/src/date-picker";
 import mpPicker from "mpvue-weui/src/picker";
-import taskForm from '../taskForm/taskForm'
+import taskForm from "../taskForm/taskForm";
+import myButton from "../../../components/myButton"
 
 export default {
+  props: {
+    state: String
+  },
   data() {
     return {
       mypickerShow: true,
-      algorithmArray: [
-        {
-          label: "短作业优先",
-          value: 0
-        },
-        {
-          label: "长作业优先",
-          value: 1
-        },
-        {
-          label: "优先级调度",
-          value: 2
-        }
-      ]
+      top: 0,
+      teamName: '突突突',
+      planName: '白宫行刺计划'
     };
   },
   methods: {
@@ -143,46 +123,23 @@ export default {
     },
     confirmDate(pick) {
       store.commit("changeDate", new Date(pick.value));
+    },
+    changeIsShow(event) {
+      this.mypickerShow = !this.mypickerShow;
+      this.top = event.currentTarget.offsetTop;
     }
   },
   computed: {
-    algorithm() {
-      if (store.state.algorithm == 0) {
-        return "短作业优先";
-      } else if (store.state.algorithm == 1) {
-        return "长作业优先";
-      } else if (store.state.algorithm == 2) {
-        return "优先级调度";
-      }
-    },
-    date() {
-      return store.state.date;
-    },
-    year() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getFullYear();
-    },
-    month() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getMonth() + 1;
-    },
-    day() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getDate();
+    offsetTop() {
+      return this.mypickerShow ? "top: 0px" : `top: -${this.top - 10}px`;
     }
   },
   components: {
-    mpDatepicker,
-    mpPicker,
-    taskForm
+    taskForm,
+    myButton
   },
-  mounted() {}
+  created() {
+  }
 };
 </script>
 

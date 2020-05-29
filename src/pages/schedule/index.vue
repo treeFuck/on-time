@@ -23,6 +23,12 @@
     transform-style: preserve-3d;
     transform: rotateY(-180deg);
   }
+  .null {
+    background-position: 60% -0.15em;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-image: url(../../../static/images/fish3.png);
+  }
 }
 </style>
 
@@ -33,6 +39,7 @@
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <mylist v-if="scheduleList" :scheduleList="scheduleList"></mylist>
+    <div v-if="!scheduleList" class="null"></div>
     <mypicker></mypicker>
   </div>
 </template>
@@ -51,10 +58,10 @@ export default {
   },
   computed: {
     algorithm() {
-      return store.state.algorithm
+      return store.state.algorithm;
     },
     date() {
-      return this.handleTime(store.state.date)
+      return this.handleTime(store.state.date);
     }
   },
   methods: {
@@ -74,6 +81,9 @@ export default {
     },
     // 处理日程列表里面开始时间的显示格式
     handleStartTime(scheduleList) {
+      if (scheduleList == null) {
+        return;
+      }
       let len = scheduleList.length;
       for (let i = 0; i < len; i++) {
         let time = new Date(scheduleList[i].startTime);
@@ -85,13 +95,18 @@ export default {
         algorithm: this.algorithm,
         date: this.date
       };
+      wx.showLoading();
       this.$wxhttp
         .post({
           url: "/schedule/sortTask",
           params: send
         })
         .then(res => {
-          console.log(res.data);
+          wx.hideLoading();
+          console.log(res.data.data);
+          this.handleStartTime(res.data.data);
+          this.scheduleList = res.data.data;
+          return;
           let res2 = [
             {
               taskId: 1,

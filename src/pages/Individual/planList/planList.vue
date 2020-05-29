@@ -9,7 +9,6 @@
     font-size: 16px;
     border-radius: 15px;
     background-color: rgba(255, 251, 220, 0.8);
-    box-shadow: 0 3px 5px 1px #eee;
     .handle {
       display: flex;
       justify-content: space-between;

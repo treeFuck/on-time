@@ -23,7 +23,7 @@
     </div>
     <!-- 若未登录，显示登录按键，若已登录，显示具体设置 -->
     <div class="footer">
-      <div v-if="!isLogged" class="login-button">
+      <!-- <div v-if="!isLogged" class="login-button">
         <myButton :color="'yellow'" open-type="getUserInfo" @getuserinfo="handleClick">登录</myButton>
         <mp-button
           btnClass="btn-class"
@@ -32,7 +32,7 @@
           open-type="getUserInfo"
           @getuserinfo="handleClick"
         >登陆</mp-button>
-      </div>
+      </div> -->
     </div>
     <div class="about" @click="about">
       <p>关于作者</p>

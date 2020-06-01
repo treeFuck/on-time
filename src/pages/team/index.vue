@@ -62,7 +62,7 @@ export default {
       });
     },
     getTeamData() {
-      store.dispatch("getTeamList")
+      this.$store.dispatch("getTeamList")
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);

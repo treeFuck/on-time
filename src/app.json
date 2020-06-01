@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/login/main",
     "pages/team/main",
     "pages/teamEdit/main",
-    "pages/login/main",
     "pages/set/main",
     "pages/Individual/main",
     "pages/schedule/main",

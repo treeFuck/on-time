@@ -1,4 +1,5 @@
 import { getOpenid, login } from "../api/login"
+import { getTeamList } from '../api/team'
 
 const actions = {
     async Login({ commit }, userInfo) {
@@ -20,7 +21,17 @@ const actions = {
         } catch (error) {
             console.error(error);
         }
-    }
+    },
+    async getTeamList({ commit }) {
+      try {
+        const result = await getTeamList()
+        const { data } = result.data
+        console.log('data :>> ', data);
+        commit('SET_TEAMLIST', data)
+      } catch (error) {
+        console.log(result.errMsg);
+      }
+    },
 }
 
 export default actions

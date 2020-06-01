@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getTeamList } from '../../api/team'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    algorithm: 0, // 0：短作业优先, 1：长作业优先, 2：优先级调度
     date: new Date(),
+    mypickerShow: true,
+
     team: [],
     teamList: [
       {
@@ -133,22 +133,13 @@ const store = new Vuex.Store({
     changeAlgorithm(state, newVl) {
       state.algorithm = newVl;
     },
-    SET_TEAMLIST(state, newVl) {
-      state.team = newVl
-      // state.teamList = { ...state.teamList, newVl }
-    }
+    SET_PICKER_IS_SHOW(state) {
+      state.mypickerShow = !state.mypickerShow
+    },
   },
   actions: {
-    // 获取用户团队列表
-    async getTeamList({ commit }) {
-      try {
-        const result = await getTeamList()
-        const { data } = result.data
-        console.log('data :>> ', data);
-        commit('SET_TEAMLIST', data)
-      } catch (error) {
-        console.log(result.errMsg);
-      }
+    setMyPickerIsShow({ commit }) {
+      commit('SET_PICKER_IS_SHOW')
     }
   }
 })

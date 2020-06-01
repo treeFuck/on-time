@@ -109,7 +109,7 @@
       <div class="addForm" v-if="state === 'add'">
         <div class="input-box">
           <label for>*选择队伍:</label>
-          <picker class="picker" mode="selector" :range="teamList" :value="teamName" @change="selectTeam">
+          <picker class="picker" mode="selector" :range="groupList" @change="selectTeam">
             <span>{{teamName}}</span>
             <img class="down" src="../../../../static/images/down.png" alt />
           </picker>
@@ -138,48 +138,38 @@ export default {
   },
   computed: {
     groupList() {
-      return store.state.team
+      const group = this.$store.state.teamList
+      let arr = []
+      group.map(item => {
+        arr.push(item.groupName)
+      })
+      return arr
+    },
+    mypickerShow() {
+      return store.state.mypickerShow
+    },
+    offsetTop() {
+      return this.mypickerShow ? "top: 0px" : `top: -32em;`;
     }
   },
   data() {
     return {
-      mypickerShow: true,
-      top: 0,
       teamName: "突突突",
-      planName: "白宫行刺计划",
-      teamList: ['富婆求子计划', '非洲挖矿计划', '日本下海计划']
+      planName: "白宫行刺计划"
     };
   },
   methods: {
-    pickAlgorithm() {
-      this.$refs.algorithmPicker.show();
-    },
-    pickDate() {
-      this.$refs.datePicker.show();
-    },
-    confirmAlgorithm(pick) {
-      store.commit("changeAlgorithm", pick.value[0]);
-    },
-    confirmDate(pick) {
-      store.commit("changeDate", new Date(pick.value));
-    },
     changeIsShow(event) {
-      this.mypickerShow = !this.mypickerShow;
-      this.top = event.currentTarget.offsetTop;
+      store.dispatch('setMyPickerIsShow')
     },
     selectTeam(event) {
       const index = event.target.value
-      this.teamName = this.teamList[index]
+      this.teamName = this.$store.state.teamList[index].groupName
     },
     toEditTeam() {
       wx.navigateTo({
         url: "/pages/teamEdit/main"
       })
-    }
-  },
-  computed: {
-    offsetTop() {
-      return this.mypickerShow ? "top: 0px" : `top: -${this.top - 10}px`;
     }
   },
   components: {

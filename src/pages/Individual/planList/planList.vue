@@ -1,6 +1,7 @@
 <style scoped lang="scss">
 .planList {
   margin: 4em 0;
+  transition: margin-top 0.4s;
   .plan {
     position: relative;
     margin: 3em auto;
@@ -121,9 +122,9 @@
   <div class="planList">
     <div class="plan" v-for="(plan, index1) in planData" :key="index1">
       <div class="handle">
-        <div class="add"></div>
-        <div class="edit" ></div>
-        <div class="del"></div>
+        <div class="add" @click="addPlan"></div>
+        <div class="edit" @click="editPlan(plan)"></div>
+        <div class="del" @click="delPlan(plan.planId)"></div>
       </div>
       <div class="top">
         <div class="fish">计划{{index1+1}}</div>
@@ -141,11 +142,11 @@
           :key="index2"
         >
           <div class="endTime">
-            <div v-show='!task.status'>
+            <div v-show="!task.status">
               <span class="clock">{{task.end_clock}}</span>
               <span class="date">{{task.end_date}}</span>
             </div>
-            <div v-show='task.status'>
+            <div v-show="task.status">
               <span>已完成</span>
             </div>
           </div>
@@ -167,15 +168,39 @@ export default {
     return {};
   },
   methods: {
-    delPlan() {
-
+    delPlan(planId) {
+      console.log("删除计划", planId);
     },
-    editPlan() {
-
+    editPlan(plan) {
+      let nowPlanId = store.state.plan.planId;
+      if (!nowPlanId || nowPlanId!=plan.planId) {
+        store.commit("changePlan", { ...plan });
+      }
+      store.commit("changeShow", true);
+    },
+    addPlan() {
+      if (store.state.plan.planId != null) {
+        store.commit("changePlan", {
+          planName: null,
+          taskList: [
+            {
+              taskName: null,
+              lasting: null,
+              startTime: null,
+              endTime: null,
+              priority: null,
+              status: null
+            }
+          ]
+        });
+      }
+      store.commit("changeShow", true);
     }
   },
+  computed: {
+  },
   mounted() {
-    console.log(this.planData);
+    // console.log(this.planData);
   }
 };
 </script>

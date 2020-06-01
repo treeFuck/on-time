@@ -21,7 +21,7 @@
       </div>
       <div class="right">
         <p>队长</p>
-        <img src="../user.png" alt />
+        <img :src="avatar" alt />
       </div>
     </div>
     <div class="avatarList">
@@ -44,6 +44,8 @@
 
 <script>
 import myButton from '../../../components/myButton'
+import store from '../store'
+
 export default {
   name: 'TeamCard',
   components: {
@@ -52,10 +54,17 @@ export default {
   props: {
     state: String
   },
+  computed: {
+    avatar() {
+      if(this.state === 'create')
+        return this.$store.state.userInfo.avatarUrl || '/pages/teamEdit/user.png'
+      return '/pages/teamEdit/user.png'
+    }
+  },
   data() {
     return {
-      teamName: "",
-      limit: 0,
+      teamName: store.state.teamName,
+      limit: store.state.limit,
       member: []
     };
   },
@@ -65,6 +74,9 @@ export default {
     },
     createTeam() {
       console.log("创建按钮");
+      const teamName = this.teamName
+      const limit = this.limit
+      store.dispatch('AddTeam', { groupName: teamName, limit })
     },
     deleteTeam() {
       console.log("删除按键");
@@ -102,7 +114,9 @@ export default {
   .title {
     display: flex;
     justify-content: center;
-    font-size: 20pt;
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-size: 17pt;
+    font-weight: bold;
     height: 20pt;
     border-radius: 5pt 5pt 0 0;
     position: relative;

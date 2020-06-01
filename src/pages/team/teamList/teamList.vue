@@ -144,7 +144,7 @@
     <div class="team" v-for="(team, index1) in teamList" :key="index1">
       <div class="handle">
         <div class="add"></div>
-        <div class="edit"></div>
+        <div class="edit" @click="handleEdit"></div>
         <div class="del"></div>
       </div>
       <div class="top">
@@ -203,7 +203,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    handleEdit() {
+      
+    }
+  },
 };
 </script>
 

@@ -9,6 +9,9 @@ const mutations = {
     },
     SET_AUTH(state, Authorization) {
         state.Authorization = Authorization;
+    },
+    SET_TEAMLIST(state, newVl) {
+      state.teamList = newVl
     }
 }
 

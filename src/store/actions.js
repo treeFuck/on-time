@@ -16,7 +16,6 @@ const actions = {
             // 保存用户信息、token到vuex
             commit('SET_USERINFO', { ...userInfo, openid })
             commit('SET_AUTH', res.header.Authorization);
-             
             return 'success';
         } catch (error) {
             console.error(error);

@@ -42,6 +42,7 @@
 import store from "./store";
 import teamList from "./teamList/teamList.vue";
 import mypicker from "./mypicker/mypicker.vue";
+
 export default {
   data() {
     return {
@@ -61,10 +62,11 @@ export default {
       });
     },
     getTeamData() {
+      store.dispatch("getTeamList")
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);
-      }, 1000);
+      }, 500);
     }
   },
   components: {

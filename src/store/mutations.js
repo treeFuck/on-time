@@ -12,6 +12,9 @@ const mutations = {
     },
     SET_TEAMLIST(state, newVl) {
       state.teamList = newVl
+    },
+    SET_TEAMNAME(state, newVl) {
+        state.teamForm.teamName = newVl
     }
 }
 

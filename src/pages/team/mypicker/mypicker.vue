@@ -78,7 +78,9 @@
     }
   }
   .btn {
-    margin: 0 auto;
+    position: absolute;
+    bottom: -50px;
+    left: 38%;
   }
 }
 .mypickerShow {
@@ -99,7 +101,7 @@
       <div class="updateForm" v-if="state === 'update'">
         <div class="input-box">
           <label for>*修改队名:</label>
-          <input type="text" v-model="teamName" />
+          <input type="text" v-model="teamForm.groupName" />
         </div>
         <div class="input-box">
           <label for>*修改计划:</label>
@@ -110,17 +112,20 @@
         <div class="input-box">
           <label for>*选择队伍:</label>
           <picker class="picker" mode="selector" :range="groupList" @change="selectTeam">
-            <span>{{teamName}}</span>
+            <span>{{teamForm.groupName}}</span>
             <img class="down" src="../../../../static/images/down.png" alt />
           </picker>
           <img class="add" src="../../../../static/images/add2.png" @click="toEditTeam" alt />
         </div>
         <div class="input-box">
           <label for>*添加计划:</label>
-          <input type="text" />
+          <input type="text" v-model="planName" />
         </div>
       </div>
       <task-form />
+    </div>
+    <div class="btn">
+      <my-button color="yellow" @click="handleSubmit">完成</my-button>
     </div>
   </div>
 </template>
@@ -150,12 +155,15 @@ export default {
     },
     offsetTop() {
       return this.mypickerShow ? "top: 0px" : `top: -32em;`;
-    }
+    },
   },
   data() {
     return {
-      teamName: "突突突",
-      planName: "白宫行刺计划"
+      planName: "白宫行刺计划",
+      teamForm: {
+        groupName: '冲冲冲',
+        teamId: 0
+      }
     };
   },
   methods: {
@@ -164,12 +172,18 @@ export default {
     },
     selectTeam(event) {
       const index = event.target.value
-      this.teamName = this.$store.state.teamList[index].groupName
+      this.teamForm = this.$store.state.teamList[index]
+      console.log(this.teamForm);
     },
     toEditTeam() {
       wx.navigateTo({
         url: "/pages/teamEdit/main"
       })
+    },
+    handleSubmit() {
+      if(this.state === 'add') {
+        
+      }
     }
   },
   components: {

@@ -31,7 +31,10 @@ const actions = {
       } catch (error) {
         console.log(result.errMsg);
       }
-    },
+  },
+  setTeamName({commit}) {
+      commit('SET_TEAMNAME')
+  }
 }
 
 export default actions

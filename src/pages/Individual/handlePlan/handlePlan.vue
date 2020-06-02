@@ -1,22 +1,26 @@
 <style scoped lang="scss">
 .handlePlan {
-  position: fixed;
+  position: absolute;
+  z-index: 1;
+  top: 0;
   left: 3%;
   width: 94%;
-  // height: 4em;
   padding: 1em 0;
   font-size: 16px;
-  background: #FFF5C4;
+  background: #fff5c4;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0 0 3px 1px #eee;
-  transition: top 0.5s;
+  transition: transform 0.5s;
+  transform: translateY(-100%);
   .xiala {
     position: absolute;
     top: 0;
     right: 3%;
+    padding: 10px 0;
     width: 2em;
-    height: 120%;
+    height: 100%;
+    z-index: 100;
     .line {
       position: absolute;
       top: 0;
@@ -34,117 +38,89 @@
       height: 2em;
     }
   }
+  .planName {
+    display: flex;
+    margin: 5px 0;
+    color: #a08600;
+    span {
+      display: inline-block;
+      width: 30%;
+      text-align: center;
+      padding-right: 5px;
+    }
+    input {
+      display: inline-block;
+      background-color: #fff;
+      border-radius: 5pt;
+      width: 63%;
+      box-sizing: border-box;
+      // padding: 5px;
+      text-align: center;
+    }
+  }
 }
-.mypickerShow {
-  top: 0;
-}
-.mypickerHide {
-  top: -6em;
+.handlePlanShow {
+  transform: translateY(0);
 }
 </style>
 
 <template>
-  <div class="handlePlan" :class="{'mypickerShow': mypickerShow, 'mypickerHide': !mypickerShow}">
+  <div id="handlePlan" class="handlePlan" :class="{handlePlanShow:handlePlanShow}" ref="handlePlan">
     <div class="xiala">
       <div class="line"></div>
-      <img @click="mypickerShow=!mypickerShow" class="gou" src="../../../../static/images/gou.png" />
+      <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
     </div>
-    <div class="plan">
-      <div class="planNmae">
-        <span class="item"></span>
-        <input class="data">
-      </div>
-      <div class="taskList">
-        
-      </div>
+    <div class="planName">
+      <span v-if="type">*修改计划:</span>
+      <span v-else>*添加计划:</span>
+      <input type="text" v-model="plan.planName" />
     </div>
-
-
-    <mp-picker
-      ref="algorithmPicker"
-      @onConfirm="confirmAlgorithm"
-      :pickerValueArray="algorithmArray"
-    ></mp-picker>
-    <mp-datepicker ref="datePicker" @onConfirm="confirmDate"></mp-datepicker>
+    <task v-for="(task, index) in plan.taskList" :key="index" :task="task"></task>
+    <div class="success" @click="commit">完成</div>
   </div>
 </template>
 
 <script>
 import store from "../store";
-import mpDatepicker from "mpvue-weui/src/date-picker";
-import mpPicker from "mpvue-weui/src/picker";
+import task from "./task/task.vue";
 
 export default {
+  props: {
+    state: String
+  },
   data() {
     return {
-      mypickerShow: false,
-      algorithmArray: [
-        {
-          label: "短作业优先",
-          value: 0
-        },
-        {
-          label: "长作业优先",
-          value: 1
-        },
-        {
-          label: "优先级调度",
-          value: 2
-        }
-      ]
     };
   },
   methods: {
-    pickAlgorithm() {
-      this.$refs.algorithmPicker.show();
+    changeIsShow(event) {
+      store.commit("changeShow", !this.handlePlanShow);
     },
-    pickDate() {
-      this.$refs.datePicker.show();
-    },
-    confirmAlgorithm(pick) {
-      store.commit("changeAlgorithm", pick.value[0]);
-    },
-    confirmDate(pick) {
-      store.commit("changeDate", new Date(pick.value));
+    commit() {
+      console.table(this.plan);
     }
   },
   computed: {
-    algorithm() {
-      if (store.state.algorithm == 0) {
-        return "短作业优先";
-      } else if (store.state.algorithm == 1) {
-        return "长作业优先";
-      } else if (store.state.algorithm == 2) {
-        return "优先级调度";
+    type() {
+      if (store.state.plan.planId) {
+        return true; // 修改
       }
+      return false; // 新增
     },
-    date() {
-      return store.state.date;
+    plan() {
+      return store.state.plan;
     },
-    year() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getFullYear();
-    },
-    month() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getMonth() + 1;
-    },
-    day() {
-      if (!store.state.date) {
-        return "";
-      }
-      return store.state.date.getDate();
+    handlePlanShow() {
+      return store.state.handlePlanShow;
     }
   },
   components: {
-    mpDatepicker,
-    mpPicker
+    task
   },
-  mounted() {}
+  mounted() {
+    // console.log(this.type)
+  },
+  created() {}
 };
 </script>
 

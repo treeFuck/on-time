@@ -5,16 +5,28 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    type: 1, // 类型：0-->修改，1-->添加
-    plan: null
+    handlePlanShow: false,
+    plan: {
+      planName: null,
+      taskList: [
+        {
+          taskName: null,
+          lasting: null,
+          startTime: null,
+          endTime: null,
+          priority: null,
+          status: null
+        }
+      ]
+    }
   },
   mutations: {
-    changeType(state, newVl) {
-      state.type = newVl
-    },
     changePlan(state, newVl) {
       state.plan = newVl;
-    }
+    },
+    changeShow(state, newVl) {
+      state.handlePlanShow = newVl
+    },
   }
 })
 

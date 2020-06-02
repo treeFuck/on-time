@@ -17,3 +17,20 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
+
+export function getToday (clockStr) {
+
+  const date = new Date();
+
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const t1 = [year, month, day].map(formatNumber).join('/')
+
+  return `${t1} ${clockStr}`
+}
+
+export function formatTimeStr (str) {
+  return str.replace(/\-/g, "/").split(".")[0]
+}

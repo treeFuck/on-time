@@ -33,8 +33,8 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <handlePlan></handlePlan>
-    <planList v-if="planData" :planData="planData" @handlePlanShow="handlePlanShow"></planList>
+    <handlePlan @Refresh="getplanData"></handlePlan>
+    <planList v-if="planData" :planData="planData"></planList>
   </div>
 </template>
 
@@ -71,9 +71,12 @@ export default {
       });
     },
     getplanData() {
-      // httpReq.getPlan().then(res=>{
-      //   console.log(res);
-      // })
+      httpReq.getPlan().then(res=>{
+        console.log(res.data.data);
+        this.handleStartTime(res.data.data);
+        this.planData = res.data.data
+      })
+      return;
       setTimeout(() => {
         let res = [
           {

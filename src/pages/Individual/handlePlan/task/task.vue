@@ -1,11 +1,32 @@
 <style lang="scss" scoped>
 .taskList {
+  position: relative;
   box-sizing: border-box;
   padding: 10px;
   margin: 10px;
   background-color: #ffeb88;
   border-radius: 5pt;
   color: #a08600;
+  .add,
+  .del {
+    position: absolute;
+    left: 0.5em;
+    height: 1em;
+    width: 1em;
+    color: #ffeb88;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1em;
+    border-radius: 50%;
+    background-color: #fffbe8;
+  }
+  .add {
+    bottom: 1em;
+  }
+  .del {
+    bottom: 2.5em;
+  }
   .taskName {
     display: flex;
     align-items: center;
@@ -49,12 +70,20 @@
   }
   .priority {
     display: flex;
-    span {
-      display: inline-block;
-      width: 28pt;
-      height: 14pt;
-      border-radius: 5pt;
-      margin: 0 5px;
+    justify-content: center;
+    .priorityList {
+      div {
+        display: inline-block;
+        width: 28pt;
+        height: 14pt;
+        border-radius: 5pt;
+        margin: 0 5px;
+        text-align: center;
+        line-height: 14pt;
+        span {
+          font-size: 20pt;
+        }
+      }
     }
     .green {
       background-color: #69ff8c;
@@ -88,10 +117,12 @@
 </style>
 <template>
   <div class="taskList">
+    <div class="add" @click="addTask">+</div>
+    <div class="del" @click="delTask">-</div>
     <div class="taskName">
       <label v-if="type" for="taskName">*修改小计划:</label>
       <label v-else for="taskName">*添加小计划:</label>
-      <input name="taskName" class="task-name-input" type="text" v-model="task.taskName" />
+      <input v-model="task.taskName" name="taskName" class="task-name-input" type="text"  />
     </div>
     <div class="time-box">
       <label for>开始时间 :</label>
@@ -116,7 +147,7 @@
     </div>
     <div class="time-box">
       <label for>预计时间 :</label>
-      <input type="text" v-model="estimatedTime" class="es" />
+      <input type="text" v-model="task.lasting" class="es" />
       <span>分</span>
     </div>
     <div class="time-box">
@@ -143,10 +174,18 @@
     <div class="priority">
       <label for>重要程度 :</label>
       <div class="priorityList">
-        <span class="green"></span>
-        <span class="yellow"></span>
-        <span class="orange"></span>
-        <span class="red"></span>
+        <div class="green" @click="changePriority(1)">
+          <span v-show="task.priority==1">√</span>
+        </div>
+        <div class="yellow" @click="changePriority(2)">
+          <span v-show="task.priority==2">√</span>
+        </div>
+        <div class="orange" @click="changePriority(3)">
+          <span v-show="task.priority==3">√</span>
+        </div>
+        <div class="red" @click="changePriority(4)">
+          <span v-show="task.priority==4">√</span>
+        </div>
       </div>
     </div>
   </div>
@@ -168,26 +207,34 @@ export default {
   computed: {},
   data() {
     return {
-      taskName: "",
       startTime: null,
-      estimatedTime: 60,
       endTime: null,
       type: false
     };
   },
-  computed: {},
+  computed: {
+  },
   methods: {
+    addTask() {
+      this.$emit("addTask");
+    },
+    delTask() {
+      this.$emit("delTask");
+    },
+    changePriority(index) {
+      this.task.priority = index;
+    },
     startDateChange(event) {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.startTime.date = [year, month, day];
-      this.task.startTime = `${value} ${this.startTime.time.join(':')}`;
+      this.task.startTime = `${value} ${this.startTime.time.join(":")}`;
     },
     startTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.startTime.time = [hour, minute, second];
-      this.task.startTime = `${this.startTime.date.join('-')} ${value}`;
+      this.task.startTime = `${this.startTime.date.join("-")} ${value}:00`;
     },
     endDateChange(event) {
       const value = event.target.value;
@@ -199,7 +246,7 @@ export default {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.endTime.time = [hour, minute, second];
-      this.task.endTime = `${this.endTime.date.join("-")} ${value}`;
+      this.task.endTime = `${this.endTime.date.join("-")} ${value}:00`;
     },
     setStartTime() {
       let date;
@@ -209,7 +256,7 @@ export default {
         str = formatTime(date);
       } else {
         str = getToday("8:00:00");
-        this.task.startTime = str;
+        this.task.startTime = str.replace(/\//g, "-");
       }
       let [t1, t2] = str.split(" ");
       let [year, month, day] = t1.split("/");
@@ -231,7 +278,7 @@ export default {
         str = formatTime(date);
       } else {
         str = getToday("22:00:00");
-        this.task.endTime = str;
+        this.task.endTime = str.replace(/\//g, "-");
       }
       const [t1, t2] = str.split(" ");
       const [year, month, day] = t1.split("/");
@@ -252,15 +299,14 @@ export default {
     this.setEndTime();
   },
   watch: {
-    'task.taskId': function(val, oldval) {
-
+    "task.taskId": function(val, oldval) {
       if (val) {
-          this.type = true;
-        } else {
-          this.type = false;
-        }
-        this.setStartTime();
-        this.setEndTime();
+        this.type = true;
+      } else {
+        this.type = false;
+      }
+      this.setStartTime();
+      this.setEndTime();
     }
   }
 };

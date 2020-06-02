@@ -49,6 +49,7 @@
 import store from "./store";
 import mylist from "./mylist/mylist.vue";
 import mypicker from "./mypicker/mypicker.vue";
+import httpReq from "../../api/schedule.js";
 
 export default {
   data() {
@@ -86,10 +87,12 @@ export default {
       }
       let len = scheduleList.length;
       for (let i = 0; i < len; i++) {
-        let time = new Date(scheduleList[i].startTime);
+        let dateStr = scheduleList[i].startTime.replace(/\-/g, "/").split(".")[0];
+        let time = new Date(dateStr);
         scheduleList[i].start_time = `${time.getHours()}:00`;
       }
     },
+    // 获取日程列表
     getSchedule() {
       let send = {
         algorithm: this.algorithm,
@@ -106,65 +109,6 @@ export default {
           console.log(res.data.data);
           this.handleStartTime(res.data.data);
           this.scheduleList = res.data.data;
-          return;
-          let res2 = [
-            {
-              taskId: 1,
-              taskName: "安康打卡",
-              lasting: 20,
-              startTime: "2020-12-11 07:00:00",
-              status: 1
-            },
-            {
-              taskId: 2,
-              taskName: "测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:00:00",
-              status: 0
-            },
-            {
-              taskId: 3,
-              taskName:
-                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:30:00",
-              status: 1
-            },
-            {
-              taskId: 3,
-              taskName:
-                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:30:00",
-              status: 1
-            },
-            {
-              taskId: 4,
-              taskName:
-                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:30:00",
-              status: 1
-            },
-            {
-              taskId: 5,
-              taskName:
-                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:30:00",
-              status: 1
-            },
-            {
-              taskId: 6,
-              taskName:
-                "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试",
-              lasting: 20,
-              startTime: "2020-12-11 08:30:00",
-              status: 1
-            }
-          ];
-          this.handleStartTime(res2);
-          this.scheduleList = res2;
         });
     }
   },

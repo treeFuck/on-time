@@ -1,8 +1,8 @@
 <template>
   <div class="team">
     <div class="list">
-      <TeamCard :state="'create'" />
-      <TeamCard :state="'edit'" />
+      <TeamCard :state="'create'" :teamData="teamData" />
+      <TeamCard :state="'edit'" v-for="(team, index) in teamList" :key="index" :teamData="team" />
     </div>
   </div>
 </template>
@@ -13,15 +13,19 @@ import store from './store'
 import PlanList from './component/PlanList'
 import TeamCard from './component/TeamCard'
 export default {
+  computed: {
+    teamList() {
+      return this.$store.state.teamList
+    }
+  },
   data() {
     return {
       teamData: {
-        group_id: 1232,
-        group_name: '攻城狮',
-        creator_id: 'zuan',
+        groupId: 1232,
+        groupName: '攻城狮',
+        creatorId: 'zuan',
         limit: 5
       },
-      toDoList: [],
       memberList: [
         {_id: 1, nickName: '钻', avatarUrl: '../user.png'},
         {_id: 2, nickName: '树', avatarUrl: '../user.png'}, 
@@ -35,8 +39,6 @@ export default {
     PlanList,
     TeamCard
   },
-  computed: {
-  },
   methods: {
     createTeam() {
       return false
@@ -45,7 +47,7 @@ export default {
     addMember() {},
     removeMember() {}
   },
-  created() {
+  mounted() {
     
   },
 }

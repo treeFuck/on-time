@@ -32,8 +32,8 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <team-list v-if="teamList" :teamList="teamList"></team-list>
-    <mypicker state="add"></mypicker>
+    <team-list v-if="teamList" :teamList="planList"></team-list>
+    <mypicker :state="pickerState"></mypicker>
   </div>
 </template>
 
@@ -49,7 +49,17 @@ export default {
       teamList: null
     };
   },
-  computed: {},
+  computed: {
+    pickerState() {
+      return store.state.pickerState
+    },
+    team() {
+      return this.$store.state.teamList
+    },
+    planList() {
+      return store.state.planList
+    }
+  },
   methods: {
     // 处理日程列表里面开始时间的显示格式
     handleStartTime(teamList) {
@@ -62,7 +72,8 @@ export default {
       });
     },
     getTeamData() {
-      this.$store.dispatch("getTeamList")
+      this.$store.dispatch("getTeamList") // 获取团队列表
+      store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
       setTimeout(() => {
         this.teamList = store.state.teamList;
         this.handleStartTime(this.teamList);

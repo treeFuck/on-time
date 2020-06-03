@@ -80,7 +80,7 @@
   .btn {
     position: absolute;
     bottom: -50px;
-    left: 38%;
+    left: 35%;
   }
 }
 .mypickerShow {
@@ -122,7 +122,7 @@
           <input type="text" v-model="planName" />
         </div>
       </div>
-      <task-form />
+      <task-form :formData="form" />
     </div>
     <div class="btn">
       <my-button color="yellow" @click="handleSubmit">完成</my-button>
@@ -159,21 +159,40 @@ export default {
   },
   data() {
     return {
-      planName: "白宫行刺计划",
+      planName: "",
       teamForm: {
-        groupName: '冲冲冲',
-        teamId: 0
+        groupName: '',
+        groupId: 0
+      },
+      form: {
+        userId: 1,
+        taskName: '',
+        groupMemberList: [{
+          id: 1,
+          nickName: "政",
+          avatar:
+            "https://wx.qlogo.cn/mmopen/vi_32/krwDIf6c0aib75H4LxmR7LzJ7WahDxJrr7zZew9y4iaztssNic0iar5IGQaXVWFpQicgSKHpZjF1ZPunIuV9tPaAiarQ/132"
+        }],
+        startTime: {},
+        endTime: {},
+        lasting: 60,
+        priority: 3,
+        status: 0
       }
     };
   },
   methods: {
     changeIsShow(event) {
       store.dispatch('setMyPickerIsShow')
+      store.dispatch('changePicker', 'add')
     },
     selectTeam(event) {
       const index = event.target.value
       this.teamForm = this.$store.state.teamList[index]
-      console.log(this.teamForm);
+      // 修改子任务模板
+      this.form.groupMemberList = this.teamForm.groupMemberList
+      this.form.groupId = this.teamForm.groupId
+      console.log(this.form);
     },
     toEditTeam() {
       wx.navigateTo({
@@ -182,7 +201,25 @@ export default {
     },
     handleSubmit() {
       if(this.state === 'add') {
-        
+        const planName = this.planName
+        const groupId = this.teamForm.groupId
+
+        // 格式化开始时间和结束时间
+        const startTime = this.form.startTime.date.join('-') + ' ' + this.form.startTime.time.join(':')
+        const endTime = this.form.endTime.date.join('-') + ' ' + this.form.endTime.time.join(':')
+
+        let task = this.form
+        task = { ...task, startTime, endTime }
+
+        // 添加大任务
+        store.dispatch('addGroupPlan', { 
+          planName,
+          groupId,
+          taskList: [task]
+         })
+
+        // 关闭picker
+        store.dispatch('setMyPickerIsShow')
       }
     }
   },

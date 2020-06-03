@@ -6,14 +6,14 @@
         name="taskName"
         class="task-name-input"
         type="text"
-        v-model="taskName"
+        v-model="formData.taskName"
         placeholder="请输入计划内容"
       />
     </div>
     <div class="member">
       <label for>*负责人 :</label>
       <div class="memberList">
-        <img class="avatar" v-for="member in memberList" :key="member.id" :src="member.avatar" alt />
+        <img class="avatar" v-for="member in formData.groupMemberList" :key="member.userid" :src="member.wechatIcon" @click="setLeader(member)" />
       </div>
     </div>
     <div class="time-box">
@@ -39,7 +39,7 @@
     </div>
     <div class="time-box">
       <label for>预计时间 :</label>
-      <input type="text" v-model="estimatedTime" class="es">
+      <input type="text" v-model="formData.lasting" class="es">
       <span>分</span>
     </div>
     <div class="time-box">
@@ -66,10 +66,10 @@
     <div class="priority">
       <label for="">重要程度 :</label>
       <div class="priorityList">
-        <span class="green"></span>
-        <span class="yellow"></span>
-        <span class="orange"></span>
-        <span class="red"></span>
+        <span class="green" @click="selectPriority(1)"></span>
+        <span class="yellow" @click="selectPriority(2)"></span>
+        <span class="orange" @click="selectPriority(3)"></span>
+        <span class="red" @click="selectPriority(4)"></span>
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@ import { formatTime, formatNumber } from "../../../utils/index";
 
 export default {
   computed: {
-    memberList() {
+    groupMemberList() {
       return [
         {
           id: 1,
@@ -122,11 +122,13 @@ export default {
       ];
     },
   },
+  props: {
+    formData: Object
+  },
   data() {
     return {
       taskName: "",
       startTime: null,
-      estimatedTime: 60,
       endTime: null
     };
   },
@@ -136,24 +138,28 @@ export default {
       const [year, month, day] = value.split('-')
       this.startTime.date = [year, month, day]
       console.log(this.startTime);
+      this.formData.startTime.date = this.startTime.date
     },
     startTimeChange(event) {
       const value = event.target.value
       const [hour, minute, second = '00'] = value.split(':')
       this.startTime.time = [hour, minute, second]
       console.log(this.startTime);
+      this.formData.startTime.time = this.startTime.time
     },
     endDateChange(event) {
       const value = event.target.value
       const [year, month, day] = value.split('-')
       this.endTime.date = [year, month, day]
       console.log(this.endTime);
+      this.formData.endTime.date = this.endTime.date
     },
     endTimeChange(event) {
       const value = event.target.value
       const [hour, minute, second = '00'] = value.split(':')
       this.endTime.time = [hour, minute, second]
       console.log(this.endTime);
+      this.formData.endTime.time = this.endTime.time
     },
     getNowDate(time) {
       const date = new Date();
@@ -170,6 +176,14 @@ export default {
         date: [year, month, day],
         time: [formatNumber((Number(hour) + 1) % 24), minute, second]
       };
+      this.formData.startTime = this.startTime
+      this.formData.endTime = this.endTime
+    },
+    setLeader(member) {
+      this.formData.userId = member.userId
+    },
+    selectPriority(value) {
+      this.formData.priority = value
     }
   },
   created() {

@@ -15,6 +15,10 @@ const mutations = {
     },
     SET_TEAMNAME(state, newVl) {
         state.teamForm.teamName = newVl
+    },
+    UPDATE_TEAMLIST(state, newVl) {
+        let arr = state.teamList.filters(item => item.groupId !== newVl)
+        state.teamList = arr
     }
 }
 

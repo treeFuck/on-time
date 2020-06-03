@@ -8,11 +8,11 @@
       <div class="left">
         <div class="input-box">
           <label for="teamName">编辑队名 :</label>
-          <input v-model="teamName" type="text" name="teamName" />
+          <input v-model="teamData.groupName" type="text" name="teamName" />
         </div>
         <div class="input-box">
           <label for="limit">队员上限 :</label>
-          <input v-model="limit" type="text" name="limit" />
+          <input v-model="teamData.limit" type="text" name="limit" />
         </div>
         <div class="input-box">
           <label for="invite">成员列表 :</label>
@@ -25,12 +25,7 @@
       </div>
     </div>
     <div class="avatarList">
-      <img src="../user.png" alt />
-      <img src="../user.png" alt />
-      <img src="../user.png" alt />
-      <img src="../user.png" alt />
-      <img src="../user.png" alt />
-      <img src="../user.png" alt />
+      <img v-for="(user, index) in teamData.groupMemberList" :key="index" :src="user.wechatIcon" alt="">
     </div>
     <div v-if="state === 'create'" class="btn-box">
       <my-button @click="createTeam" :color="'red'">完成</my-button>
@@ -52,7 +47,8 @@ export default {
     myButton
   },
   props: {
-    state: String
+    state: String,
+    teamData: Object
   },
   computed: {
     avatar() {
@@ -74,12 +70,15 @@ export default {
     },
     createTeam() {
       console.log("创建按钮");
-      const teamName = this.teamName
+      const teamName = this.teamData.groupName
       const limit = this.limit
       store.dispatch('AddTeam', { groupName: teamName, limit })
     },
     deleteTeam() {
       console.log("删除按键");
+      console.log(this.teamData);
+      const { groupId } = this.teamData
+      this.$store.dispatch('deleteGroup', groupId)
     },
     editTeam() {
       console.log("编辑按键");
@@ -157,10 +156,10 @@ export default {
       }
     }
   }
-  .avatarList {
+  .avatarList { 
     padding-top: 1em;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     img {
       width: 24pt;
       height: 24pt;

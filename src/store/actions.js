@@ -1,5 +1,5 @@
 import { getOpenid, login } from "../api/login"
-import { getTeamList } from '../api/team'
+import { getTeamList, deleteGroup } from '../api/team'
 
 const actions = {
     async Login({ commit }, userInfo) {
@@ -32,8 +32,18 @@ const actions = {
         console.log(result.errMsg);
       }
   },
+  
   setTeamName({commit}) {
-      commit('SET_TEAMNAME')
+    commit('SET_TEAMNAME')
+  },
+  async deleteGroup({ commit }, groupId) {
+    try {
+      const result = await deleteGroup(groupId)
+      console.log('result :>> ', result);
+      commit("UPDATE_TEAMLIST", groupId)
+    } catch (error) {
+      console.log(result.message);
+    }
   }
 }
 

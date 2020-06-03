@@ -141,15 +141,15 @@
 
 <template>
   <div class="teamList">
-    <div class="team" v-for="(team, index1) in teamList" :key="index1">
+    <div class="team" v-for="(team, index) in teamList" :key="index">
       <div class="handle">
-        <div class="add"></div>
+        <div class="add" @click="handleAdd"></div>
+        <div class="del" @click="handleDelete"></div>
         <div class="edit" @click="handleEdit"></div>
-        <div class="del"></div>
       </div>
       <div class="top">
-        <div class="fish">团队{{index1+1}}</div>
-        <div class="teamName">{{team.teamName}}</div>
+        <div class="fish">团队{{team.type}}</div>
+        <div class="teamName">{{team.planName}}</div>
       </div>
       <div class="taskList">
         <div class="item">
@@ -161,6 +161,7 @@
           :class="{'done': task.status}"
           v-for="(task, index2) in team.taskList"
           :key="index2"
+          @click="handleChangeStatus(task)"
         >
           <div class="endTime">
             <div v-show="!task.status">
@@ -173,7 +174,7 @@
           </div>
           <div class="taskName">
             {{task.taskName}}
-            <div class="member">
+            <!-- <div class="member">
               <img
                 class="avatar"
                 v-for="(member, index3) in task.members"
@@ -181,14 +182,14 @@
                 :src="member.avatar"
                 alt
               />
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
-      <div class="memberList">
+      <!-- <div class="memberList">
         <span>团队成员</span>
         <img class="avatar" v-for="(member, id) in team.members" :key="id" :src="member.avatar" alt />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -201,13 +202,23 @@ export default {
     teamList: Object
   },
   data() {
-    return {};
+    return {
+      modalIsOpen: false
+    };
   },
   methods: {
+    handleAdd() {
+      store.dispatch('changePicker', 'add')
+      store.dispatch('setMyPickerIsShow')
+    },
     handleEdit() {
-      
+      store.dispatch('changePicker', 'update')
+      store.dispatch('setMyPickerIsShow')
+    },
+    handleChangeStatus(task) {
+      task.status = !task.status
     }
-  },
+  }
 };
 </script>
 

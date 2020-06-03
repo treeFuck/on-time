@@ -29,9 +29,8 @@ export async function updateMember(value) {
 }
 
 // 删除团队
-export async function deleteGroup(value) {
+export async function deleteGroup(groupId) {
   try {
-     const { groupId } = value
      const result = await request.get({
        url: '/group/deleteGroup',
        params: { groupId }
@@ -55,9 +54,8 @@ export async function getTeamList() {
 }
 
 // 获取特定团队的所有计划
-export async function getGroupPlan(value) {
+export async function getGroupPlan(groupId) {
   try {
-    const { groupId } = value
     const result = await request.get({
       url: '/group/getGroupPlan',
       params: { groupId }
@@ -72,7 +70,7 @@ export async function getGroupPlan(value) {
 export async function addGroupPlan(value) {
   try {
     //type为团队Id
-    const { planName, teamId: type, taskList } = value
+    const { planName, groupId: type, taskList } = value
     const result = await request.post({
       url: '/group/addGroupPlan',
       params: { planName, type, taskList }

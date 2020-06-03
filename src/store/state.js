@@ -6,16 +6,7 @@ const state = {
         nickName: '请先登录',
         teamId: '123'
     },
-    teamList: [],
-    teamForm: {
-        planName: '计划名',
-        type: 2,
-        taskList: [
-            {
-                
-            }
-        ]
-    },
+    teamList: []
 }
 
 export default state

@@ -78,7 +78,7 @@
 </style>
 
 <template>
-  <div id="handlePlan" class="handlePlan" :class="{handlePlanShow:handlePlanShow}" ref="handlePlan">
+  <div id="handlePlan" ref="handlePlan" class="handlePlan" :class="{handlePlanShow:handlePlanShow}">
     <div class="xiala">
       <div class="line"></div>
       <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
@@ -117,13 +117,17 @@ export default {
     changeIsShow(event) {
       store.commit("changeShow", !this.handlePlanShow);
     },
+    // 点击完成
     commit() {
       if (this.type) {
+        // 修改计划
         this.updatePlan();
       } else {
+        // 添加计划
         this.addPlan();
       }
     },
+    // 判断持续时间是否是大于0的数字
     judegNumber(data) {
       let num = Number(data);
       if (isNaN(num)) {
@@ -134,6 +138,7 @@ export default {
       }
       return true;
     },
+    // 判断全部输入是否正确
     judgeData() {
       if (!this.plan.planName) {
         // 计划名字不能为空
@@ -188,19 +193,19 @@ export default {
       }
       return true;
     },
+    // 发起请求，添加一个计划
     addPlan() {
+      console.log("添加计划", this.plan);
       if (!this.judgeData()) {
         return;
       }
-      console.log("添加计划", this.plan);
       wx.showLoading({
-        title: '添加中...',
+        title: "添加中...",
         mask: true
       });
       httpReq.addPlan(this.plan).then(res => {
         wx.hideLoading();
-        console.log(res.data);
-        if (res.data.data == 1) {
+        if (res.data.code == 1) {
           wx.showToast({
             title: "添加成功",
             icon: "success",
@@ -211,16 +216,70 @@ export default {
           store.commit("refreshPlan");
           // 刷新计划数据
           this.$emit("Refresh");
+        } else {
+          wx.showToast({
+            title: res.data.message,
+            icon: "none",
+            duration: 2000
+          });
         }
       });
     },
+    // 发起请求，删除一个任务
+    httpDelTask(taskId) {
+      return new Promise((resolve, reject) => {
+        httpReq.delTask(taskId).then(res => {
+          if (res.data.code == 1) {
+            resolve(1);
+          } else {
+            reject();
+          }
+        });
+      });
+    },
+    // 发起请求，更新一个计划
     updatePlan() {
       if (!this.judgeData()) {
         return;
       }
-      console.log("修改计划", this.plan);
-      console.log("删除子任务", this.delTaskList);
+      let promiseArr = [];
+      let len = this.delTaskList.length;
+      wx.showLoading({
+        title: "修改中...",
+        mask: true
+      });
+      for (let i = 0; i < len; i++) {
+        promiseArr.push(this.httpDelTask(this.delTaskList[i].taskId));
+      }
+      Promise.all(promiseArr).then(res => {
+        console.log("删除子任务结果", res);
+        wx.hideLoading();
+        httpReq.updatePlan(this.plan).then(res => {
+          console.log("修改结果", res);
+          if (res.data.code == 1) {
+            wx.showToast({
+              title: "修改成功",
+              icon: "success",
+              duration: 2000
+            });
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: "none",
+              duration: 2000
+            });
+          }
+          // 重置handlePlan
+          store.commit("changeShow", false);
+          store.commit("refreshPlan");
+          // 刷新计划数据
+          this.$emit("Refresh");
+        });
+      });
+      // console.log("修改计划", this.plan);
+      // console.log("删除子任务", this.delTaskList);
     },
+    // 添加一个任务数据
     addTask() {
       store.state.plan.taskList.push({
         taskName: "",
@@ -231,6 +290,7 @@ export default {
         status: 0
       });
     },
+    // 删除任务数组里索引为index的元素
     delTask(index) {
       if (this.plan.taskList.length == 1) {
         // 留一个不删
@@ -261,6 +321,7 @@ export default {
       return store.state.plan;
     },
     handlePlanShow() {
+      if (store.state.handlePlanShow == true) {}
       return store.state.handlePlanShow;
     }
   },

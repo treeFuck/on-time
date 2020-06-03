@@ -122,7 +122,7 @@
     <div class="taskName">
       <label v-if="type" for="taskName">*修改小计划:</label>
       <label v-else for="taskName">*添加小计划:</label>
-      <input v-model="task.taskName" name="taskName" class="task-name-input" type="text"  />
+      <input v-model="task.taskName" name="taskName" class="task-name-input" type="text" />
     </div>
     <div class="time-box">
       <label for>开始时间 :</label>
@@ -212,8 +212,7 @@ export default {
       type: false
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     addTask() {
       this.$emit("addTask");
@@ -299,14 +298,31 @@ export default {
     this.setEndTime();
   },
   watch: {
-    "task.taskId": function(val, oldval) {
-      if (val) {
-        this.type = true;
-      } else {
-        this.type = false;
-      }
-      this.setStartTime();
-      this.setEndTime();
+    // "task.taskId": function(val, oldval) {
+    //   console.log("task测试1", val);
+    //   if (val) {
+    //     this.type = true;
+    //   } else {
+    //     this.type = false;
+    //   }
+    //   this.setStartTime();
+    //   this.setEndTime();
+    // },
+    task: {
+      handler(newVl, oldVl) {
+        if(!oldVl) {
+          return;
+        }
+        console.log("task改变")
+        if (newVl.type) {
+          this.type = true;
+        } else {
+          this.type = false;
+        }
+        this.setStartTime();
+        this.setEndTime();
+      },
+      immediate: true
     }
   }
 };

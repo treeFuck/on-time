@@ -59,6 +59,7 @@
         display: inline-block;
         width: 60%;
         font-size: 18px;
+        word-break: break-all;
       }
     }
     .taskList {
@@ -124,7 +125,7 @@
       <div class="handle">
         <div class="add" @click="addPlan"></div>
         <div class="edit" @click="editPlan(plan)"></div>
-        <div class="del" @click="delPlan(plan.planId)"></div>
+        <div class="del" @click="delPlan(plan)"></div>
       </div>
       <div class="top">
         <div class="fish">计划{{index1+1}}</div>
@@ -159,7 +160,7 @@
 
 <script>
 import store from "../store";
-
+import httpReq from "../../../api/Individual.js";
 export default {
   props: {
     planData: Object
@@ -168,14 +169,50 @@ export default {
     return {};
   },
   methods: {
-    delPlan(planId) {
-      console.log("删除计划", planId);
+    delPlan(plan) {
+      wx.showModal({
+        title: "提示",
+        content: `你确定删除计划“${plan.planName}”`,
+        success: res => {
+          if (res.confirm) {
+            wx.showLoading({
+              title: "删除中...",
+              mask: true
+            });
+            httpReq.delPlan(plan.planId).then(res => {
+              wx.hideLoading();
+              if (res.data.code == 1) {
+                wx.showToast({
+                  title: "删除成功",
+                  icon: "success",
+                  duration: 2000
+                });
+              } else {
+                wx.showToast({
+                  title: res.data.message,
+                  icon: "success",
+                  duration: 2000
+                });
+              }
+              // 重置handlePlan
+              store.commit("changeShow", false);
+              store.commit("refreshPlan");
+              // 刷新计划数据
+              this.$emit("Refresh");
+            });
+          }
+        }
+      });
     },
     editPlan(plan) {
       let nowPlanId = store.state.plan.planId;
-      if (!nowPlanId || nowPlanId!=plan.planId) {
+      if (!nowPlanId || nowPlanId != plan.planId) {
         store.commit("changePlan", JSON.parse(JSON.stringify(plan)));
       }
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 300
+      });
       store.commit("changeShow", true);
     },
     addPlan() {
@@ -194,11 +231,14 @@ export default {
           ]
         });
       }
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 300
+      });
       store.commit("changeShow", true);
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     // console.log(this.planData);
   }

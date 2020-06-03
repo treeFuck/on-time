@@ -34,7 +34,7 @@
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <handlePlan @Refresh="getplanData"></handlePlan>
-    <planList v-if="planData" :planData="planData"></planList>
+    <planList @Refresh="getplanData" v-if="planData" :planData="planData"></planList>
   </div>
 </template>
 
@@ -76,124 +76,18 @@ export default {
         this.handleStartTime(res.data.data);
         this.planData = res.data.data
       })
-      return;
-      setTimeout(() => {
-        let res = [
-          {
-            planName: "测试计划八八零六零",
-            planId: 1,
-            taskList: [
-              {
-                taskId: 1,
-                taskName: "测试子任务1",
-                lasting: 30,
-                startTime: "2020-05-10 20:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              }
-            ]
-          },
-          {
-            planName: "测试计划八八零的六零",
-            planId: 8,
-            taskList: [
-              {
-                taskId: 2,
-                taskName:
-                  "测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1",
-                lasting: 30,
-                startTime: "2020-05-10 20:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 1
-              },
-              {
-                taskId: 3,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              }
-            ]
-          },
-          {
-            planName: "测试计划八八零的六零",
-            planId: 9,
-            taskList: [
-              {
-                taskId: 4,
-                taskName:
-                  "测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1测试子任务1",
-                lasting: 30,
-                startTime: "2020-05-10 20:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 1
-              },
-              {
-                taskId: 5,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              },
-              {
-                taskId: 6,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              },
-              {
-                taskId: 7,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              },
-              {
-                taskId: 8,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              },
-              {
-                taskId: 9,
-                taskName: "测试子任务2",
-                lasting: 40,
-                startTime: "2020-05-10 16:21:00",
-                endTime: "2020-05-11 20:21:00",
-                priority: 3,
-                status: 0
-              }
-            ]
-          }
-        ];
-        this.handleStartTime(res);
-        this.planData = res;
-        //console.log(this.planData)
-      }, 1000);
     }
   },
   components: {
     planList,
     handlePlan
   },
-  mounted() {
+  // mounted() {
+  //   this.getplanData();
+  //   console.log(httpReq);
+  // },
+  onShow() {
     this.getplanData();
-    //console.log(httpReq);
   }
 };
 </script>

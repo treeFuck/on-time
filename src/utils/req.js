@@ -17,9 +17,7 @@ function request(url, method, data) {
             data: data,
             header: header,
             success: (res) => {
-                if (res.data.code == 1) {
-                    resolve(res);
-                } else if (res.data.code == 3001) {
+                if (res.data.code == 3001) {
                     wx.showModal({
                         title: '登录过期',
                         content: '请重新登录',
@@ -31,6 +29,8 @@ function request(url, method, data) {
                         }
                     })
                     reject('expire') // token过期
+                } else {
+                    resolve(res)
                 }
             },
             fail: (res) => {

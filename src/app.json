@@ -1,12 +1,12 @@
 {
   "pages": [
     "pages/login/main",
+    "pages/about/main",
+    "pages/set/main",
     "pages/Individual/main",
     "pages/team/main",
     "pages/teamEdit/main",
-    "pages/set/main",
-    "pages/schedule/main",
-    "pages/about/main"
+    "pages/schedule/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

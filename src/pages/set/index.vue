@@ -12,17 +12,20 @@
     <!-- 用户信息 -->
     <div class="userInfo">
       <div class="icon">
-        <div class="share btn" @click="share"></div>
+        <!-- <div class="share btn" @click="share"></div> -->
         <div class="avatar-box btn">
           <img class="avatar" :src="avatarUrl" alt />
         </div>
-        <div class="edit btn" @click="edit"></div>
+        <!-- <div class="edit btn" @click="edit"></div> -->
       </div>
       <div class="nickName">{{nickName}}</div>
-      <div class="set-box">设置功能暂定</div>
+      <!-- <div class="set-box">设置功能暂定</div> -->
     </div>
-    <div class="about" @click="about">
-      <p>关于作者</p>
+    <div class="author" @click="about('author')">
+      <span>关于作者</span>
+    </div>
+    <div class="use" @click="about('use')">
+      <span>使用说明</span>
     </div>
   </div>
 </template>
@@ -62,8 +65,8 @@ export default {
     test(e) {
       console.log("hello");
     },
-    about() {
-      wx.navigateTo({ url: '/pages/about/main' })
+    about(param) {
+      wx.navigateTo({ url:`/pages/about/main?type=${param}`})
     }
   }
 };
@@ -80,7 +83,7 @@ export default {
   margin-top: 100px;
   width: 80%;
   max-width: 500px;
-  height: 13em;
+  height: 10em;
   border-radius: 20px;
   .icon {
     display: flex;
@@ -88,7 +91,7 @@ export default {
     width: 100%;
     height: 70px;
     box-sizing: border-box;
-
+    
     .btn {
       width: 30%;
     }
@@ -109,6 +112,7 @@ export default {
         border-radius: 100%;
         width: 120px;
         height: 120px;
+        box-shadow: 0 8px 12px 0px #ffe980;
       }
     }
     .set-box {
@@ -117,6 +121,8 @@ export default {
   }
 
   .nickName {
+    font-size: 24px;
+    color:#A08600;
     margin-top: 10px;
   }
 }
@@ -126,16 +132,33 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.about {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url(../../../static/images/fish1.png) no-repeat center;
-  background-size: 110pt auto;
-  font-size: 14pt;
-  height: 101pt;
-  padding-top: 10px;
+.author, .use {
+  position: relative;
+  margin: 1em auto;
+  width: 9em;
+  height: 5em;
   color: #ffd600;
+  font-size: 20px;
+  background-repeat: no-repeat;
+  background-size: auto 100% ;
+  background-position: center;
+  span {
+    position: absolute;
+    font-weight: bold;
+    line-height: 5.5em;
+  }
+}
+.author {
+  background-image: url(../../../static/images/fish1.png) ;
+  span {
+    left: 2em;
+  }
+}
+.use {
+  background-image: url(../../../static/images/fish4.png) ;
+  span {
+    right: 2em;
+  }
 }
 
 .btn-class {

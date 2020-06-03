@@ -98,14 +98,14 @@ export default {
         algorithm: this.algorithm,
         date: this.date
       };
-      wx.showLoading();
+      //wx.showLoading();
       this.$wxhttp
         .post({
           url: "/schedule/sortTask",
           params: send
         })
         .then(res => {
-          wx.hideLoading();
+          //wx.hideLoading();
           console.log(res.data.data);
           this.handleStartTime(res.data.data);
           this.scheduleList = res.data.data;
@@ -116,7 +116,7 @@ export default {
     mylist,
     mypicker
   },
-  mounted() {
+  onShow() {
     this.getSchedule();
   },
   watch: {

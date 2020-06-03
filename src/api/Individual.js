@@ -16,8 +16,8 @@ function addPlan(plan) {
 
 // 删除子任务
 function delTask(taskId) {
-    return request.post({
-        url: '/personal_plan/delete_task',
+    return request.get({
+        url: `/personal_plan/delete_task?taskId=${taskId}`,
         params: taskId
     })
 }
@@ -31,8 +31,8 @@ function updatePlan(plan) {
 }
 // 删除计划
 function delPlan(planId) {
-    return request.post({
-        url: '/personal_plan/delete_plan',
+    return request.get({
+        url: `/personal_plan/delete_plan?planId=${planId}`,
         params: planId
     })
 }

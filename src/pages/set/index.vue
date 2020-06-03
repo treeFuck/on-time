@@ -21,8 +21,11 @@
       <div class="nickName">{{nickName}}</div>
       <!-- <div class="set-box">设置功能暂定</div> -->
     </div>
-    <div class="about" @click="about">
-      <p>关于作者</p>
+    <div class="author" @click="about('author')">
+      <span>关于作者</span>
+    </div>
+    <div class="use" @click="about('use')">
+      <span>使用说明</span>
     </div>
   </div>
 </template>
@@ -62,8 +65,8 @@ export default {
     test(e) {
       console.log("hello");
     },
-    about() {
-      wx.navigateTo({ url: '/pages/about/main' })
+    about(param) {
+      wx.navigateTo({ url:`/pages/about/main?type=${param}`})
     }
   }
 };
@@ -129,16 +132,33 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.about {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: url(../../../static/images/fish1.png) no-repeat center;
-  background-size: 110pt auto;
-  font-size: 14pt;
-  height: 101pt;
-  padding-top: 10px;
+.author, .use {
+  position: relative;
+  margin: 1em auto;
+  width: 9em;
+  height: 5em;
   color: #ffd600;
+  font-size: 20px;
+  background-repeat: no-repeat;
+  background-size: auto 100% ;
+  background-position: center;
+  span {
+    position: absolute;
+    font-weight: bold;
+    line-height: 5.5em;
+  }
+}
+.author {
+  background-image: url(../../../static/images/fish1.png) ;
+  span {
+    left: 2em;
+  }
+}
+.use {
+  background-image: url(../../../static/images/fish4.png) ;
+  span {
+    right: 2em;
+  }
 }
 
 .btn-class {

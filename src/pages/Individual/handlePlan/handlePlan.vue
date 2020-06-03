@@ -78,7 +78,7 @@
 </style>
 
 <template>
-  <div id="handlePlan" class="handlePlan" :class="{handlePlanShow:handlePlanShow}" ref="handlePlan">
+  <div id="handlePlan" ref="handlePlan" class="handlePlan" :class="{handlePlanShow:handlePlanShow}">
     <div class="xiala">
       <div class="line"></div>
       <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
@@ -195,10 +195,10 @@ export default {
     },
     // 发起请求，添加一个计划
     addPlan() {
+      console.log("添加计划", this.plan);
       if (!this.judgeData()) {
         return;
       }
-      console.log("添加计划", this.plan);
       wx.showLoading({
         title: "添加中...",
         mask: true
@@ -249,7 +249,7 @@ export default {
         mask: true
       });
       for (let i = 0; i < len; i++) {
-        promiseArr.push(this.httpDelTask(delTaskList[i].taskId));
+        promiseArr.push(this.httpDelTask(this.delTaskList[i].taskId));
       }
       Promise.all(promiseArr).then(res => {
         console.log("删除子任务结果", res);
@@ -321,6 +321,7 @@ export default {
       return store.state.plan;
     },
     handlePlanShow() {
+      if (store.state.handlePlanShow == true) {}
       return store.state.handlePlanShow;
     }
   },

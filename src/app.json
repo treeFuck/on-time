@@ -1,10 +1,10 @@
 {
   "pages": [
+    "pages/set/main",
     "pages/Individual/main",
     "pages/login/main",
     "pages/team/main",
     "pages/teamEdit/main",
-    "pages/set/main",
     "pages/schedule/main",
     "pages/about/main"
   ],

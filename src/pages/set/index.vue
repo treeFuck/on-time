@@ -12,14 +12,14 @@
     <!-- 用户信息 -->
     <div class="userInfo">
       <div class="icon">
-        <div class="share btn" @click="share"></div>
+        <!-- <div class="share btn" @click="share"></div> -->
         <div class="avatar-box btn">
           <img class="avatar" :src="avatarUrl" alt />
         </div>
-        <div class="edit btn" @click="edit"></div>
+        <!-- <div class="edit btn" @click="edit"></div> -->
       </div>
       <div class="nickName">{{nickName}}</div>
-      <div class="set-box">设置功能暂定</div>
+      <!-- <div class="set-box">设置功能暂定</div> -->
     </div>
     <div class="about" @click="about">
       <p>关于作者</p>
@@ -80,7 +80,7 @@ export default {
   margin-top: 100px;
   width: 80%;
   max-width: 500px;
-  height: 13em;
+  height: 10em;
   border-radius: 20px;
   .icon {
     display: flex;
@@ -88,7 +88,7 @@ export default {
     width: 100%;
     height: 70px;
     box-sizing: border-box;
-
+    
     .btn {
       width: 30%;
     }
@@ -109,6 +109,7 @@ export default {
         border-radius: 100%;
         width: 120px;
         height: 120px;
+        box-shadow: 0 8px 12px 0px #ffe980;
       }
     }
     .set-box {
@@ -117,6 +118,8 @@ export default {
   }
 
   .nickName {
+    font-size: 24px;
+    color:#A08600;
     margin-top: 10px;
   }
 }

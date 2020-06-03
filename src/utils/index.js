@@ -19,9 +19,8 @@ export function formatTime (date) {
 }
 
 export function getToday (clockStr) {
-
+  
   const date = new Date();
-
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -33,4 +32,9 @@ export function getToday (clockStr) {
 
 export function formatTimeStr (str) {
   return str.replace(/\-/g, "/").split(".")[0]
+}
+
+export function getTimeNum (str) {
+  let timeStr = str.replace(/\-/g, "/").split(".")[0];
+  return  new Date(timeStr).getTime()
 }

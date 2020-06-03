@@ -41,7 +41,7 @@
       padding: 0.5em 0;
       width: 90%;
       border-radius: 8px;
-      background-color: rgba(255,245,196,1);
+      background-color: rgba(255, 245, 196, 1);
       // box-shadow: 2px 3px 5px 0px #eee;
       .left {
         display: inline-block;
@@ -96,7 +96,12 @@
       <div class="algorithm">{{algorithm}}</div>
     </div>
     <div class="dataCon">
-      <div class="list" @click="changeStatus(item)" v-for="(item, index) in scheduleList" :key="index">
+      <div
+        class="list"
+        @click="changeStatus(item)"
+        v-for="(item, index) in scheduleList"
+        :key="index"
+      >
         <div class="left">
           <div class="startTime">{{item.start_time}}</div>
           <div class="no-done" v-show="!item.status">
@@ -145,7 +150,19 @@ export default {
   },
   methods: {
     changeStatus(item) {
-      item.status = !item.status;
+      this.$wxhttp
+        .post({
+          url: "/schedule/updateTaskStatus",
+          params: {
+            taskId: item.taskId,
+            status: (!item.status)?1:0
+          }
+        })
+        .then((res) => {
+          if(res.data.code == 1) {
+            item.status = !item.status;
+          }
+        });
     }
   },
   mounted() {

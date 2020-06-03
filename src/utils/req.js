@@ -1,6 +1,6 @@
 import store from '../store/index'
 // 接口地址
-const host = 'http://47.102.155.74:8080'
+const host = 'https://sln.tplanner.cn:10080'
 
 // wx请求
 function request(url, method, data) {

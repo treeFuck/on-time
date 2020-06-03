@@ -174,7 +174,7 @@ export default {
     editPlan(plan) {
       let nowPlanId = store.state.plan.planId;
       if (!nowPlanId || nowPlanId!=plan.planId) {
-        store.commit("changePlan", { ...plan });
+        store.commit("changePlan", JSON.parse(JSON.stringify(plan)));
       }
       store.commit("changeShow", true);
     },

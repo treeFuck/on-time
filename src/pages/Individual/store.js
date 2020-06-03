@@ -7,20 +7,35 @@ const store = new Vuex.Store({
   state: {
     handlePlanShow: false,
     plan: {
-      planName: null,
+      planName: '',
       taskList: [
         {
-          taskName: null,
-          lasting: null,
+          taskName: '',
+          lasting: 10,
           startTime: null,
           endTime: null,
-          priority: null,
-          status: null
+          priority: 1,
+          status: 0
         }
       ]
     }
   },
   mutations: {
+    refreshPlan(state) {
+      state.plan = {
+        planName: '',
+        taskList: [
+          {
+            taskName: '',
+            lasting: 10,
+            startTime: null,
+            endTime: null,
+            priority: 1,
+            status: 0
+          }
+        ]
+      };
+    },
     changePlan(state, newVl) {
       state.plan = newVl;
     },

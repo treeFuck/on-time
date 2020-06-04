@@ -84,7 +84,7 @@ export async function addGroupPlan(value) {
 // 修改团队大计划
 export async function updateGroupPlan(value) {
   try {
-    const { teamId: type, planName, planId, taskList } = value
+    const { type, planName, planId, taskList } = value
     const result = await request.post({
       url: '/group/updateGroupPlan',
       params: {
@@ -94,6 +94,7 @@ export async function updateGroupPlan(value) {
         taskList
       }
     })
+    return result
   } catch (error) {
     console.log('error :>> ', error);
   }

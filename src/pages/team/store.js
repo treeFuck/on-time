@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { addGroupPlan, getListGroupPlan } from '../../api/team'
+import { addGroupPlan, getListGroupPlan, updateGroupPlan } from '../../api/team'
 
 Vue.use(Vuex)
 
@@ -29,6 +29,12 @@ const store = new Vuex.Store({
     },
     SET_PICKER_FORM(state, newVl) {
       state.pickerForm = newVl
+    },
+    UPDATE_PLAN_LIST(state, newVl) {
+      state.planList.map(item => {
+        if (item.type === newVl.type) 
+          item = newVl
+      })
     }
   },
   actions: {
@@ -69,6 +75,15 @@ const store = new Vuex.Store({
     setTaskForm({commit}, teamData) {
       console.log('teamForm :>> ', teamData);
       commit('SET_PICKER_FORM', teamData)
+    },
+    async UpdateGroupPlan({ commit }, groupPlan) {
+      try {
+        const res = await updateGroupPlan(groupPlan)
+        console.log('添加任务的res :>> ', res);
+        commit("UPDATE_PLAN_LIST", groupPlan)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
     }
   }
 })

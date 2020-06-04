@@ -231,6 +231,11 @@ export default {
         // 关闭picker
         store.dispatch("setMyPickerIsShow");
       }
+      if(this.state == "update") {
+        console.log('formdata :>> ', this.pickerForm);
+        store.dispatch('UpdateGroupPlan', this.pickerForm)
+      }
+      
     }
   },
   components: {

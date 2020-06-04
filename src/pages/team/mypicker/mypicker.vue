@@ -100,14 +100,12 @@
     <div class="main">
       <div class="updateForm" v-if="state === 'update'">
         <div class="input-box">
-          <label for>*修改队名:</label>
-          <input type="text" v-model="teamForm.groupName" />
-        </div>
-        <div class="input-box">
           <label for>*修改计划:</label>
-          <input type="text" v-model="planName" />
+          <input type="text" v-model="pickerForm.planName" />
         </div>
+        <taskFormEdit v-for="(task, index) in pickerForm.taskList" :key="index" :formData="task" />
       </div>
+
       <div class="addForm" v-if="state === 'add'">
         <div class="input-box">
           <label for>*选择队伍:</label>
@@ -121,8 +119,8 @@
           <label for>*添加计划:</label>
           <input type="text" v-model="planName" />
         </div>
+        <task-form :formData="form" />
       </div>
-      <task-form :formData="form" />
     </div>
     <div class="btn">
       <my-button color="yellow" @click="handleSubmit">完成</my-button>
@@ -136,6 +134,7 @@ import mpDatepicker from "mpvue-weui/src/date-picker";
 import mpPicker from "mpvue-weui/src/picker";
 import taskForm from "../taskForm/taskForm";
 import myButton from "../../../components/myButton";
+import taskFormEdit from '../taskFormEdit/taskFormEdit'
 
 export default {
   props: {
@@ -143,91 +142,102 @@ export default {
   },
   computed: {
     groupList() {
-      const group = this.$store.state.teamList
-      let arr = []
+      const group = this.$store.state.teamList;
+      let arr = [];
       group.map(item => {
-        arr.push(item.groupName)
-      })
-      return arr
+        arr.push(item.groupName);
+      });
+      return arr;
     },
     mypickerShow() {
-      return store.state.mypickerShow
+      return store.state.mypickerShow;
     },
     offsetTop() {
       return this.mypickerShow ? "top: 0px" : `top: -32em;`;
     },
+    pickerForm() {
+      return store.state.pickerForm;
+    },
+    form() {
+      if(this.state === "add")
+        return {
+          userId: 1,
+          taskName: "",
+          groupMemberList: [],
+          startTime: {},
+          endTime: {},
+          lasting: 60,
+          priority: 3,
+          status: 0
+        };
+      if(this.state === "updata") {
+        return pickerForm.taskList[0]
+      }
+    }
   },
   data() {
     return {
       planName: "",
       teamForm: {
-        groupName: '',
+        groupName: "",
         groupId: 0
-      },
-      form: {
-        userId: 1,
-        taskName: '',
-        groupMemberList: [{
-          id: 1,
-          nickName: "政",
-          avatar:
-            "https://wx.qlogo.cn/mmopen/vi_32/krwDIf6c0aib75H4LxmR7LzJ7WahDxJrr7zZew9y4iaztssNic0iar5IGQaXVWFpQicgSKHpZjF1ZPunIuV9tPaAiarQ/132"
-        }],
-        startTime: {},
-        endTime: {},
-        lasting: 60,
-        priority: 3,
-        status: 0
       }
     };
   },
   methods: {
     changeIsShow(event) {
-      store.dispatch('setMyPickerIsShow')
-      store.dispatch('changePicker', 'add')
+      store.dispatch("setMyPickerIsShow");
+      store.dispatch("changePicker", "add");
     },
     selectTeam(event) {
-      const index = event.target.value
-      this.teamForm = this.$store.state.teamList[index]
+      const index = event.target.value;
+      this.teamForm = this.$store.state.teamList[index];
       // 修改子任务模板
-      this.form.groupMemberList = this.teamForm.groupMemberList
-      this.form.groupId = this.teamForm.groupId
+      this.form.groupMemberList = this.teamForm.groupMemberList;
+      this.form.groupId = this.teamForm.groupId;
       console.log(this.form);
     },
     toEditTeam() {
       wx.navigateTo({
         url: "/pages/teamEdit/main"
-      })
+      });
     },
     handleSubmit() {
-      if(this.state === 'add') {
-        const planName = this.planName
-        const groupId = this.teamForm.groupId
+      if (this.state === "add") {
+        const planName = this.planName;
+        const groupId = this.teamForm.groupId;
 
         // 格式化开始时间和结束时间
-        const startTime = this.form.startTime.date.join('-') + ' ' + this.form.startTime.time.join(':')
-        const endTime = this.form.endTime.date.join('-') + ' ' + this.form.endTime.time.join(':')
+        const startTime =
+          this.form.startTime.date.join("-") +
+          " " +
+          this.form.startTime.time.join(":");
+        const endTime =
+          this.form.endTime.date.join("-") +
+          " " +
+          this.form.endTime.time.join(":");
 
-        let task = this.form
-        task = { ...task, startTime, endTime }
-
+        let task = this.form;
+        task = { ...task, startTime, endTime };
+        const a = { planName, groupId, taskList: [task] }
+        console.log('a :>> ', a);
         // 添加大任务
-        store.dispatch('addGroupPlan', { 
+        store.dispatch("addGroupPlan", {
           planName,
           groupId,
           taskList: [task]
-         })
+        });
 
         // 关闭picker
-        store.dispatch('setMyPickerIsShow')
+        store.dispatch("setMyPickerIsShow");
       }
     }
   },
   components: {
     taskForm,
-    myButton
-  },
-  created() {}
+    myButton,
+    taskFormEdit
+  }
 };
 </script>
 

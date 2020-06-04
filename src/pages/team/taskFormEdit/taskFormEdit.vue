@@ -10,7 +10,7 @@
         placeholder="请输入计划内容"
       />
     </div>
-    <div class="member">
+    <!-- <div class="member">
       <label for>*负责人 :</label>
       <div class="memberList">
         <img
@@ -26,14 +26,14 @@
         :key="member.userid"
         ></div>
       </div>
-    </div>
+    </div> -->
     <div class="time-box">
       <label for>开始时间 :</label>
       <div class="right">
         <picker
           class="picker"
           mode="date"
-          :value="startTime.date.join('-')"
+          :value="startTime.t1"
           @change="startDateChange"
         >
           <span class="year input">{{startTime.date[0]}}</span>
@@ -56,6 +56,7 @@
           <span class="second input">{{startTime.time[2]}}</span>
           <span>秒</span>
         </picker>
+        {{startTime.date}}
       </div>
     </div>
     <div class="time-box">
@@ -66,7 +67,7 @@
     <div class="time-box">
       <label for>结束时间 :</label>
       <div class="right">
-        <picker class="picker" mode="date" :value="endTime.t1" @change="endDateChange">
+        <picker class="picker" mode="date" @change="endDateChange">
           <span class="year input">{{endTime.date[0]}}</span>
           <span>年</span>
           <span class="month input">{{endTime.date[1]}}</span>
@@ -74,7 +75,7 @@
           <span class="day input">{{endTime.date[2]}}</span>
           <span>日</span>
         </picker>
-        <picker class="picker" mode="time" :value="endTime" @change="endTimeChange">
+        <picker class="picker" mode="time" @change="endTimeChange">
           <span class="hour input">{{endTime.time[0]}}</span>
           <span>时</span>
           <span class="minute input">{{endTime.time[1]}}</span>
@@ -107,8 +108,8 @@ export default {
   data() {
     return {
       taskName: "",
-      startTime: null,
-      endTime: null,
+      startTime: this.format(this.formData.startTime),
+      endTime: this.format(this.formData.endTime),
       p: ["√", "", "", ""]
     };
   },
@@ -117,47 +118,44 @@ export default {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.startTime.date = [year, month, day];
+      this.startTime.t1 = value
       console.log(this.startTime);
-      this.formData.startTime.date = this.startTime.date;
-    },
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
+    },  
     startTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.startTime.time = [hour, minute, second];
+      this.startTime.t2 = [hour, minute, second].join(":")
       console.log(this.startTime);
-      this.formData.startTime.time = this.startTime.time;
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
     },
     endDateChange(event) {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.endTime.date = [year, month, day];
+      this.endTime.t1 = value
       console.log(this.endTime);
-      this.formData.endTime.date = this.endTime.date;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
     },
     endTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.endTime.time = [hour, minute, second];
+      this.endTime.t2 = [hour, minute, second].join(":")
       console.log(this.endTime);
-      this.formData.endTime.time = this.endTime.time;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
     },
-    getNowDate(time) {
-      const date = new Date();
-      const str = formatTime(date);
-      console.log(str);
-      const [t1, t2] = str.split(" ");
-      const [year, month, day] = t1.split("/");
+    format(time) {
+      const [t1, t2] = time.split(" ");
+      const [year, month, day] = t1.split("-");
       const [hour, minute, second] = t2.split(":");
-      this.startTime = {
+      return {
         date: [year, month, day],
-        time: [hour, minute, second]
-      };
-      this.endTime = {
-        date: [year, month, day],
-        time: [formatNumber((Number(hour) + 1) % 24), minute, second]
-      };
-      this.formData.startTime = this.startTime;
-      this.formData.endTime = this.endTime;
+        time: [hour, minute, second],
+        t1,
+        t2
+      }
     },
     setLeader(member) {
       this.formData.userId = member.userId;
@@ -167,9 +165,6 @@ export default {
       this.p = ["", "", "", ""]
       this.p[value-1] = "√"
     }
-  },
-  created() {
-    this.getNowDate(this.startTime);
   }
 };
 </script>

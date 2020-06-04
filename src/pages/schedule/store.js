@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    algorithm: 0,// 0：短作业优先, 1：长作业优先, 2：优先级调度
+    algorithm: 1,// 1：短作业优先, 2：长作业优先, 3：优先级调度
     date: new Date()
   },
   mutations: {

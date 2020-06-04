@@ -143,8 +143,8 @@ export default {
     }
   },
   onLoad(option) {
-    // this.type = option.type;
-    console.log(this.type);
+    this.type = option.type;
+    // console.log(this.type);
   }
 };
 </script>

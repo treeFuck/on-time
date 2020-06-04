@@ -106,10 +106,6 @@
           display: inline-block;
           width: 75%;
           text-align: left;
-          .member {
-            display: flex;
-            align-items: center;
-          }
         }
       }
       .done {
@@ -143,9 +139,9 @@
   <div class="teamList">
     <div class="team" v-for="(team, index) in teamList" :key="index">
       <div class="handle">
-        <div class="add" @click="handleAdd"></div>
-        <div class="del" @click="handleDelete"></div>
-        <div class="edit" @click="handleEdit"></div>
+        <div class="add" @click="handleAdd(team)"></div>
+        <div class="del" @click="handleDelete(team)"></div>
+        <div class="edit" @click="handleEdit(team)"></div>
       </div>
       <div class="top">
         <div class="fish">团队{{team.type}}</div>
@@ -174,15 +170,8 @@
           </div>
           <div class="taskName">
             {{task.taskName}}
-            <!-- <div class="member">
-              <img
-                class="avatar"
-                v-for="(member, index3) in task.members"
-                :key="index3"
-                :src="member.avatar"
-                alt
-              />
-            </div> -->
+            <span>{{task.lasting}}</span>
+            <img class="avatar" :src="task.userVo.wechatIcon" />
           </div>
         </div>
       </div>
@@ -207,13 +196,18 @@ export default {
     };
   },
   methods: {
-    handleAdd() {
-      store.dispatch('changePicker', 'add')
-      store.dispatch('setMyPickerIsShow')
-    },
-    handleEdit() {
+    handleAdd(teamData) {
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
+      store.dispatch('setTaskForm', teamData)
+    },
+    handleEdit(teamData) {
+      store.dispatch('changePicker', 'update')
+      store.dispatch('setMyPickerIsShow')
+      store.dispatch('setTaskForm', teamData)
+    },
+    handleDelete(teamData) {
+      console.log("点击删除");
     },
     handleChangeStatus(task) {
       task.status = !task.status

@@ -127,3 +127,13 @@ export async function deleteGroupTask(value) {
   }
 }
 
+export async function getListGroupPlan() {
+  try {
+    const result = await request.get({
+      url: '/group/getListGroupPlan'
+    })
+    return result.data
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
+}

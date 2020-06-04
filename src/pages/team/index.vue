@@ -74,10 +74,7 @@ export default {
     getTeamData() {
       this.$store.dispatch("getTeamList") // 获取团队列表
       store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
-      setTimeout(() => {
-        this.teamList = store.state.teamList;
-        this.handleStartTime(this.teamList);
-      }, 500);
+      this.teamList = store.state.planList;
     }
   },
   components: {

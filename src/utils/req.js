@@ -1,6 +1,6 @@
 import store from '../store/index'
 // 接口地址
-const host = 'https://sln.tplanner.cn:10080'
+const host = 'https://timer.boycharse.top:10080'
 
 // wx请求
 function request(url, method, data) {

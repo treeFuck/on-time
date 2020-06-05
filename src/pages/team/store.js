@@ -10,7 +10,16 @@ const store = new Vuex.Store({
     pickerState: 'add',
     team: [],
     planList: [],
-    pickerForm: {}
+    pickerForm: {
+      userId: 1,
+      taskName: "",
+      groupMemberList: [],
+      startTime: {},
+      endTime: {},
+      lasting: 60,
+      priority: 1,
+      status: 0
+    }
   },
   mutations: {
     SET_PICKER_IS_SHOW(state) {
@@ -79,7 +88,7 @@ const store = new Vuex.Store({
     async UpdateGroupPlan({ commit }, groupPlan) {
       try {
         const res = await updateGroupPlan(groupPlan)
-        console.log('添加任务的res :>> ', res);
+        console.log('更新任务的res :>> ', res);
         commit("UPDATE_PLAN_LIST", groupPlan)
       } catch (error) {
         console.log('error :>> ', error);

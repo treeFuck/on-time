@@ -32,7 +32,7 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <team-list v-if="teamList" :teamList="planList"></team-list>
+    <team-list v-if="planList" :teamList="planList"></team-list>
     <mypicker :state="pickerState" ></mypicker>
   </div>
 </template>
@@ -44,11 +44,6 @@ import teamList from "./teamList/teamList.vue";
 import mypicker from "./mypicker/mypicker.vue";
 
 export default {
-  data() {
-    return {
-      teamList: null
-    };
-  },
   computed: {
     pickerState() {
       return store.state.pickerState
@@ -74,7 +69,6 @@ export default {
     getTeamData() {
       this.$store.dispatch("getTeamList") // 获取团队列表
       store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
-      this.teamList = store.state.planList;
     }
   },
   components: {

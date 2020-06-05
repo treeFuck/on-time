@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { addGroupPlan, getListGroupPlan, updateGroupPlan } from '../../api/team'
+import { addGroupPlan, getListGroupPlan, updateGroupPlan, deleteGroupPlan } from '../../api/team'
 
 Vue.use(Vuex)
 
@@ -62,17 +62,19 @@ const store = new Vuex.Store({
     async getAllTeamPlan({ commit }) {
       try {
         const result = await getListGroupPlan()
-        const { data } = result
+        const { data = [] } = result
 
-        // 修改数据格式，添加两个属性
-        data.map((item) => {
-          item.taskList.map(task => {
-            task.start_clokc = task.startTime.split(" ")[1]
-            task.start_date = task.startTime.split(" ")[0]
-            task.end_clock = task.endTime.split(" ")[1]
-            task.end_date = task.endTime.split(" ")[0]
+        if (data != null) {
+          // 修改数据格式，添加两个属性
+          data.map((item) => {
+            item.taskList.map(task => {
+              task.start_clokc = task.startTime.split(" ")[1]
+              task.start_date = task.startTime.split(" ")[0]
+              task.end_clock = task.endTime.split(" ")[1]
+              task.end_date = task.endTime.split(" ")[0]
+            })
           })
-        })
+        }
         console.log('data :>> ', data);
         // 更新vuex
         commit('SET_PLANLIST', data)
@@ -90,6 +92,19 @@ const store = new Vuex.Store({
         const res = await updateGroupPlan(groupPlan)
         console.log('更新任务的res :>> ', res);
         commit("UPDATE_PLAN_LIST", groupPlan)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
+    },
+    async DeleteGroupPlan({ commit }, planId) {
+      try {
+        const result = await deleteGroupPlan(planId)
+        console.log('result :>> ', result);
+        let arr = this.state.planList
+        let index = arr.findIndex(item => item.planId === planId)
+        arr.splice(index, 1)
+        commit("SET_PLANLIST", arr)
+
       } catch (error) {
         console.log('error :>> ', error);
       }

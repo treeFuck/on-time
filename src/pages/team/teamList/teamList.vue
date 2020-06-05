@@ -208,7 +208,6 @@ export default {
   methods: {
     handleAdd(teamData) {
       console.log('teamData :>> ', teamData);
-      teamData.taskList.push(store.state.pickerForm)
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
       store.dispatch('setTaskForm', teamData)
@@ -220,6 +219,7 @@ export default {
     },
     handleDelete(teamData) {
       console.log("点击删除");
+      store.dispatch("DeleteGroupPlan", teamData.planId)
     },
     handleChangeStatus(task) {
       task.status = !task.status

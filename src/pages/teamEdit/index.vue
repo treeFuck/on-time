@@ -22,9 +22,9 @@ export default {
     return {
       teamData: {
         groupId: 1232,
-        groupName: '攻城狮',
-        creatorId: 'zuan',
-        limit: 5
+        groupName: '',
+        creatorId: 2,
+        limit: ''
       },
       memberList: [
         {_id: 1, nickName: '钻', avatarUrl: '../user.png'},

@@ -54,7 +54,7 @@ export default {
     avatar() {
       if(this.state === 'create')
         return this.$store.state.userInfo.avatarUrl || '/pages/teamEdit/user.png'
-      return '/pages/teamEdit/user.png'
+      return this.teamData.groupMemberList[0].wechatIcon
     }
   },
   data() {

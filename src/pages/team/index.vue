@@ -65,6 +65,9 @@ export default {
     teamList,
     mypicker
   },
+  onShow() {
+    this.getTeamData();
+  },
   mounted() {
     this.getTeamData();
   }

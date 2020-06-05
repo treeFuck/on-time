@@ -94,6 +94,10 @@
         <span class="red" @click="selectPriority(4)">{{p[3]}}</span>
       </div>
     </div>
+    <div class="icon">
+      <p class="icon-btn" @click="handleRemoveTask">-</p>
+      <!-- <p class="icon-btn">+</p> -->
+    </div>
   </div>
 </template>
 
@@ -164,6 +168,10 @@ export default {
       this.formData.priority = value;
       this.p = ["", "", "", ""]
       this.p[value-1] = "√"
+    },
+    handleRemoveTask() {
+      store.dispatch("RemoveTask", this.formData.taskId)
+      console.log('removeTask :>> ', this.formData.taskId);
     }
   }
 };
@@ -177,6 +185,7 @@ export default {
   background-color: #ffeb88;
   border-radius: 5pt;
   color: #a08600;
+  position: relative;
   .taskName {
     display: flex;
     align-items: center;
@@ -258,6 +267,24 @@ export default {
       background-color: #ff9460;
     }
   }
+  .icon {
+    position: absolute;
+    left: 0.5em;
+    bottom: 0.5em;
+    .icon-btn {
+      margin: 5px 0;
+      width: 1em;
+      height: 1em;
+      color: #ffeb88;
+      background-color: #fffbe8;
+      line-height: 1em;
+      border-radius: 100%;
+      font-size: 50rpx;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
 
   .avatar {
     width: 1.5em;

@@ -10,7 +10,6 @@
 <script>
 // Use Vuex
 import store from './store'
-import PlanList from './component/PlanList'
 import TeamCard from './component/TeamCard'
 export default {
   computed: {
@@ -36,19 +35,7 @@ export default {
     }
   },
   components: {
-    PlanList,
     TeamCard
-  },
-  methods: {
-    createTeam() {
-      return false
-    },
-    exitTeam() {},
-    addMember() {},
-    removeMember() {}
-  },
-  mounted() {
-    
   },
 }
 </script>

@@ -11,7 +11,7 @@
   box-shadow: 0 0 3px 1px #eee;
   transition: top 0.5s;
   .main {
-    max-height: 380px;
+    max-height: 400px;
     overflow: auto;
   }
   .xiala {
@@ -225,9 +225,6 @@ export default {
         });
       }
       if(this.state == "update") {
-        console.log('formdata :>> ', this.taskFormList);
-        const { taskList } = this.taskFormList
-        
         store.dispatch('UpdateGroupPlan', this.taskFormList)
       }
 
@@ -251,7 +248,8 @@ export default {
         lasting: 60,
         priority: 1,
         status: 0,
-        taskName: ""
+        taskName: "",
+        taksId: null
       }
   },
 };

@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { addGroupPlan, getListGroupPlan, updateGroupPlan, deleteGroupPlan } from '../../api/team'
+import {
+  addGroupPlan,
+  getListGroupPlan,
+  updateGroupPlan,
+  deleteGroupPlan,
+  deleteGroupTask
+} from '../../api/team'
 import { formatTime1, getNowTime } from '../../utils'
 
 Vue.use(Vuex)
@@ -29,6 +35,12 @@ const store = new Vuex.Store({
     },
     ADD_TASK_FOMR(state, newVl) {
       state.taskFormList = newVl
+    },
+    REMOVE_TASK(state, newVl) {
+      const taskList = state.taskFormList.taskList
+      const index = taskList.findIndex(item => item.taskId === newVl)
+      taskList.splice(index, 1)
+      state.taskFormList.taskList = taskList
     }
   },
   actions: {
@@ -73,9 +85,16 @@ const store = new Vuex.Store({
       }
     },
     // 更新taskForm的内容
-    setTaskFormList({commit}, teamData) {
-      console.log('teamForm :>> ', teamData);
-      commit('SET_TASK_FORM', teamData)
+    async setTaskFormList({ commit }, teamData) {
+      try {
+        // const res = await updateGroupPlan(groupPlan)
+        // console.log('res :>> ', res);
+        console.log('teamForm :>> ', teamData);
+        commit('SET_TASK_FORM', teamData)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
+      
     },
     // 更新团队计划
     async UpdateGroupPlan({ commit }, groupPlan) {
@@ -120,6 +139,16 @@ const store = new Vuex.Store({
       }
       teamData.taskList.push(task)
       commit("ADD_TASK_FOMR", teamData)
+    },
+    // 删除子计划
+    async RemoveTask({ commit }, taskId) {
+      try {
+        const { data } = await deleteGroupTask(taskId)
+        console.log('res :>> ', data);
+        commit("REMOVE_TASK", taskId)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
     }
   }
 })

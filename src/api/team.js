@@ -17,10 +17,18 @@ export async function addTeam(teamData) {
 export async function updateMember(value) {
   try {
     //type: add, delete
-    const { userId, groupId, type } = value
+    const {
+      userId,
+      groupId,
+      type
+    } = value
     const result = await request.post({
       url: '/group/updateMember',
-      params: { userId, groupId, type }
+      params: {
+        userId,
+        groupId,
+        type
+      }
     })
     return result
   } catch (error) {
@@ -31,14 +39,16 @@ export async function updateMember(value) {
 // 删除团队
 export async function deleteGroup(groupId) {
   try {
-     const result = await request.get({
-       url: '/group/deleteGroup',
-       params: { groupId }
-     })
-     return result
-   } catch (error) {
-     console.log('error :>> ', error);
-   }
+    const result = await request.get({
+      url: '/group/deleteGroup',
+      params: {
+        groupId
+      }
+    })
+    return result
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
 }
 
 // 获取团队列表
@@ -58,7 +68,9 @@ export async function getGroupPlan(groupId) {
   try {
     const result = await request.get({
       url: '/group/getGroupPlan',
-      params: { groupId }
+      params: {
+        groupId
+      }
     })
     return result
   } catch (error) {
@@ -70,10 +82,18 @@ export async function getGroupPlan(groupId) {
 export async function addGroupPlan(value) {
   try {
     //type为团队Id
-    const { planName, groupId: type, taskList } = value
+    const {
+      planName,
+      groupId: type,
+      taskList
+    } = value
     const result = await request.post({
       url: '/group/addGroupPlan',
-      params: { planName, type, taskList }
+      params: {
+        planName,
+        type,
+        taskList
+      }
     })
     return result
   } catch (error) {
@@ -85,11 +105,7 @@ export async function addGroupPlan(value) {
 export async function updateGroupPlan(value) {
   try {
     const { type, planName, planId, taskList } = value
-    taskList.map(item => {
-      item = { 
-        taskId
-      }
-    })
+    
     const result = await request.post({
       url: '/group/updateGroupPlan',
       params: {
@@ -110,7 +126,9 @@ export async function deleteGroupPlan(planId) {
   try {
     const result = await request.get({
       url: '/group/deleteGroupPlan',
-      params: { planId }
+      params: {
+        planId
+      }
     })
     return result
   } catch (error) {
@@ -119,12 +137,13 @@ export async function deleteGroupPlan(planId) {
 }
 
 // 删除团队某个子计划
-export async function deleteGroupTask(value) {
+export async function deleteGroupTask(taskId) {
   try {
-    const { taskId } = value
     const result = await request.get({
       url: '/group/deleteGroupTask',
-      params: { taskId }
+      params: {
+        taskId
+      }
     })
     return result
   } catch (error) {

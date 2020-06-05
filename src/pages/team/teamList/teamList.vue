@@ -154,7 +154,7 @@
         <div class="edit" @click="handleEdit(team)"></div>
       </div>
       <div class="top">
-        <div class="fish">团队{{team.type}}</div>
+        <div class="fish">{{team.groupName}}</div>
         <div class="teamName">{{team.planName}}</div>
       </div>
       <div class="taskList">
@@ -215,7 +215,7 @@ export default {
       store.dispatch('setTaskForm_addTask', { teamData: data, userVo })
     },
     handleEdit(teamData) {
-      const data = teamData
+      const data = JSON.parse(JSON.stringify(teamData))
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
       store.dispatch('setTaskFormList', data)

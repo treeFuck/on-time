@@ -218,7 +218,6 @@ export default {
   },
   onLoad(option) {
     this.type = option.type;
-    this.type = "use";
     // console.log(this.type);
   }
 };

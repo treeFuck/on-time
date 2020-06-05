@@ -207,7 +207,7 @@ export default {
   },
   methods: {
     handleAdd(teamData) {
-      const data = teamData
+      const data = JSON.parse(JSON.stringify(teamData))
       const userVo = this.$store.state.userInfo
       console.log('this.teamList :>> ', this.teamList);
       store.dispatch('changePicker', 'update')

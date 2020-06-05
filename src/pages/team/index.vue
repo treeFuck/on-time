@@ -56,16 +56,6 @@ export default {
     }
   },
   methods: {
-    // 处理日程列表里面开始时间的显示格式
-    handleStartTime(teamList) {
-      teamList.forEach(team => {
-        team.taskList.forEach(task=>{
-          let endTime = new Date(task.endTime);
-          task.end_clock = `${endTime.getHours()}:00`;
-          task.end_date = endTime.toLocaleDateString();
-        })
-      });
-    },
     getTeamData() {
       this.$store.dispatch("getTeamList") // 获取团队列表
       store.dispatch('getAllTeamPlan')  // 获取所有团队的任务

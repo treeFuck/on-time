@@ -27,12 +27,6 @@ const store = new Vuex.Store({
     SET_TASK_FORM(state, newVl) {
       state.taskFormList = newVl
     },
-    UPDATE_PLAN_LIST(state, newVl) {
-      state.planList.map(item => {
-        if (item.type === newVl.type) 
-          item = newVl
-      })
-    },
     ADD_TASK_FOMR(state, newVl) {
       state.taskFormList = newVl
     }
@@ -72,7 +66,6 @@ const store = new Vuex.Store({
             })
           })
         }
-        console.log('data :>> ', data);
         // 更新vuex
         commit('SET_PLANLIST', data)
       } catch (error) {
@@ -87,9 +80,9 @@ const store = new Vuex.Store({
     // 更新团队计划
     async UpdateGroupPlan({ commit }, groupPlan) {
       try {
+        console.log('groupPlan :>> ', groupPlan);
         const res = await updateGroupPlan(groupPlan)
         console.log('更新任务的res :>> ', res);
-        commit("UPDATE_PLAN_LIST", groupPlan)
       } catch (error) {
         console.log('error :>> ', error);
       }

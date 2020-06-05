@@ -85,6 +85,11 @@ export async function addGroupPlan(value) {
 export async function updateGroupPlan(value) {
   try {
     const { type, planName, planId, taskList } = value
+    taskList.map(item => {
+      item = { 
+        taskId
+      }
+    })
     const result = await request.post({
       url: '/group/updateGroupPlan',
       params: {

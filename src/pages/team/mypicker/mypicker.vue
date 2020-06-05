@@ -207,7 +207,6 @@ export default {
       if (this.state === "add") {
         const planName = this.planName;
         const groupId = this.teamForm.groupId;
-        console.log('this.planForm :>> ', this.planForm);
         // 格式化开始时间和结束时间
         const startTime =
           this.planForm.startTime.date.join("-") +
@@ -228,7 +227,7 @@ export default {
       if(this.state == "update") {
         console.log('formdata :>> ', this.taskFormList);
         const { taskList } = this.taskFormList
-        this.taskFormList.taskList = taskList.filters(item => item.taskName != "")
+        
         store.dispatch('UpdateGroupPlan', this.taskFormList)
       }
 

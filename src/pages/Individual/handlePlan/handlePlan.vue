@@ -113,7 +113,8 @@ export default {
   },
   data() {
     return {
-      delTaskList: []
+      delTaskList: [],
+      judegNumber: /^[0-9]*[1-9][0-9]*$/  // 判断持续时间是否是大于0的整数
     };
   },
   methods: {
@@ -129,17 +130,6 @@ export default {
         // 添加计划
         this.addPlan();
       }
-    },
-    // 判断持续时间是否是大于0的数字
-    judegNumber(data) {
-      let num = Number(data);
-      if (isNaN(num)) {
-        return false;
-      }
-      if (num < 1) {
-        return false;
-      }
-      return true;
     },
     // 判断全部输入是否正确
     judgeData() {
@@ -172,10 +162,10 @@ export default {
           });
           return false;
         }
-        if (!this.judegNumber(this.plan.taskList[i].lasting)) {
+        if (!this.judegNumber.test(this.plan.taskList[i].lasting)) {
           // 子任务持续时间必须为大于0的数字
           wx.showToast({
-            title: "持续时间必须为大于0的数字",
+            title: "预计耗时必须为大于0的整数",
             icon: "none",
             duration: 1500
           });

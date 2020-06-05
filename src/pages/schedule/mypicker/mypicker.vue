@@ -28,8 +28,9 @@
     .gou {
       display: block;
       position: absolute;
-      bottom: -2em;
-      left: 0;
+      bottom: -4em;
+      left: -2em;
+      padding: 2em;
       width: 2em;
       height: 2em;
     }

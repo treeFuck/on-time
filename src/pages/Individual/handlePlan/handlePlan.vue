@@ -32,8 +32,9 @@
     .gou {
       display: block;
       position: absolute;
-      bottom: -2em;
-      left: -1.5em;
+      padding: 2em;
+      bottom: -4em;
+      left: -3.5em;
       width: 2em;
       height: 2em;
     }
@@ -68,8 +69,10 @@
     line-height: 2em;
     text-align: center;
     font-weight: bold;
+    border-radius: 4px;
     transform: translateX(-50%);
     background-color: #fff5c4;
+    box-shadow: 0 0 5px 1px #eee;
   }
 }
 .handlePlanShow {

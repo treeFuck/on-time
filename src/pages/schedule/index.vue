@@ -89,7 +89,7 @@ export default {
       for (let i = 0; i < len; i++) {
         let dateStr = scheduleList[i].startTime.replace(/\-/g, "/").split(".")[0];
         let time = new Date(dateStr);
-        scheduleList[i].start_time = `${time.getHours()}:00`;
+        scheduleList[i].start_time = `${time.getHours()}:${this.prefixInteger(time.getMinutes(), 2)}`;
       }
     },
     // 获取日程列表

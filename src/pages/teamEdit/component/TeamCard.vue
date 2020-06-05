@@ -83,7 +83,9 @@ export default {
       this.$store.dispatch('getTeamList')
     },
     editTeam() {
-      console.log("编辑按键");
+      const teamName = this.teamData.groupName
+      const limit = this.limit
+      store.dispatch("")
     }
   },
   created() {

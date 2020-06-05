@@ -101,9 +101,9 @@
       <div class="updateForm" v-if="state === 'update'">
         <div class="input-box">
           <label for>*修改计划:</label>
-          <input type="text" v-model="pickerForm.planName" />
+          <input type="text" v-model="taskFormList.planName" />
         </div>
-        <taskFormEdit v-for="(task, index) in pickerForm.taskList" :key="index" :formData="task" />
+        <taskFormEdit v-for="(task, index) in taskFormList.taskList" :key="index" :formData="task" />
       </div>
 
       <div class="addForm" v-if="state === 'add'">
@@ -119,7 +119,7 @@
           <label for>*添加计划:</label>
           <input type="text" v-model="planName" />
         </div>
-        <task-form :formData="pickerForm" />
+        <task-form :formData="planForm" />
       </div>
     </div>
     <div class="btn">
@@ -135,6 +135,7 @@ import mpPicker from "mpvue-weui/src/picker";
 import taskForm from "../taskForm/taskForm";
 import myButton from "../../../components/myButton";
 import taskFormEdit from '../taskFormEdit/taskFormEdit'
+import {getNowTime} from '../../../utils'
 
 export default {
   props: {
@@ -155,8 +156,8 @@ export default {
     offsetTop() {
       return this.mypickerShow ? "top: 0px" : `top: -32em;`;
     },
-    pickerForm() {
-      return store.state.pickerForm;
+    taskFormList() {
+      return store.state.taskFormList;
     },
     form() {
       if(this.state === "add")
@@ -178,7 +179,8 @@ export default {
       teamForm: {
         groupName: "",
         groupId: 0
-      }
+      },
+      planForm: null
     };
   },
   methods: {
@@ -188,11 +190,13 @@ export default {
     },
     selectTeam(event) {
       const index = event.target.value;
-      this.teamForm = this.$store.state.teamList[index];
+      this.teamForm  = this.$store.state.teamList[index];
+
       // 修改子任务模板
-      this.pickerForm.groupMemberList = this.teamForm.groupMemberList;
-      this.pickerForm.groupId = this.teamForm.groupId;
-      console.log(this.pickerForm);
+      this.planForm.groupMemberList = this.teamForm.groupMemberList;
+      this.planForm.groupId = this.teamForm.groupId;
+      this.planForm.userId = this.teamForm.groupMemberList[0].userId
+      console.log(this.teamForm.groupMemberList);
     },
     toEditTeam() {
       wx.navigateTo({
@@ -203,34 +207,31 @@ export default {
       if (this.state === "add") {
         const planName = this.planName;
         const groupId = this.teamForm.groupId;
-
+        console.log('this.planForm :>> ', this.planForm);
         // 格式化开始时间和结束时间
         const startTime =
-          this.pickerForm.startTime.date.join("-") +
+          this.planForm.startTime.date.join("-") +
           " " +
-          this.pickerForm.startTime.time.join(":");
+          this.planForm.startTime.time.join(":");
         const endTime =
-          this.pickerForm.endTime.date.join("-") +
+          this.planForm.endTime.date.join("-") +
           " " +
-          this.pickerForm.endTime.time.join(":");
+          this.planForm.endTime.time.join(":");
 
-        let task = this.pickerForm;
-        task = { ...task, startTime, endTime };
-        
         // 添加大任务
         store.dispatch("addGroupPlan", {
           planName,
           groupId,
-          taskList: [task]
+          taskList: [{ ...this.planForm, startTime, endTime }]
         });
-
-        // 关闭picker
-        store.dispatch("setMyPickerIsShow");
       }
       if(this.state == "update") {
-        console.log('formdata :>> ', this.pickerForm);
-        store.dispatch('UpdateGroupPlan', this.pickerForm)
+        console.log('formdata :>> ', this.taskFormList);
+        const { taskList } = this.taskFormList
+        this.taskFormList.taskList = taskList.filters(item => item.taskName != "")
+        store.dispatch('UpdateGroupPlan', this.taskFormList)
       }
+
       // 关闭picker
       store.dispatch("setMyPickerIsShow");
 
@@ -243,7 +244,17 @@ export default {
     taskForm,
     myButton,
     taskFormEdit
-  }
+  },
+  created() {
+    const date = getNowTime()
+      this.planForm = {
+        ...date,
+        lasting: 60,
+        priority: 1,
+        status: 0,
+        taskName: ""
+      }
+  },
 };
 </script>
 

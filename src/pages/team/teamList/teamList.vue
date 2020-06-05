@@ -207,21 +207,25 @@ export default {
   },
   methods: {
     handleAdd(teamData) {
-      console.log('teamData :>> ', teamData);
+      const data = teamData
+      const userVo = this.$store.state.userInfo
+      console.log('this.teamList :>> ', this.teamList);
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
-      store.dispatch('setTaskForm', teamData)
+      store.dispatch('setTaskForm_addTask', { teamData: data, userVo })
     },
     handleEdit(teamData) {
+      const data = teamData
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
-      store.dispatch('setTaskForm', teamData)
+      store.dispatch('setTaskFormList', data)
     },
     handleDelete(teamData) {
       console.log("点击删除");
       store.dispatch("DeleteGroupPlan", teamData.planId)
     },
     handleChangeStatus(task) {
+      console.log('task :>> ', task);
       task.status = !task.status
     }
   }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { addGroupPlan, getListGroupPlan, updateGroupPlan, deleteGroupPlan } from '../../api/team'
+import { formatTime1, getNowTime } from '../../utils'
 
 Vue.use(Vuex)
 
@@ -10,16 +11,8 @@ const store = new Vuex.Store({
     pickerState: 'add',
     team: [],
     planList: [],
-    pickerForm: {
-      userId: 1,
-      taskName: "",
-      groupMemberList: [],
-      startTime: {},
-      endTime: {},
-      lasting: 60,
-      priority: 1,
-      status: 0
-    }
+    taskFormList: [],
+    PlanForm: {}
   },
   mutations: {
     SET_PICKER_IS_SHOW(state) {
@@ -28,35 +21,38 @@ const store = new Vuex.Store({
     SET_PICKER_STATE(state, newVl) {
       state.pickerState = newVl
     },
-    ADD_PLAN(state, newVl) {
-      const index = state.team.findIndex(item => item.groupId == newVl.type)
-      state.team[index] = newVl
-      // state.planList.push(newVl)
-    },
     SET_PLANLIST(state, newVl) {
       state.planList = newVl
     },
-    SET_PICKER_FORM(state, newVl) {
-      state.pickerForm = newVl
+    SET_TASK_FORM(state, newVl) {
+      state.taskFormList = newVl
     },
     UPDATE_PLAN_LIST(state, newVl) {
       state.planList.map(item => {
         if (item.type === newVl.type) 
           item = newVl
       })
+    },
+    ADD_TASK_FOMR(state, newVl) {
+      state.taskFormList = newVl
     }
   },
   actions: {
+    // picker是否显示
     setMyPickerIsShow({commit}) {
       commit('SET_PICKER_IS_SHOW')
     },
+    // picker是什么类型：add，update
     changePicker({commit}, state) {
       commit('SET_PICKER_STATE', state)
     },
+    // 添加团队任务
     async addGroupPlan({ commit }, planData) {
-      const res = await addGroupPlan(planData)
-      console.log('res :>> ', res);
-      commit('ADD_PLAN', res.data.data)
+      try {
+        const res = await addGroupPlan(planData)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
     },
     // 获取所有团队任务
     async getAllTeamPlan({ commit }) {
@@ -67,8 +63,9 @@ const store = new Vuex.Store({
         if (data != null) {
           // 修改数据格式，添加两个属性
           data.map((item) => {
+            if(item.taskList !== null)
             item.taskList.map(task => {
-              task.start_clokc = task.startTime.split(" ")[1]
+              task.start_clock = task.startTime.split(" ")[1]
               task.start_date = task.startTime.split(" ")[0]
               task.end_clock = task.endTime.split(" ")[1]
               task.end_date = task.endTime.split(" ")[0]
@@ -83,10 +80,11 @@ const store = new Vuex.Store({
       }
     },
     // 更新taskForm的内容
-    setTaskForm({commit}, teamData) {
+    setTaskFormList({commit}, teamData) {
       console.log('teamForm :>> ', teamData);
-      commit('SET_PICKER_FORM', teamData)
+      commit('SET_TASK_FORM', teamData)
     },
+    // 更新团队计划
     async UpdateGroupPlan({ commit }, groupPlan) {
       try {
         const res = await updateGroupPlan(groupPlan)
@@ -108,6 +106,27 @@ const store = new Vuex.Store({
       } catch (error) {
         console.log('error :>> ', error);
       }
+    },
+
+    //添加子计划
+    async setTaskForm_addTask({ commit }, { teamData, userVo }) {
+      const date = getNowTime()
+      const { avatarUrl: wechatIcon } = userVo
+      const task = {
+        ...date,
+        userId: teamData.userId,
+        planId: teamData.planId,
+        lasting: 60,
+        priority: 1,
+        status: 0,
+        taskName: "",
+        userVo: {
+          wechatIcon,
+          userId: teamData.userId
+        }
+      }
+      teamData.taskList.push(task)
+      commit("ADD_TASK_FOMR", teamData)
     }
   }
 })

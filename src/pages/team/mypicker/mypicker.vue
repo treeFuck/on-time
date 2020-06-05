@@ -214,6 +214,9 @@ export default {
           " " +
           this.pickerForm.endTime.time.join(":");
 
+        let task = this.pickerForm;
+        task = { ...task, startTime, endTime };
+        
         // 添加大任务
         store.dispatch("addGroupPlan", {
           planName,

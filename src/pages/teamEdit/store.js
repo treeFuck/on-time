@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    teamName: '富婆求子',
+    teamName: '',
     limit: 3
   },
   mutations: {

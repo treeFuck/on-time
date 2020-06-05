@@ -73,6 +73,7 @@ export default {
       const teamName = this.teamData.groupName
       const limit = this.limit
       store.dispatch('AddTeam', { groupName: teamName, limit })
+      wx.switchTab({ url: '/pages/team/main' })
     },
     deleteTeam() {
       console.log("删除按键");

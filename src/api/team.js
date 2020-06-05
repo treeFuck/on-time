@@ -101,9 +101,8 @@ export async function updateGroupPlan(value) {
 }
 
 // 删除团队大计划
-export async function deleteGroupPlan(value) {
+export async function deleteGroupPlan(planId) {
   try {
-    const { planId } = value
     const result = await request.get({
       url: '/group/deleteGroupPlan',
       params: { planId }

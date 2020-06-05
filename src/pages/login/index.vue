@@ -109,6 +109,7 @@ export default {
           nickName,
           avatarUrl
         });
+        this.isShowLoading = false;
         if (res == "success") {
           console.log("登录成功");
           wx.switchTab({

@@ -23,12 +23,14 @@
     transform-style: preserve-3d;
     transform: rotateY(-180deg);
   }
-  .null {
-    background-position: 60% -0.15em;
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-    background-image: url(../../../static/images/fish3.png);
-  }
+}
+.null {
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80% auto ;
+  background-image: url(../../../static/images/null.png);
 }
 </style>
 
@@ -87,9 +89,14 @@ export default {
       }
       let len = scheduleList.length;
       for (let i = 0; i < len; i++) {
-        let dateStr = scheduleList[i].startTime.replace(/\-/g, "/").split(".")[0];
+        let dateStr = scheduleList[i].startTime
+          .replace(/\-/g, "/")
+          .split(".")[0];
         let time = new Date(dateStr);
-        scheduleList[i].start_time = `${time.getHours()}:00`;
+        scheduleList[i].start_time = `${time.getHours()}:${this.prefixInteger(
+          time.getMinutes(),
+          2
+        )}`;
       }
     },
     // 获取日程列表

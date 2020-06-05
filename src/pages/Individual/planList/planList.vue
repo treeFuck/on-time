@@ -141,6 +141,7 @@
           :class="{'done': task.status}"
           v-for="(task, index2) in plan.taskList"
           :key="index2"
+          @click="changeStatus(task)"
         >
           <div class="endTime">
             <div v-show="!task.status">
@@ -169,6 +170,21 @@ export default {
     return {};
   },
   methods: {
+    changeStatus(item) {
+      this.$wxhttp
+        .post({
+          url: "/schedule/updateTaskStatus",
+          params: {
+            taskId: item.taskId,
+            status: (!item.status)?1:0
+          }
+        })
+        .then((res) => {
+          if(res.data.code == 1) {
+            item.status = !item.status;
+          }
+        });
+    },
     delPlan(plan) {
       wx.showModal({
         title: "提示",
@@ -190,7 +206,7 @@ export default {
               } else {
                 wx.showToast({
                   title: res.data.message,
-                  icon: "success",
+                  icon: "none",
                   duration: 2000
                 });
               }

@@ -116,15 +116,15 @@ export default {
       mypickerShow: false,
       algorithmArray: [
         {
-          label: "短作业优先",
+          label: "短任务优先",
           value: 1
         },
         {
-          label: "长作业优先",
+          label: "长任务优先",
           value: 2
         },
         {
-          label: "优先级调度",
+          label: "紧急任务优先",
           value: 3
         },
         {
@@ -151,11 +151,11 @@ export default {
   computed: {
     algorithm() {
       if (store.state.algorithm == 1) {
-        return "短作业优先";
+        return "短任务优先";
       } else if (store.state.algorithm == 2) {
-        return "长作业优先";
+        return "长任务优先";
       } else if (store.state.algorithm == 3) {
-        return "优先级调度";
+        return "紧急任务优先";
       } else if (store.state.algorithm == 4) {
         return "起止时间排序";
       }

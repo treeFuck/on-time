@@ -78,6 +78,7 @@
         .taskName {
           width: 75%;
           text-align: left;
+
         }
       }
       .task {
@@ -106,6 +107,15 @@
           display: inline-block;
           width: 75%;
           text-align: left;
+          .lasting {
+            margin: 0 5px;
+            font-size: 14px;
+            color: #FF8355;
+          }
+          .ldone {
+            color: #ccc;
+            text-decoration: line-through;
+          }
         }
       }
       .done {
@@ -170,7 +180,7 @@
           </div>
           <div class="taskName">
             {{task.taskName}}
-            <span>{{task.lasting}}</span>
+            <span class="lasting" :class="{'ldone': task.status}">(预计耗时{{task.lasting}}分钟)</span>
             <img class="avatar" :src="task.userVo.wechatIcon" />
           </div>
         </div>
@@ -197,6 +207,8 @@ export default {
   },
   methods: {
     handleAdd(teamData) {
+      console.log('teamData :>> ', teamData);
+      teamData.taskList.push(store.state.pickerForm)
       store.dispatch('changePicker', 'update')
       store.dispatch('setMyPickerIsShow')
       store.dispatch('setTaskForm', teamData)

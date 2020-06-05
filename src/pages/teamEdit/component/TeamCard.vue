@@ -79,6 +79,7 @@ export default {
       console.log(this.teamData);
       const { groupId } = this.teamData
       this.$store.dispatch('deleteGroup', groupId)
+      this.$store.dispatch('getTeamList')
     },
     editTeam() {
       console.log("编辑按键");

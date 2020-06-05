@@ -119,7 +119,7 @@
           <label for>*添加计划:</label>
           <input type="text" v-model="planName" />
         </div>
-        <task-form :formData="form" />
+        <task-form :formData="pickerForm" />
       </div>
     </div>
     <div class="btn">
@@ -170,9 +170,6 @@ export default {
           priority: 3,
           status: 0
         };
-      if(this.state === "updata") {
-        return pickerForm.taskList[0]
-      }
     }
   },
   data() {
@@ -193,9 +190,9 @@ export default {
       const index = event.target.value;
       this.teamForm = this.$store.state.teamList[index];
       // 修改子任务模板
-      this.form.groupMemberList = this.teamForm.groupMemberList;
-      this.form.groupId = this.teamForm.groupId;
-      console.log(this.form);
+      this.pickerForm.groupMemberList = this.teamForm.groupMemberList;
+      this.pickerForm.groupId = this.teamForm.groupId;
+      console.log(this.pickerForm);
     },
     toEditTeam() {
       wx.navigateTo({
@@ -209,18 +206,14 @@ export default {
 
         // 格式化开始时间和结束时间
         const startTime =
-          this.form.startTime.date.join("-") +
+          this.pickerForm.startTime.date.join("-") +
           " " +
-          this.form.startTime.time.join(":");
+          this.pickerForm.startTime.time.join(":");
         const endTime =
-          this.form.endTime.date.join("-") +
+          this.pickerForm.endTime.date.join("-") +
           " " +
-          this.form.endTime.time.join(":");
+          this.pickerForm.endTime.time.join(":");
 
-        let task = this.form;
-        task = { ...task, startTime, endTime };
-        const a = { planName, groupId, taskList: [task] }
-        console.log('a :>> ', a);
         // 添加大任务
         store.dispatch("addGroupPlan", {
           planName,
@@ -235,7 +228,12 @@ export default {
         console.log('formdata :>> ', this.pickerForm);
         store.dispatch('UpdateGroupPlan', this.pickerForm)
       }
-      
+      // 关闭picker
+      store.dispatch("setMyPickerIsShow");
+
+      // 刷新列表
+      this.$store.dispatch("getTeamList") // 获取团队列表
+      store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
     }
   },
   components: {

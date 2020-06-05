@@ -206,7 +206,7 @@ export default {
               } else {
                 wx.showToast({
                   title: res.data.message,
-                  icon: "success",
+                  icon: "none",
                   duration: 2000
                 });
               }

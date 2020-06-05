@@ -24,6 +24,14 @@
     transform: rotateY(-180deg);
   }
 }
+.null {
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80% auto ;
+  background-image: url(../../../static/images/null.png);
+}
 </style>
 
 <template>
@@ -35,6 +43,7 @@
     </div>
     <handlePlan @Refresh="getplanData"></handlePlan>
     <planList @Refresh="getplanData" v-if="planData" :planData="planData"></planList>
+    <div v-if="!planData" class="null"></div>
   </div>
 </template>
 
@@ -56,6 +65,9 @@ export default {
   methods: {
     // 处理计划列表里面时间的显示格式
     handleStartTime(planData) {
+      if(!planData) {
+        return;
+      }
       planData.forEach(plan => {
         plan.taskList.forEach(task => {
           let dateStr = task.endTime.replace(/\-/g, "/").split(".")[0];
@@ -72,9 +84,12 @@ export default {
     },
     getplanData() {
       httpReq.getPlan().then(res=>{
-        console.log(res.data.data);
+        // console.log('计划列表',res.data.data);
         this.handleStartTime(res.data.data);
         this.planData = res.data.data
+        if(!this.planData) {
+          store.commit('changeShow', true);
+        }
       })
     }
   },

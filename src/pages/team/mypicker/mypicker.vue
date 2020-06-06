@@ -145,9 +145,12 @@ export default {
     groupList() {
       const group = this.$store.state.teamList;
       let arr = [];
-      group.map(item => {
-        arr.push(item.groupName);
-      });
+      if(group) {
+        group.map(item => {
+          arr.push(item.groupName);
+        });
+      }
+      
       return arr;
     },
     mypickerShow() {
@@ -203,7 +206,7 @@ export default {
         url: "/pages/teamEdit/main"
       });
     },
-    handleSubmit() {
+    async handleSubmit() {
       if (this.state === "add") {
         const planName = this.planName;
         const groupId = this.teamForm.groupId;
@@ -218,20 +221,20 @@ export default {
           this.planForm.endTime.time.join(":");
 
         // 添加大任务
-        store.dispatch("addGroupPlan", {
+        await store.dispatch("addGroupPlan", {
           planName,
           groupId,
           taskList: [{ ...this.planForm, startTime, endTime }]
         });
       }
       if(this.state == "update") {
-        store.dispatch('UpdateGroupPlan', this.taskFormList)
+        await store.dispatch('UpdateGroupPlan', this.taskFormList)
       }
       // 关闭picker
-      store.dispatch("setMyPickerIsShow");
+      await store.dispatch("setMyPickerIsShow");
 
       // 刷新列表
-      store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
+      await store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
     }
   },
   components: {

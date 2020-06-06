@@ -68,19 +68,19 @@ export default {
     invite() {
       store.dispatch('setShareGroupId', this.teamData.groupId)
     },
-    createTeam() {
+    async createTeam() {
       console.log("创建按钮");
       const teamName = this.teamData.groupName
       const limit = this.limit
-      store.dispatch('AddTeam', { groupName: teamName, limit })
+      await store.dispatch('AddTeam', { groupName: teamName, limit })
       wx.switchTab({ url: '/pages/team/main' })
     },
-    deleteTeam() {
+    async deleteTeam() {
       console.log("删除按键");
       console.log(this.teamData);
       const { groupId } = this.teamData
-      this.$store.dispatch('deleteGroup', groupId)
-      this.$store.dispatch('getTeamList')
+      await this.$store.dispatch('deleteGroup', groupId)
+      await this.$store.dispatch('getTeamList')
     },
     editTeam() {
       const teamName = this.teamData.groupName

@@ -9,43 +9,39 @@
 
 <script>
 // Use Vuex
-import store from './store'
-import TeamCard from './component/TeamCard'
-import { getCurrentPageUrlWithArgs } from '../../utils'
+import store from "./store";
+import TeamCard from "./component/TeamCard";
+import { getCurrentPageUrlWithArgs } from "../../utils";
 
 export default {
   computed: {
     teamList() {
-      return this.$store.state.teamList
+      return this.$store.state.teamList;
     }
   },
   data() {
     return {
       teamData: {
         groupId: 1232,
-        groupName: '',
+        groupName: "",
         creatorId: 2,
-        limit: ''
+        limit: ""
       }
-    }
+    };
   },
   components: {
     TeamCard
   },
   onShareAppMessage(res) {
-    if(res.from === 'button') {
-      console.log('dinaji');
-      console.log(res.webViewUrl);
-    }
-    return {
-      desc: "加入闲鱼特工队吧！",
-      path: '/pages/login/main?groupId=' + store.state.shareGroupId
+    if (res.from === "button") {
+      return {
+        desc: "加入闲鱼特工队吧！",
+        path: "/pages/login/main?groupId=" + store.state.shareGroupId
+      };
     }
   }
-}
-
+};
 </script>
 
 <style>
-
 </style>

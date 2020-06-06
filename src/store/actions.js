@@ -2,7 +2,7 @@ import { getOpenid, login } from "../api/login"
 import { getTeamList, deleteGroup } from '../api/team'
 
 const actions = {
-    async Login({ commit }, userInfo) {
+  async Login({ commit }, userInfo) {
         try {
             // 通过云函数获取openid
             const openid = await getOpenid()
@@ -21,8 +21,9 @@ const actions = {
         } catch (error) {
             console.error(error);
         }
-    },
-    async getTeamList({ commit }) {
+  },
+
+  async getTeamList({ commit }) {
       try {
         const result = await getTeamList()
         const { data } = result.data
@@ -35,11 +36,12 @@ const actions = {
   setTeamName({commit}) {
     commit('SET_TEAMNAME')
   },
+  
   async deleteGroup({ commit }, groupId) {
     try {
       const result = await deleteGroup(groupId)
       console.log('result :>> ', result);
-      commit("UPDATE_TEAMLIST", groupId)
+      await commit("UPDATE_TEAMLIST", groupId)
     } catch (error) {
       console.log(result.message);
     }

@@ -178,7 +178,7 @@ const store = new Vuex.Store({
     async updateMember({ commit }, data) {
       try {
         const res = await updateMember(data)
-        console.log('res :>> ', res); 
+        console.log(res);
       } catch (error) {
         console.log('error :>> ', error);
       }

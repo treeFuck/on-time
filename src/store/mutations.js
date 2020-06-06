@@ -17,8 +17,11 @@ const mutations = {
         state.teamForm.teamName = newVl
     },
     UPDATE_TEAMLIST(state, newVl) {
-        let arr = state.teamList.filters(item => item.groupId !== newVl)
-        state.teamList = arr
+        if (state.teamList.length > 0) {
+            const index = state.teamList.findIndex(item => item.groupId === newVl)
+            const teamList = state.teamList.splice(index, 1)
+            state.teamList = teamList
+        }
     }
 }
 

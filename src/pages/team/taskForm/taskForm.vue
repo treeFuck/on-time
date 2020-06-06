@@ -33,7 +33,7 @@
         <picker
           class="picker"
           mode="date"
-          :value="startTime.date.join('-')"
+          :value="startTime.t1"
           @change="startDateChange"
         >
           <span class="year input">{{startTime.date[0]}}</span>
@@ -56,6 +56,7 @@
           <span class="second input">{{startTime.time[2]}}</span>
           <span>秒</span>
         </picker>
+        {{startTime.date}}
       </div>
     </div>
     <div class="time-box">
@@ -66,7 +67,7 @@
     <div class="time-box">
       <label for>结束时间 :</label>
       <div class="right">
-        <picker class="picker" mode="date" :value="endTime.t1" @change="endDateChange">
+        <picker class="picker" mode="date" @change="endDateChange">
           <span class="year input">{{endTime.date[0]}}</span>
           <span>年</span>
           <span class="month input">{{endTime.date[1]}}</span>
@@ -74,7 +75,7 @@
           <span class="day input">{{endTime.date[2]}}</span>
           <span>日</span>
         </picker>
-        <picker class="picker" mode="time" :value="endTime" @change="endTimeChange">
+        <picker class="picker" mode="time" @change="endTimeChange">
           <span class="hour input">{{endTime.time[0]}}</span>
           <span>时</span>
           <span class="minute input">{{endTime.time[1]}}</span>
@@ -93,6 +94,10 @@
         <span class="red" @click="selectPriority(4)">{{p[3]}}</span>
       </div>
     </div>
+    <!-- <div class="icon">
+      <p class="icon-btn">-</p>
+      <p class="icon-btn">+</p>
+    </div> -->
   </div>
 </template>
 
@@ -117,29 +122,33 @@ export default {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.startTime.date = [year, month, day];
+      this.startTime.t1 = value
       console.log(this.startTime);
-      this.formData.startTime.date = this.startTime.date;
-    },
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
+    },  
     startTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.startTime.time = [hour, minute, second];
+      this.startTime.t2 = [hour, minute, second].join(":")
       console.log(this.startTime);
-      this.formData.startTime.time = this.startTime.time;
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
     },
     endDateChange(event) {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.endTime.date = [year, month, day];
+      this.endTime.t1 = value
       console.log(this.endTime);
-      this.formData.endTime.date = this.endTime.date;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
     },
     endTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.endTime.time = [hour, minute, second];
+      this.endTime.t2 = [hour, minute, second].join(":")
       console.log(this.endTime);
-      this.formData.endTime.time = this.endTime.time;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
     },
     getNowDate(time) {
       const date = new Date();
@@ -182,6 +191,7 @@ export default {
   background-color: #ffeb88;
   border-radius: 5pt;
   color: #a08600;
+  position: relative;
   .taskName {
     display: flex;
     align-items: center;
@@ -261,6 +271,23 @@ export default {
     }
     .red {
       background-color: #ff9460;
+    }
+  }
+  .icon {
+    position: absolute;
+    left: 0.5em;
+    bottom: 0.5em;
+    .icon-btn {
+      margin: 5px 0;
+      width: 1em;
+      height: 1em;
+      color: #ffeb88;
+      background-color: #fffbe8;
+      line-height: 1em;
+      border-radius: 100%;
+      font-size: 50rpx;
+      font-weight: bold;
+      text-align: center;
     }
   }
 

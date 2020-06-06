@@ -104,6 +104,7 @@
 <script>
 import store from "../store";
 import { formatTime, formatNumber } from "../../../utils/index";
+import state from '../../../store/state';
 
 export default {
   props: {
@@ -171,7 +172,7 @@ export default {
     },
     handleRemoveTask() {
       store.dispatch("RemoveTask", this.formData.taskId)
-      console.log('removeTask :>> ', this.formData.taskId);
+      store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
     }
   }
 };

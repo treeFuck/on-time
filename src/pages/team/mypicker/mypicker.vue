@@ -227,12 +227,10 @@ export default {
       if(this.state == "update") {
         store.dispatch('UpdateGroupPlan', this.taskFormList)
       }
-
       // 关闭picker
       store.dispatch("setMyPickerIsShow");
 
       // 刷新列表
-      this.$store.dispatch("getTeamList") // 获取团队列表
       store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
     }
   },

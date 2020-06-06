@@ -26,7 +26,6 @@ const actions = {
       try {
         const result = await getTeamList()
         const { data } = result.data
-        console.log('data :>> ', data);
         commit('SET_TEAMLIST', data)
       } catch (error) {
         console.log(result.errMsg);

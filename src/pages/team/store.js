@@ -15,7 +15,6 @@ const store = new Vuex.Store({
   state: {
     mypickerShow: false,
     pickerState: 'add',
-    team: [],
     planList: [],
     taskFormList: [],
     PlanForm: {}
@@ -37,10 +36,30 @@ const store = new Vuex.Store({
       state.taskFormList = newVl
     },
     REMOVE_TASK(state, newVl) {
+      // 修改picker列表
       const taskList = state.taskFormList.taskList
       const index = taskList.findIndex(item => item.taskId === newVl)
       taskList.splice(index, 1)
       state.taskFormList.taskList = taskList
+      
+      // 修改页面列表
+      const taskFormList = state.taskFormList
+      const planList = state.planList
+      planList.map(item => {
+        if (item.planId === taskFormList.planId) {
+          item = taskFormList
+        }
+      })
+      state.planList = planList
+    },
+    UPDATE_PLAN_LIST(state, newVl) {
+      const planList = state.planList
+      planList.map(item => {
+        if (item.planId === newVl.planId) 
+          item = newVl
+      })
+      state.planList = planList
+      console.log('state.planList :>> ', state.planList);
     }
   },
   actions: {
@@ -99,9 +118,12 @@ const store = new Vuex.Store({
     // 更新团队计划
     async UpdateGroupPlan({ commit }, groupPlan) {
       try {
-        console.log('groupPlan :>> ', groupPlan);
         const res = await updateGroupPlan(groupPlan)
-        console.log('更新任务的res :>> ', res);
+        if (res.data.message === "success") {
+          await commit("UPDATE_PLAN_LIST", res.data.data)
+        }
+        console.log('更新res :>> ', res);
+        
       } catch (error) {
         console.log('error :>> ', error);
       }

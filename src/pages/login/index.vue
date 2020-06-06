@@ -112,6 +112,15 @@ export default {
         this.isShowLoading = false;
         if (res == "success") {
           console.log("登录成功");
+
+          // 如果是从分享页进来的
+          const groupId = this.$root.$mp.query.groupId || 0
+          if(groupId !== 0) {
+            wx.navigateTo({
+              url: `/pages/team/main?groupId=${groupId}`
+            })
+          }
+
           wx.switchTab({
             // 登录成功， 跳转主页
             url: "/pages/schedule/main"

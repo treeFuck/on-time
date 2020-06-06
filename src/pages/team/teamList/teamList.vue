@@ -147,7 +147,8 @@
 
 <template>
   <div class="teamList">
-    <div class="team" v-for="(team, index) in teamList" :key="index">
+    <mp-modal ref="mpModal" title="提示" content="是否删除该计划" showCancel="true" @confirm="confirm" @cancel="cancel"></mp-modal>
+    <div class="team" v-for="team in teamList" :key="team.planId">
       <div class="handle">
         <div class="add" @click="handleAdd(team)"></div>
         <div class="del" @click="handleDelete(team)"></div>
@@ -195,14 +196,19 @@
 
 <script>
 import store from "../store";
+import mpModal from 'mpvue-weui/src/modal';
 
 export default {
   props: {
     teamList: Object
   },
+  components: {
+    mpModal
+  },
   data() {
     return {
-      modalIsOpen: false
+      modalIsOpen: false,
+      temp: null
     };
   },
   methods: {
@@ -220,12 +226,17 @@ export default {
       store.dispatch('setTaskFormList', data)
     },
     handleDelete(teamData) {
-      store.dispatch("DeleteGroupPlan", teamData.planId)
+      this.temp = teamData
+      this.$refs.mpModal.show();
     },
     handleChangeStatus(task) {
       console.log('task :>> ', task);
       task.status = !task.status
-    }
+    },
+    confirm() {
+      store.dispatch("DeleteGroupPlan", this.temp.planId)
+    },
+    cancel(){}
   },
 };
 </script>

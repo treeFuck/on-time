@@ -16,7 +16,7 @@
         </div>
         <div class="input-box">
           <label for="invite">成员列表 :</label>
-          <input type="text" name="invite" value="邀请成员" disabled @click="invite" />
+          <button open-type="share" class="share" @click="invite">邀请成员</button>
         </div>
       </div>
       <div class="right">
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     invite() {
-      console.log("点击邀请");
+      store.dispatch('setShareGroupId', this.teamData.groupId)
     },
     createTeam() {
       console.log("创建按钮");
@@ -85,11 +85,8 @@ export default {
     editTeam() {
       const teamName = this.teamData.groupName
       const limit = this.limit
-      store.dispatch("")
+      
     }
-  },
-  created() {
-    console.log(this._props.state);
   }
 };
 </script>
@@ -145,6 +142,19 @@ export default {
           text-align: center;
           width: 50%;
           background-color: #ffffff;
+        }
+        .share {
+          margin: 0;
+          padding: 0;
+          height: 30px;
+          line-height: 30px;
+          border: none;
+          border-radius: 10px;
+          outline: none;
+          text-align: center;
+          width: 50%;
+          background-color: #ffffff;
+          font-size: 12pt;
         }
       }
     }

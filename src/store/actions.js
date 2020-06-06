@@ -13,9 +13,9 @@ const actions = {
                 "name": userInfo.nickName,
                 "wechatIcon": userInfo.avatarUrl
             });
-
+          
             // 保存用户信息、token到vuex
-            commit('SET_USERINFO', { ...userInfo, openid })
+            commit('SET_USERINFO', { ...userInfo, openid, userId: res.data.userId })
             commit('SET_AUTH', res.header.Authorization);
             return 'success';
         } catch (error) {

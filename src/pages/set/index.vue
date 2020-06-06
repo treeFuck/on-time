@@ -62,9 +62,6 @@ export default {
       console.log("点击编辑");
       this.$refs.mpModal.show();
     },
-    test(e) {
-      console.log("hello");
-    },
     about(param) {
       wx.navigateTo({ url:`/pages/about/main?type=${param}`})
     }

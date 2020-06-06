@@ -7,9 +7,13 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     teamName: '',
-    limit: 3
+    limit: 3,
+    shareGroupId: 0
   },
   mutations: {
+    SET_SHARE_GROUPID(state, newVl) {
+      state.shareGroupId = newVl
+    }
   },
   actions: {
     async AddTeam({ commit }, teamData) {
@@ -22,6 +26,9 @@ const store = new Vuex.Store({
         console.log(result.errMsg);
         console.log('error :>> ', error);
       }
+    },
+    setShareGroupId({ commit }, groupId) {
+      commit('SET_SHARE_GROUPID', groupId)
     }
   }
 })

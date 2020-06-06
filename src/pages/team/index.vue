@@ -34,6 +34,7 @@
     </div>
     <team-list v-if="planList" :teamList="planList"></team-list>
     <mypicker :state="pickerState" ></mypicker>
+    <mp-modal ref="mpModal" title="提示" content="是否加入队伍" showCancel="true" @confirm="confirm" @cancel="cancel"></mp-modal>
   </div>
 </template>
 
@@ -42,6 +43,7 @@
 import store from "./store";
 import teamList from "./teamList/teamList.vue";
 import mypicker from "./mypicker/mypicker.vue";
+import mpModal from 'mpvue-weui/src/modal';
 
 export default {
   computed: {
@@ -59,13 +61,34 @@ export default {
     getTeamData() {
       this.$store.dispatch("getTeamList") // 获取团队列表
       store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
+    },
+    confirm() {
+      const data = {
+        userId: this.$store.state.userInfo.userId,
+        groupId: this.shareGroupId,
+        type: 'add'
+      }
+      store.dispatch('updateMember', data)
+    },
+    cancel(){
+      console.log('拒接加入');
+    }
+  },
+  data() {
+    return {
+      shareGroupId: 0
     }
   },
   components: {
     teamList,
-    mypicker
+    mypicker,
+    mpModal
   },
   onShow() {
+    this.shareGroupId = this.$root.$mp.query.groupId || 0
+    if(this.shareGroupId !== 0) {
+      this.$refs.mpModal.show();
+    }
     this.getTeamData();
   },
   mounted() {

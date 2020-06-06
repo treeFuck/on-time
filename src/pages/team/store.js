@@ -5,7 +5,8 @@ import {
   getListGroupPlan,
   updateGroupPlan,
   deleteGroupPlan,
-  deleteGroupTask
+  deleteGroupTask,
+  updateMember
 } from '../../api/team'
 import { formatTime1, getNowTime } from '../../utils'
 
@@ -168,6 +169,16 @@ const store = new Vuex.Store({
         const { data } = await deleteGroupTask(taskId)
         console.log('res :>> ', data);
         commit("REMOVE_TASK", taskId)
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
+    },
+
+    // 加入团队
+    async updateMember({ commit }, data) {
+      try {
+        const res = await updateMember(data)
+        console.log('res :>> ', res); 
       } catch (error) {
         console.log('error :>> ', error);
       }

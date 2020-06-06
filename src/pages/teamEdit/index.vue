@@ -11,6 +11,8 @@
 // Use Vuex
 import store from './store'
 import TeamCard from './component/TeamCard'
+import { getCurrentPageUrlWithArgs } from '../../utils'
+
 export default {
   computed: {
     teamList() {
@@ -24,20 +26,24 @@ export default {
         groupName: '',
         creatorId: 2,
         limit: ''
-      },
-      memberList: [
-        {_id: 1, nickName: '钻', avatarUrl: '../user.png'},
-        {_id: 2, nickName: '树', avatarUrl: '../user.png'}, 
-        {_id: 3, nickName: '沛', avatarUrl: '../user.png'},
-        {_id: 4, nickName: '政', avatarUrl: '../user.png'}, 
-        {_id: 5, nickName: '兰', avatarUrl: '../user.png'}, 
-      ]
+      }
     }
   },
   components: {
     TeamCard
   },
+  onShareAppMessage(res) {
+    if(res.from === 'button') {
+      console.log('dinaji');
+      console.log(res.webViewUrl);
+    }
+    return {
+      desc: "加入闲鱼特工队吧！",
+      path: '/pages/login/main?groupId=' + store.state.shareGroupId
+    }
+  }
 }
+
 </script>
 
 <style>

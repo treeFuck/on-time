@@ -66,6 +66,7 @@ export default {
   },
   methods: {
     invite() {
+      // set groupId which your want to share
       store.dispatch('setShareGroupId', this.teamData.groupId)
     },
     async createTeam() {

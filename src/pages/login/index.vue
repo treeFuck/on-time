@@ -113,29 +113,29 @@ export default {
         if (res == "success") {
           console.log("登录成功");
 
-          // 如果是从分享页进来的
-          const groupId = this.$root.$mp.query.groupId || 0
-          if(groupId !== 0) {
+          // 如果是通过分享链接进来的，则其链接上应该携带着被分享的团队ID
+          const shareGroupId = this.$root.$mp.query.shareGroupId || 0
+          if(shareGroupId !== 0) {
             wx.navigateTo({
-              url: `/pages/team/main?groupId=${groupId}`
+              url: `/pages/team/main?shareGroupId=${shareGroupId}`
             })
           }
-
-          wx.switchTab({
-            // 登录成功， 跳转主页
+          // 正常访问
+          else {
+            wx.switchTab({
             url: "/pages/schedule/main"
             // url: "/pages/Individual/main",
             // url: "/pages/set/main",
             // url: "/pages/team/main",
             // url: "/pages/about/main"
           });
+          }
         }
       } catch (error) {
         console.log(error);
       }
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>

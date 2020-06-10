@@ -34,10 +34,16 @@
 <template>
   <div class="about">
     <div class="con">
-      <div :class="usePageClass" :animation="useAnimation">
+      <!-- <div :class="usePageClass" :animation="useAnimation">
         <use @change="change"></use>
       </div>
       <div :class="authorPageClass" :animation="authorAnimation">
+        <author @change="change"></author>
+      </div> -->
+      <div :class="usePageClass">
+        <use @change="change"></use>
+      </div>
+      <div :class="authorPageClass">
         <author @change="change"></author>
       </div>
     </div>
@@ -89,50 +95,50 @@ export default {
       this.clickLimit = true;
       setTimeout(() => {
         this.clickLimit = false;
-      }, 1200);
-      this.useAnimation.export();
-      this.authorAnimation.export();
-      if (this.type == "author") {
-        this.useAnimation.rotateY(0).step();
-        this.authorAnimation.rotateY(180).step();
-      } else {
-        this.useAnimation.rotateY(180).step();
-        this.authorAnimation.rotateY(0).step();
-      }
-      setTimeout(() => {
+      }, 1000);
+      // this.useAnimation.export();
+      // this.authorAnimation.export();
+      // if (this.type == "author") {
+      //   this.useAnimation.rotateY(0).step();
+      //   this.authorAnimation.rotateY(180).step();
+      // } else {
+      //   this.useAnimation.rotateY(180).step();
+      //   this.authorAnimation.rotateY(0).step();
+      // }
+      // setTimeout(() => {
         if (this.type == "use") {
           this.type = "author";
         } else {
           this.type = "use";
         }
-      }, 400);
+      // }, 400);
     }
   },
   onLoad(option) {
     this.type = option.type;
   },
   mounted() {
-    this.useAnimation = wx.createAnimation({
-      duration: 1000,
-      timingFunction: "ease-out",
-      delay: 0
-    });
-    this.authorAnimation = wx.createAnimation({
-      duration: 1000,
-      timingFunction: "ease-out",
-      delay: 0
-    });
-    if (this.type == "use") {
-      this.useAnimation.export();
-      this.authorAnimation.export();
-      this.useAnimation.rotateY(0).step();
-      this.authorAnimation.rotateY(180).step();
-    } else {
-      this.useAnimation.export();
-      this.useAnimation.export();
-      this.useAnimation.rotateY(180).step();
-      this.authorAnimation.rotateY(0).step();
-    }
+    // this.useAnimation = wx.createAnimation({
+    //   duration: 1000,
+    //   timingFunction: "ease-out",
+    //   delay: 0
+    // });
+    // this.authorAnimation = wx.createAnimation({
+    //   duration: 1000,
+    //   timingFunction: "ease-out",
+    //   delay: 0
+    // });
+    // if (this.type == "use") {
+    //   this.useAnimation.export();
+    //   this.authorAnimation.export();
+    //   this.useAnimation.rotateY(0).step();
+    //   this.authorAnimation.rotateY(180).step();
+    // } else {
+    //   this.useAnimation.export();
+    //   this.useAnimation.export();
+    //   this.useAnimation.rotateY(180).step();
+    //   this.authorAnimation.rotateY(0).step();
+    // }
   }
 };
 </script>

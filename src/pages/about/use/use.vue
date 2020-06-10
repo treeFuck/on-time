@@ -26,10 +26,10 @@
       background-repeat: no-repeat;
       background-size: auto 100%;
       background-position: center;
-      background-image: url(../../../../static/images/fish1.png);
+      background-image: url(../../../../static/images/fish4.png);
       span {
         position: absolute;
-        left: 2em;
+        right: 2em;
         font-weight: bold;
         line-height: 5.5em;
       }

@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     groupList() {
-      const group = this.$store.state.teamList;
+      const group = store.state.teamList;
       let arr = [];
       if(group) {
         group.map(item => {
@@ -193,7 +193,7 @@ export default {
     },
     selectTeam(event) {
       const index = event.target.value;
-      this.teamForm  = this.$store.state.teamList[index];
+      this.teamForm  = store.state.teamList[index];
 
       // 修改子任务模板
       this.planForm.groupMemberList = this.teamForm.groupMemberList;

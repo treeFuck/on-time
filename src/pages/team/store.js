@@ -6,9 +6,10 @@ import {
   updateGroupPlan,
   deleteGroupPlan,
   deleteGroupTask,
-  updateMember
+  updateMember,
+  getTeamList
 } from '../../api/team'
-import { formatTime1, getNowTime } from '../../utils'
+import { getNowTime } from '../../utils'
 
 Vue.use(Vuex)
 
@@ -18,9 +19,13 @@ const store = new Vuex.Store({
     pickerState: 'add',
     planList: [],
     taskFormList: [],
-    PlanForm: {}
+    PlanForm: {},
+    teamList: []
   },
   mutations: {
+    SET_TEAM_LIST(state, newVl) {
+      state.teamList = newVl
+    },
     SET_PICKER_IS_SHOW(state) {
       state.mypickerShow = !state.mypickerShow
     },
@@ -181,6 +186,21 @@ const store = new Vuex.Store({
         console.log(res);
       } catch (error) {
         console.log('error :>> ', error);
+      }
+    },
+
+    // 更新团队列表
+    async getTeamList({ commit}) {
+      try {
+        const { data } = await getTeamList()
+        commit('SET_TEAM_LIST', data.data)
+      } catch (error) {
+        console.log('error :>> ', error);
+        wx.showToast({
+          title: "获取团队列表失败，请稍后重试",
+          icon: "none",
+          duration: 2000
+        });
       }
     }
   }

@@ -8,13 +8,15 @@
       <div class="left">
         <div class="input-box">
           <label for="teamName">编辑队名 :</label>
-          <input v-model="teamData.groupName" type="text" name="teamName" />
+          <input v-if="state === 'create'" v-model="groupName" type="text" name="teamName-create" />
+          <input v-else v-model="teamData.groupName" type="text" name="teamName" />
         </div>
         <div class="input-box">
           <label for="limit">队员上限 :</label>
-          <input v-model="teamData.limit" type="text" name="limit" />
+          <input v-if="state === 'create'" v-model="limit" type="text" name="limit-create" />
+          <input v-else v-model="teamData.limit" type="text" name="limit" />
         </div>
-        <div class="input-box">
+        <div class="input-box" v-if="state !== 'create'">
           <label for="invite">成员列表 :</label>
           <button open-type="share" class="share" @click="invite">邀请成员</button>
         </div>
@@ -25,7 +27,12 @@
       </div>
     </div>
     <div class="avatarList">
-      <img v-for="(user, index) in teamData.groupMemberList" :key="index" :src="user.wechatIcon" alt="">
+      <img
+        v-for="(user, index) in teamData.groupMemberList"
+        :key="index"
+        :src="user.wechatIcon"
+        alt
+      />
     </div>
     <div v-if="state === 'create'" class="btn-box">
       <my-button @click="createTeam" :color="'red'">完成</my-button>
@@ -38,11 +45,12 @@
 </template>
 
 <script>
-import myButton from '../../../components/myButton'
-import store from '../store'
+import myButton from "../../../components/myButton";
+import store from "../store";
+import { deleteGroup } from "../../../api/team";
 
 export default {
-  name: 'TeamCard',
+  name: "TeamCard",
   components: {
     myButton
   },
@@ -52,41 +60,73 @@ export default {
   },
   computed: {
     avatar() {
-      if(this.state === 'create')
-        return this.$store.state.userInfo.avatarUrl || '/pages/teamEdit/user.png'
-      return this.teamData.groupMemberList[0].wechatIcon
+      if (this.state === "create")
+        return (
+          this.$store.state.userInfo.avatarUrl || "/pages/teamEdit/user.png"
+        );
+      return this.teamData.groupMemberList[0].wechatIcon;
     }
   },
   data() {
     return {
-      teamName: store.state.teamName,
-      limit: store.state.limit,
+      groupName: "",
+      limit: "",
       member: []
     };
   },
   methods: {
     invite() {
-      // set groupId which your want to share
-      store.dispatch('setShareGroupId', this.teamData.groupId)
+      // 设置你想分享的团队的ID
+      store.dispatch("setShareGroupId", this.teamData.groupId);
     },
     async createTeam() {
       console.log("创建按钮");
-      const teamName = this.teamData.groupName
-      const limit = this.limit
-      await store.dispatch('AddTeam', { groupName: teamName, limit })
-      wx.switchTab({ url: '/pages/team/main' })
+      const teamName = this.groupName;
+      const limit = this.limit;
+      await store.dispatch("AddTeam", { groupName: teamName, limit });
+      wx.switchTab({ url: "/pages/team/main" });
     },
     async deleteTeam() {
-      console.log("删除按键");
-      console.log(this.teamData);
-      const { groupId } = this.teamData
-      await this.$store.dispatch('deleteGroup', groupId)
-      await this.$store.dispatch('getTeamList')
+      console.log("当前的信息 :>> ", this.teamData);
+      const { groupId, groupName } = this.teamData;
+      wx.showModal({
+        title: "提示",
+        content: `确定退出队伍"${groupName}"？`,
+        success: async res => {
+          try {
+            if (res.confirm) {
+              const { data } = await deleteGroup(groupId);
+              if (data.code == 1) {
+                wx.showToast({
+                  title: "退出成功",
+                  icon: "none",
+                  duration: 2000
+                });
+                // 刷新计划数据
+                this.$emit("Refresh");
+              }
+            }
+          } catch (error) {
+            console.log("error :>> ", error);
+            wx.showToast({
+              title: "退出失败",
+              icon: "none",
+              duration: 2000
+            });
+          }
+        }
+      });
     },
     editTeam() {
-      const teamName = this.teamData.groupName
-      const limit = this.limit
-      
+      const teamName = this.teamData.groupName;
+      const limit = this.limit;
+    }
+  },
+  onShow() {
+    // 若是create卡片，则重置输入框
+    if (this.state === "create") {
+      this.groupName = "";
+      this.limit = "";
     }
   }
 };
@@ -95,19 +135,19 @@ export default {
 <style lang="scss" scoped>
 .createColor1 {
   color: #ff8a77;
-  background-color: #fff4f0
+  background-color: #fff4f0;
 }
 .editColor1 {
-  color: #FFD600;
-  background-color: #FFFBE8
+  color: #ffd600;
+  background-color: #fffbe8;
 }
 .createColor2 {
   color: #ff8a77;
   background-color: #ffdcd4;
 }
 .editColor2 {
-  background-color: #FFF4BB;
-  color: #FFD600;
+  background-color: #fff4bb;
+  color: #ffd600;
 }
 .teamCard {
   border-radius: 5pt;
@@ -115,7 +155,7 @@ export default {
   .title {
     display: flex;
     justify-content: center;
-    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
     font-size: 17pt;
     font-weight: bold;
     height: 20pt;
@@ -149,13 +189,16 @@ export default {
           padding: 0;
           height: 30px;
           line-height: 30px;
-          border: none;
           border-radius: 10px;
           outline: none;
           text-align: center;
           width: 50%;
           background-color: #ffffff;
+          color: #ffd600;
           font-size: 12pt;
+          &::after {
+            border: 1px solid transparent;
+          }
         }
       }
     }
@@ -171,7 +214,7 @@ export default {
       }
     }
   }
-  .avatarList { 
+  .avatarList {
     padding-top: 1em;
     display: flex;
     justify-content: center;

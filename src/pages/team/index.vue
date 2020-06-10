@@ -1,4 +1,12 @@
 <style scoped lang="scss">
+.null {
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80% auto ;
+  background-image: url(../../../static/images/null.png);
+}
 .xiala {
   position: fixed;
   top: 0;
@@ -27,13 +35,14 @@
 </style>
 
 <template>
-  <div class="Individual">
+  <div class="team">
     <div class="xiala">
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
     <team-list v-if="planList" :teamList="planList"></team-list>
     <mypicker :state="pickerState"></mypicker>
+    <div v-if="planList.length == 0" class="null"></div>
   </div>
 </template>
 
@@ -57,20 +66,10 @@ export default {
     }
   },
   methods: {
-    getTeamData() {
-      this.$store.dispatch("getTeamList"); // 获取所有团队
-      store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
-    },
-    confirm() {
-      const data = {
-        userId: this.$store.state.userInfo.userId,
-        groupId: this.shareGroupId,
-        type: "add"
-      };
-      store.dispatch("updateMember", data);
-    },
-    cancel() {
-      console.log("拒接加入");
+    async getTeamData() {
+      console.log('刷新');
+      await store.dispatch("getTeamList"); // 获取所有团队
+      await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
     }
   },
   data() {
@@ -95,7 +94,6 @@ export default {
       type: "add"
     };
 
-    
     if (this.shareGroupId !== 0) {
       wx.showModal({
         title: "提示",
@@ -117,9 +115,6 @@ export default {
                 });
               console.log("添加成功");
             }
-            // 更新队伍和计划
-            this.getTeamData();
-            
           } catch (error) {
             wx.showToast({
               title: "加入失败",
@@ -134,6 +129,7 @@ export default {
   },
   mounted() {
     this.getTeamData();
+    console.log('planList :>> ', this.planList);
   }
 };
 </script>

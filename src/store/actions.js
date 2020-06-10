@@ -21,30 +21,6 @@ const actions = {
         } catch (error) {
             console.error(error);
         }
-  },
-
-  async getTeamList({ commit }) {
-      try {
-        const result = await getTeamList()
-        const { data } = result.data
-        commit('SET_TEAMLIST', data)
-      } catch (error) {
-        console.log(result.errMsg);
-      }
-  },
-  
-  setTeamName({commit}) {
-    commit('SET_TEAMNAME')
-  },
-  
-  async deleteGroup({ commit }, groupId) {
-    try {
-      const result = await deleteGroup(groupId)
-      console.log('result :>> ', result);
-      await commit("UPDATE_TEAMLIST", groupId)
-    } catch (error) {
-      console.log(result.message);
-    }
   }
 }
 

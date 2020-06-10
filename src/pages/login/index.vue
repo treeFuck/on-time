@@ -116,7 +116,7 @@ export default {
           // 如果是通过分享链接进来的，则其链接上应该携带着被分享的团队ID
           const shareGroupId = this.$root.$mp.query.shareGroupId || 0
           if(shareGroupId !== 0) {
-            wx.navigateTo({
+            wx.switchTab({
               url: `/pages/team/main?shareGroupId=${shareGroupId}`
             })
           }

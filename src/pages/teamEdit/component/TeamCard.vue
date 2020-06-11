@@ -38,7 +38,7 @@
       <my-button @click="createTeam" :color="'red'">完成</my-button>
     </div>
     <div v-else class="btn-box">
-      <my-button @click="deleteTeam" :color="'yellow'">删除</my-button>
+      <my-button @click="deleteTeam" :color="'yellow'">退出</my-button>
       <my-button @click="editTeam" :color="'yellow'">完成</my-button>
     </div>
   </div>

@@ -4,7 +4,7 @@
   width: 100vw;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 80% auto ;
+  background-size: 80% auto;
   background-image: url(../../../static/images/null.png);
 }
 .xiala {
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     async getTeamData() {
-      console.log('刷新');
+      console.log("刷新");
       await store.dispatch("getTeamList"); // 获取所有团队
       await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
     }
@@ -84,9 +84,9 @@ export default {
   },
   onShow() {
     // 如果有shareGroupId，则保存下来，并提示是否加入队伍
-    this.shareGroupId = this.$root.$mp.query.groupId || 0;
+    this.shareGroupId = this.$store.state.shareGroupId;
     this.userId = this.$store.state.userInfo.userId || 0;
-
+    console.log("this.shareGroupId :>> ", this.shareGroupId);
     // 在wx.showModal中定义会导致this指向错误，所以直接在这里定义
     const value = {
       groupId: this.shareGroupId,
@@ -113,6 +113,13 @@ export default {
                   icon: "success",
                   duration: 2000
                 });
+              else {
+                wx.showToast({
+                  title: "加入失败",
+                  icon: "none",
+                  duration: 2000
+                });
+              }
               console.log("添加成功");
             }
           } catch (error) {
@@ -129,7 +136,7 @@ export default {
   },
   mounted() {
     this.getTeamData();
-    console.log('planList :>> ', this.planList);
+    console.log("planList :>> ", this.planList);
   }
 };
 </script>

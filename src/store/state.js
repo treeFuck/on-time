@@ -5,7 +5,8 @@ const state = {
         nickName: '请先登录',
         teamId: '123',
         userId: ''
-    }
+    },
+    shareGroupId: 0
 }
 
 export default state

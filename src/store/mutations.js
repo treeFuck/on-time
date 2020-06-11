@@ -1,7 +1,4 @@
 const mutations = {
-    fun(state, result) {
-        state.test = result
-    },
     SET_USERINFO(state, userInfo) {
         state.userInfo.nickName = userInfo.nickName
         state.userInfo.avatarUrl = userInfo.avatarUrl
@@ -23,6 +20,9 @@ const mutations = {
             const teamList = state.teamList.splice(index, 1)
             state.teamList = teamList
         }
+    },
+    SET_SHARE_GROUPID(state, newVl) {
+        state.shareGroupId = newVl
     }
 }
 

@@ -27,6 +27,9 @@
     <div class="use" @click="about('use')">
       <span>使用说明</span>
     </div>
+    <div class="author" @click="test">
+      <span>关于作者</span>
+    </div>
   </div>
 </template>
 
@@ -64,6 +67,13 @@ export default {
     },
     about(param) {
       wx.navigateTo({ url:`/pages/about/main?type=${param}`})
+    },
+    async test() {
+      const shareGroupId = 1231
+      await this.$store.dispatch('setShareGroupId', shareGroupId)
+      await wx.switchTab({
+        url: `/pages/team/main`
+      })
     }
   }
 };

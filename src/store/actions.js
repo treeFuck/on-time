@@ -1,5 +1,4 @@
 import { getOpenid, login } from "../api/login"
-import { getTeamList, deleteGroup } from '../api/team'
 
 const actions = {
     async Login({ commit }, userInfo) {

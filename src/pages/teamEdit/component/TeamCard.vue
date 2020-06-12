@@ -75,9 +75,13 @@ export default {
     };
   },
   methods: {
-    invite() {
+    async invite() {
       // 设置你想分享的团队的ID
-      store.dispatch("setShareGroupId", this.teamData.groupId);
+      const sharedGroup = {
+        groupId: this.teamData.groupId,
+        groupName: this.teamData.groupName
+      }
+      await store.dispatch("setShareGroup", sharedGroup);
     },
     async createTeam() {
       console.log("创建按钮");

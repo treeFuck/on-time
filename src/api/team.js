@@ -22,6 +22,7 @@ export async function updateMember(value) {
       groupId,
       type
     } = value
+    console.log('添加队友的value :>> ', value);
     const result = await request.post({
       url: '/group/updateMember',
       params: {

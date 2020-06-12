@@ -82,22 +82,23 @@ export default {
     teamList,
     mypicker
   },
-  onShow() {
-    // 如果有shareGroupId，则保存下来，并提示是否加入队伍
-    this.shareGroupId = this.$store.state.shareGroupId;
-    this.userId = this.$store.state.userInfo.userId || 0;
-    console.log("this.shareGroupId :>> ", this.shareGroupId);
+  async onShow() {
+    // 如果有sharedGroup，则保存下来，并提示是否加入队伍
+    this.sharedGroup = await this.$store.state.sharedGroup;
+    this.userId = await this.$store.state.userInfo.userId || 0;
+    console.log("this.sharedGroup :>> ", this.sharedGroup);
     // 在wx.showModal中定义会导致this指向错误，所以直接在这里定义
     const value = {
-      groupId: this.shareGroupId,
+      groupId: this.sharedGroup.groupId,
+      groupName: this.sharedGroup.groupName,
       userId: this.userId,
       type: "add"
     };
-
-    if (this.shareGroupId !== 0) {
+    
+    if (this.sharedGroup.groupId !== 0) {
       wx.showModal({
         title: "提示",
-        content: `确定加入队伍`,
+        content: `确定加入队伍"${value.groupName}  ${value.groupId}"吗`,
         success: async function(res) {
           try {
             // 发送请求，将成员添加进团队
@@ -122,6 +123,7 @@ export default {
               }
               console.log("添加成功");
             }
+            await this.$store.dispatch('setShareGroupId', 0)
           } catch (error) {
             wx.showToast({
               title: "加入失败",

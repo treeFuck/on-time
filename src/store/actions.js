@@ -22,8 +22,8 @@ const actions = {
             console.error(error);
         }
     },
-    async setShareGroupId({ commit }, shareGroupId) {
-        commit('SET_SHARE_GROUPID', shareGroupId)
+    async setSharedGroup({ commit }, sharedGroup) {
+        commit('SET_SHARED_GROUP', sharedGroup)
     }
 }
 

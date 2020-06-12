@@ -8,12 +8,12 @@ const store = new Vuex.Store({
   state: {
     teamName: '',
     limit: 3,
-    shareGroupId: 0,
+    sharedGroup: {},
     teamList: []
   },
   mutations: {
-    SET_SHARE_GROUPID(state, newVl) {
-      state.shareGroupId = newVl
+    SET_SHARED_GROUP(state, newVl) {
+      state.sharedGroup = newVl
     },
     SET_TEAM_LIST(state, newVl) {
       state.teamList = newVl
@@ -31,8 +31,8 @@ const store = new Vuex.Store({
         console.log('error :>> ', error);
       }
     },
-    setShareGroupId({ commit }, groupId) {
-      commit('SET_SHARE_GROUPID', groupId)
+    setShareGroup({ commit }, sharedGroup) {
+      commit('SET_SHARED_GROUP', sharedGroup)
     },
     // 获取最新的团队列表
     async setTeamList({ commit }) {

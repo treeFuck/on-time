@@ -21,8 +21,8 @@ const mutations = {
             state.teamList = teamList
         }
     },
-    SET_SHARE_GROUPID(state, newVl) {
-        state.shareGroupId = newVl
+    SET_SHARED_GROUP(state, newVl) {
+        state.sharedGroup = newVl
     }
 }
 

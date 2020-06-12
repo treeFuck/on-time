@@ -40,8 +40,8 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <team-list v-if="planList" :teamList="planList"></team-list>
     <mypicker :state="pickerState"></mypicker>
+    <team-list v-if="planList" :teamList="planList"></team-list>
     <div v-if="planList.length == 0" class="null"></div>
   </div>
 </template>

@@ -1,6 +1,8 @@
 <style scoped lang="scss">
 .mypicker {
-  position: fixed;
+  position: absolute;
+  z-index: 100;
+  top: 0;
   left: 3%;
   width: 94%;
   padding: 1em 0;
@@ -9,17 +11,14 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0 0 3px 1px #eee;
-  transition: top 0.5s;
-  .main {
-    max-height: 400px;
-    overflow: auto;
-  }
+  transition: transform 0.5s;
+  transform: translateY(-100%);
   .xiala {
     position: absolute;
     top: 0;
-    right: 3%;
+    right: 4%;
     width: 2em;
-    height: 120%;
+    height: 105%;
     .line {
       position: absolute;
       top: 0;
@@ -84,15 +83,12 @@
   }
 }
 .mypickerShow {
-  top: 0;
-}
-.mypickerHide {
-  top: -15em;
+  transform: translateY(0);
 }
 </style>
 
 <template>
-  <div class="mypicker" :style="offsetTop">
+  <div class="mypicker" :class="{mypickerShow: mypickerShow}">
     <div class="xiala">
       <div class="line"></div>
       <img @click="changeIsShow" class="gou" src="../../../../static/images/gou.png" />
@@ -121,9 +117,9 @@
         </div>
         <task-form :formData="planForm" />
       </div>
-    </div>
-    <div class="btn">
-      <my-button color="yellow" @click="handleSubmit">完成</my-button>
+      <div class="btn" v-if="mypickerShow" >
+        <my-button color="yellow" @click="handleSubmit">完成</my-button>
+      </div>
     </div>
   </div>
 </template>
@@ -134,8 +130,8 @@ import mpDatepicker from "mpvue-weui/src/date-picker";
 import mpPicker from "mpvue-weui/src/picker";
 import taskForm from "../taskForm/taskForm";
 import myButton from "../../../components/myButton";
-import taskFormEdit from '../taskFormEdit/taskFormEdit'
-import {getNowTime} from '../../../utils'
+import taskFormEdit from "../taskFormEdit/taskFormEdit";
+import { getNowTime } from "../../../utils";
 
 export default {
   props: {
@@ -145,12 +141,12 @@ export default {
     groupList() {
       const group = store.state.teamList;
       let arr = [];
-      if(group) {
+      if (group) {
         group.map(item => {
           arr.push(item.groupName);
         });
       }
-      
+
       return arr;
     },
     mypickerShow() {
@@ -163,7 +159,7 @@ export default {
       return store.state.taskFormList;
     },
     form() {
-      if(this.state === "add")
+      if (this.state === "add")
         return {
           userId: 1,
           taskName: "",
@@ -193,12 +189,12 @@ export default {
     },
     selectTeam(event) {
       const index = event.target.value;
-      this.teamForm  = store.state.teamList[index];
+      this.teamForm = store.state.teamList[index];
 
       // 修改子任务模板
       this.planForm.groupMemberList = this.teamForm.groupMemberList;
       this.planForm.groupId = this.teamForm.groupId;
-      this.planForm.userId = this.teamForm.groupMemberList[0].userId
+      this.planForm.userId = this.teamForm.groupMemberList[0].userId;
       console.log(this.teamForm.groupMemberList);
     },
     toEditTeam() {
@@ -227,14 +223,14 @@ export default {
           taskList: [{ ...this.planForm, startTime, endTime }]
         });
       }
-      if(this.state == "update") {
-        await store.dispatch('UpdateGroupPlan', this.taskFormList)
+      if (this.state == "update") {
+        await store.dispatch("UpdateGroupPlan", this.taskFormList);
       }
       // 关闭picker
       await store.dispatch("setMyPickerIsShow");
 
       // 刷新列表
-      await store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
+      await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
     }
   },
   components: {
@@ -243,16 +239,16 @@ export default {
     taskFormEdit
   },
   created() {
-    const date = getNowTime()
-      this.planForm = {
-        ...date,
-        lasting: 60,
-        priority: 1,
-        status: 0,
-        taskName: "",
-        taksId: null
-      }
-  },
+    const date = getNowTime();
+    this.planForm = {
+      ...date,
+      lasting: 60,
+      priority: 1,
+      status: 0,
+      taskName: "",
+      taksId: null
+    };
+  }
 };
 </script>
 

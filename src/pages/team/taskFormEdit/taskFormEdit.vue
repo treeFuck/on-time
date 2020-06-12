@@ -169,34 +169,8 @@ export default {
     },
     handleAddTask() {
       this.$emit('addTask')
-    },
-    // 初始化当前时间
-    getNowDate() {
-      const date = new Date();
-      const str = formatTime(date);
-      console.log(str);
-      const [t1, t2] = str.split(" ");
-      const [year, month, day] = t1.split("/");
-      const [hour, minute, second] = t2.split(":");
-      this.startTime = {
-        date: [year, month, day],
-        time: [hour, minute, second],
-        t1: [year, month, day].join('-'),
-        t2
-      };
-      this.endTime = {
-        date: [year, month, day],
-        time: [formatNumber((Number(hour) + 1) % 24), minute, second],
-        t1: [year, month, day].join('-'),
-        t2: [formatNumber((Number(hour) + 1) % 24), minute, second].join(':')
-      };
-      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`;
-      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`;
     }
-  },
-  created() {
-    // this.getNowDate()
-  },
+  }
 };
 </script>
 

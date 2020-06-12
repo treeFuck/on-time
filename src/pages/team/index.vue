@@ -58,9 +58,6 @@ export default {
     pickerState() {
       return store.state.pickerState;
     },
-    team() {
-      return this.$store.state.teamList;
-    },
     planList() {
       return store.state.planList;
     }

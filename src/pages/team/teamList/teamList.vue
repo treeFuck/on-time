@@ -213,12 +213,11 @@ export default {
     };
   },
   methods: {
-    handleAdd(teamData) {
+    async handleAdd(teamData) {
       const data = JSON.parse(JSON.stringify(teamData))
-      const userVo = this.$store.state.userInfo
-      store.dispatch('changePicker', 'update')
-      store.dispatch('setMyPickerIsShow')
-      store.dispatch('setTaskForm_addTask', { teamData: data, userVo })
+      await store.dispatch('changePicker', 'update')
+      await store.dispatch('setMyPickerIsShow')
+      await store.dispatch('setTaskFormList', data)
     },
     handleDelete(teamData) {
       this.temp = teamData

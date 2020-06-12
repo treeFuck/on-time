@@ -170,19 +170,6 @@ export default {
     },
     taskFormList() {
       return store.state.taskFormList;
-    },
-    form() {
-      if (this.state === "add")
-        return {
-          userId: 1,
-          taskName: "",
-          groupMemberList: [],
-          startTime: {},
-          endTime: {},
-          lasting: 60,
-          priority: 3,
-          status: 0
-        };
     }
   },
   data() {
@@ -274,7 +261,8 @@ export default {
         });
       }
       if (this.state === 'update') {
-        console.log(this.taskFormList);
+        const teamData = JSON.parse(JSON.stringify(this.taskFormList))
+        console.log('teamData :>> ', teamData);
         const planId = this.taskFormList.planId
         const userId = this.$store.state.userInfo.userId
         const newTask = {
@@ -286,11 +274,10 @@ export default {
           taksId: null,
           planId,
           userId,
-          flag: 0   // 若存在，表明是本地新增的，尚未添加到服务器，可以随意删除
+          isNewTask: true   // 若存在，表明是本地新增的，尚未添加到服务器，可以随意删除
         }
-        const teamData = JSON.parse(JSON.stringify(this.taskFormList))
-        console.log(teamData);
-        // store.dispatch('setTaskForm_addTask', newTask)
+        teamData.taskList.push(newTask)
+        store.dispatch('setTaskFormList', teamData)
       }
     },
     // 删除子计划
@@ -315,7 +302,13 @@ export default {
           });
           return;
         }
-        console.log(task);
+        console.log(task,index)
+        if(task.isNewTask) {
+          const teamData = JSON.parse(JSON.stringify(this.taskFormList))
+          teamData.taskList.splice(index, 1)
+          store.dispatch('setTaskFormList', teamData)
+          return
+        }
         wx.showModal({
           title: "提示",
           content: `确定删除该子计划`,

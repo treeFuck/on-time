@@ -38,9 +38,6 @@ const store = new Vuex.Store({
     SET_TASK_FORM(state, newVl) {
       state.taskFormList = newVl
     },
-    ADD_TASK_FOMR(state, newVl) {
-      state.taskFormList = newVl
-    },
     REMOVE_TASK(state, newVl) {
       // 修改picker列表
       const taskList = state.taskFormList.taskList
@@ -149,10 +146,9 @@ const store = new Vuex.Store({
       }
     },
 
-    //添加子计划
-    async setTaskForm_addTask({ commit }, { teamData, userVo }) {
+    //添加子计划(准备删除)
+    async setTaskForm_addTask({ commit }, { teamData }) {
       const date = getNowTime()
-      const { avatarUrl: wechatIcon } = userVo
       const task = {
         ...date,
         userId: teamData.userId,
@@ -161,10 +157,7 @@ const store = new Vuex.Store({
         priority: 1,
         status: 0,
         taskName: "",
-        userVo: {
-          wechatIcon,
-          userId: teamData.userId
-        }
+        isNewTask: true
       }
       teamData.taskList.push(task)
       commit("ADD_TASK_FOMR", teamData)

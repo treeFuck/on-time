@@ -57,7 +57,7 @@
 					"id": 0,
 					"name": "转发",
 					"pathName": "pages/login/main",
-					"query": "groupId=123&groupName=风花雪月",
+					"query": "groupId=77&groupName=小测试",
 					"scene": 1007
 				}
 			]

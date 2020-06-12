@@ -31,11 +31,6 @@ export default {
       teamList: []
     };
   },
-  computed: {
-    sharedGroup() {
-      return store.state.sharedGroup;
-    }
-  },
   methods: {
     async getTeamList() {
       await store.dispatch("setTeamList");
@@ -47,14 +42,11 @@ export default {
     TeamCard
   },
   onShareAppMessage(res) {
-    console.log(store.state.sharedGroup);
-    const groupId = store.state.sharedGroup.groupId;
-    const groupName = store.state.sharedGroup.groupName;
     if (res.from === "button") {
-      console.log("groupId :>> ", store.state.sharedGroup.groupId);
-      console.log("groupName :>> ", store.state.sharedGroup.groupName);
+      const groupId = res.target.dataset.groupid;
+      const groupName = res.target.dataset.groupname;
       return {
-        title: `${groupName} 触发转发`,
+        title: `邀请你加入${groupName}`,
         path: `/pages/login/main?groupId=${groupId}&groupName=${groupName}`
       };
     }

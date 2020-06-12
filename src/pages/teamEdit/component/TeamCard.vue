@@ -18,7 +18,7 @@
         </div>
         <div class="input-box" v-if="state !== 'create'">
           <label for="invite">成员列表 :</label>
-          <button open-type="share" class="share" @click="invite">邀请成员</button>
+          <button :data-groupName="teamData.groupName" :data-groupId="teamData.groupId" open-type="share" class="share" @click="invite">邀请成员</button>
         </div>
       </div>
       <div class="right">
@@ -47,7 +47,7 @@
 <script>
 import myButton from "../../../components/myButton";
 import store from "../store";
-import { deleteGroup } from "../../../api/team";
+import { deleteGroup, updateMember } from "../../../api/team";
 
 export default {
   name: "TeamCard",
@@ -92,22 +92,65 @@ export default {
     },
     async deleteTeam() {
       console.log("当前的信息 :>> ", this.teamData);
-      const { groupId, groupName } = this.teamData;
-      wx.showModal({
+      const userId = this.$store.state.userInfo.userId
+      const { groupId, groupName, creatorId } = this.teamData;
+      console.log(userId);
+
+      // 如果用户就是队长，则直接解散团队
+      if(userId === creatorId) {
+        wx.showModal({
         title: "提示",
-        content: `确定退出队伍"${groupName}"？`,
+        content: `确定删除队伍"${groupName}"？`,
         success: async res => {
           try {
             if (res.confirm) {
               const { data } = await deleteGroup(groupId);
               if (data.code == 1) {
                 wx.showToast({
-                  title: "退出成功",
+                  title: "删除成功",
                   icon: "none",
                   duration: 2000
                 });
                 // 刷新计划数据
                 this.$emit("Refresh");
+              }
+            }
+          } catch (error) {
+            console.log("error :>> ", error);
+            wx.showToast({
+              title: "删除失败",
+              icon: "none",
+              duration: 2000
+            });
+          }
+        }
+      });
+      }
+      // 如果不是，则退出团队
+      else {
+        wx.showModal({
+        title: "提示",
+        content: `确定退出队伍"${groupName}"？`,
+        success: async res => {
+          try {
+            if (res.confirm) {
+              const { data } = await updateMember({ groupId, userId, type: 'delete' });
+              console.log(data);
+              if (data.code == 1) {
+                wx.showToast({
+                  title: "退出成功",
+                  icon: "success",
+                  duration: 2000
+                });
+                // 刷新计划数据
+                this.$emit("Refresh");
+              }
+              else if(data.code == -1) {
+                wx.showToast({
+                  title: data.message,
+                  icon: "none",
+                  duration: 2000
+                });
               }
             }
           } catch (error) {
@@ -120,6 +163,9 @@ export default {
           }
         }
       });
+      }
+
+      
     },
     editTeam() {
       const teamName = this.teamData.groupName;

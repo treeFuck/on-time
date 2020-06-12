@@ -117,7 +117,7 @@ export default {
               }
               else {
                 wx.showToast({
-                  title: "加入失败",
+                  title: `加入失败, ${result.data.message}`,
                   icon: "none",
                   duration: 2000
                 });

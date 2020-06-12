@@ -99,7 +99,13 @@
           <label for>*修改计划:</label>
           <input type="text" v-model="taskFormList.planName" />
         </div>
-        <taskFormEdit v-for="(task, index) in taskFormList.taskList" :key="index" :formData="task" />
+        <taskFormEdit
+          v-for="(task, index) in taskFormList.taskList"
+          :key="index"
+          :formData="task"
+          @removeTask="removeTask(index, task)"
+          @addTask="addTask"
+        />
       </div>
 
       <div class="addForm" v-if="state === 'add'">
@@ -115,9 +121,18 @@
           <label for>*添加计划:</label>
           <input type="text" v-model="planName" />
         </div>
-        <task-form :formData="planForm" />
+        <div class="taskList">
+          <task-form
+            ref="addTaskForm"
+            v-for="(task, index) in taskList"
+            :key="index"
+            :formData="task"
+            @addTask="addTask"
+            @removeTask="removeTask(index)"
+          />
+        </div>
       </div>
-      <div class="btn" v-if="mypickerShow" >
+      <div class="btn" v-if="mypickerShow">
         <my-button color="yellow" @click="handleSubmit">完成</my-button>
       </div>
     </div>
@@ -132,6 +147,7 @@ import taskForm from "../taskForm/taskForm";
 import myButton from "../../../components/myButton";
 import taskFormEdit from "../taskFormEdit/taskFormEdit";
 import { getNowTime } from "../../../utils";
+import state from "../../../store/state";
 
 export default {
   props: {
@@ -151,9 +167,6 @@ export default {
     },
     mypickerShow() {
       return store.state.mypickerShow;
-    },
-    offsetTop() {
-      return this.mypickerShow ? "top: 0px" : `top: -32em;`;
     },
     taskFormList() {
       return store.state.taskFormList;
@@ -179,7 +192,8 @@ export default {
         groupName: "",
         groupId: 0
       },
-      planForm: null
+      planForm: null,
+      taskList: []
     };
   },
   methods: {
@@ -195,7 +209,6 @@ export default {
       this.planForm.groupMemberList = this.teamForm.groupMemberList;
       this.planForm.groupId = this.teamForm.groupId;
       this.planForm.userId = this.teamForm.groupMemberList[0].userId;
-      console.log(this.teamForm.groupMemberList);
     },
     toEditTeam() {
       wx.navigateTo({
@@ -204,33 +217,121 @@ export default {
     },
     async handleSubmit() {
       if (this.state === "add") {
+        // 如果taskList列表中有空，则拒接提交，提醒删除不需要的子计划
+        if (this.taskList.length > 0) {
+          for (let i in this.taskList) {
+            if (this.taskList[i].taskName.trim() === "") {
+              wx.showToast({
+                title: `子任务不能为空`,
+                icon: "none",
+                duration: 2000
+              });
+              return;
+            }
+          }
+        }
         const planName = this.planName;
         const groupId = this.teamForm.groupId;
-        // 格式化开始时间和结束时间
-        const startTime =
-          this.planForm.startTime.date.join("-") +
-          " " +
-          this.planForm.startTime.time.join(":");
-        const endTime =
-          this.planForm.endTime.date.join("-") +
-          " " +
-          this.planForm.endTime.time.join(":");
 
         // 添加大任务
         await store.dispatch("addGroupPlan", {
           planName,
           groupId,
-          taskList: [{ ...this.planForm, startTime, endTime }]
+          taskList: this.taskList
         });
       }
       if (this.state == "update") {
+        // 检查是否有空的子计划
+        for (let i in this.taskFormList.taskList) {
+          if (this.taskFormList.taskList[i].taskName.trim() === "") {
+            wx.showToast({
+              title: "子计划不能为空，请先删除空的子计划",
+              icon: "none",
+              duration: 2000
+            });
+            return;
+          }
+        }
         await store.dispatch("UpdateGroupPlan", this.taskFormList);
       }
       // 关闭picker
       await store.dispatch("setMyPickerIsShow");
-
       // 刷新列表
       await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
+    },
+    // 添加子计划
+    addTask() {
+      const date = getNowTime(); // 获取时间
+      if (this.state === "create") {
+        this.taskList.push({
+          // 添加初始化的子计划
+          ...date,
+          lasting: 60,
+          priority: 1,
+          status: 0,
+          taskName: "",
+          taksId: null
+        });
+      }
+      if (this.state === 'update') {
+        console.log(this.taskFormList);
+        const planId = this.taskFormList.planId
+        const userId = this.$store.state.userInfo.userId
+        const newTask = {
+          ...date,
+          lasting: 60,
+          priority: 1,
+          status: 0,
+          taskName: "",
+          taksId: null,
+          planId,
+          userId,
+          flag: 0   // 若存在，表明是本地新增的，尚未添加到服务器，可以随意删除
+        }
+        const teamData = JSON.parse(JSON.stringify(this.taskFormList))
+        console.log(teamData);
+        // store.dispatch('setTaskForm_addTask', newTask)
+      }
+    },
+    // 删除子计划
+    removeTask(index, task) {
+      if (this.state === "create") {
+        if (this.taskList.length == 1) {
+          wx.showToast({
+            title: `至少要有一个子计划`,
+            icon: "none",
+            duration: 2000
+          });
+          return;
+        }
+        this.taskList.splice(index, 1);
+      }
+      if (this.state === "update") {
+        if (this.taskFormList.taskList == 1) {
+          wx.showToast({
+            title: `至少要有一个子计划`,
+            icon: "none",
+            duration: 2000
+          });
+          return;
+        }
+        console.log(task);
+        wx.showModal({
+          title: "提示",
+          content: `确定删除该子计划`,
+          success: async res => {
+            if (res.confirm) {
+              wx.showLoading({
+                title: "删除中...",
+                mask: true
+              });
+              await store.dispatch("RemoveTask", task.taskId);
+              await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
+              wx.hideLoading();
+            }
+          }
+        });
+      }
     }
   },
   components: {
@@ -248,6 +349,10 @@ export default {
       taskName: "",
       taksId: null
     };
+    this.taskList.push(this.planForm);
+  },
+  mounted() {
+    console.log("又渲染页面了");
   }
 };
 </script>

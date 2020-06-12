@@ -275,7 +275,7 @@ export default {
     }
   }
   .btn-box {
-    padding-top: 1em;
+    padding-top: 0.5em;
     display: flex;
     justify-content: center;
   }

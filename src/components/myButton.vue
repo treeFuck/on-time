@@ -59,17 +59,12 @@ export default {
 <style lang="scss" scoped>
 .my-button {
   margin: 0 20px;
-  padding: 10px;
-  border-radius: 5pt;
-  font-size: large;
-  font-weight: bolder;
-  width: 80px;
-  height: 20px;
+  width: 5em;
+  height: 2em;
+  line-height: 2em;
+  font-weight: bold;
+  border-radius: 4px;
+  text-align: center;
   position: relative;
-  .content {
-    position: absolute;
-    top: -15px;
-    left: 32px;
-  }
 }
 </style>

@@ -88,6 +88,7 @@ export async function addGroupPlan(value) {
       groupId: type,
       taskList
     } = value
+    console.log('value :>> ', value);
     const result = await request.post({
       url: '/group/addGroupPlan',
       params: {
@@ -162,4 +163,12 @@ export async function getListGroupPlan() {
   } catch (error) {
     console.log('error :>> ', error);
   }
+}
+
+// 修改子任务状态
+export async function updateTaskStatus({ taskId, status }) {
+  return request.post({
+    url: '/schedule/updateTaskStatus',
+    params: { taskId, status }
+  })
 }

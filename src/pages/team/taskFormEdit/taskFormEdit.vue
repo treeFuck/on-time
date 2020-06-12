@@ -26,16 +26,11 @@
         :key="member.userid"
         ></div>
       </div>
-    </div> -->
+    </div>-->
     <div class="time-box">
       <label for>开始时间 :</label>
       <div class="right">
-        <picker
-          class="picker"
-          mode="date"
-          :value="startTime.t1"
-          @change="startDateChange"
-        >
+        <picker class="picker" mode="date" :value="startTime.t1" @change="startDateChange">
           <span class="year input">{{startTime.date[0]}}</span>
           <span>年</span>
           <span class="month input">{{startTime.date[1]}}</span>
@@ -56,7 +51,6 @@
           <span class="second input">{{startTime.time[2]}}</span>
           <span>秒</span>
         </picker>
-        {{startTime.date}}
       </div>
     </div>
     <div class="time-box">
@@ -96,7 +90,7 @@
     </div>
     <div class="icon">
       <p class="icon-btn" @click="handleRemoveTask">-</p>
-      <!-- <p class="icon-btn">+</p> -->
+      <p class="icon-btn" @click="handleAddTask">+</p>
     </div>
   </div>
 </template>
@@ -104,7 +98,7 @@
 <script>
 import store from "../store";
 import { formatTime, formatNumber } from "../../../utils/index";
-import state from '../../../store/state';
+import state from "../../../store/state";
 
 export default {
   props: {
@@ -123,33 +117,33 @@ export default {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.startTime.date = [year, month, day];
-      this.startTime.t1 = value
+      this.startTime.t1 = value;
       console.log(this.startTime);
-      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
-    },  
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`;
+    },
     startTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.startTime.time = [hour, minute, second];
-      this.startTime.t2 = [hour, minute, second].join(":")
+      this.startTime.t2 = [hour, minute, second].join(":");
       console.log(this.startTime);
-      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`;
     },
     endDateChange(event) {
       const value = event.target.value;
       const [year, month, day] = value.split("-");
       this.endTime.date = [year, month, day];
-      this.endTime.t1 = value
+      this.endTime.t1 = value;
       console.log(this.endTime);
-      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`;
     },
     endTimeChange(event) {
       const value = event.target.value;
       const [hour, minute, second = "00"] = value.split(":");
       this.endTime.time = [hour, minute, second];
-      this.endTime.t2 = [hour, minute, second].join(":")
+      this.endTime.t2 = [hour, minute, second].join(":");
       console.log(this.endTime);
-      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`;
     },
     format(time) {
       const [t1, t2] = time.split(" ");
@@ -160,21 +154,49 @@ export default {
         time: [hour, minute, second],
         t1,
         t2
-      }
+      };
     },
     setLeader(member) {
       this.formData.userId = member.userId;
     },
     selectPriority(value) {
       this.formData.priority = value;
-      this.p = ["", "", "", ""]
-      this.p[value-1] = "√"
+      this.p = ["", "", "", ""];
+      this.p[value - 1] = "√";
     },
     handleRemoveTask() {
-      store.dispatch("RemoveTask", this.formData.taskId)
-      store.dispatch('getAllTeamPlan')  // 获取所有团队的任务
+      this.$emit('removeTask')
+    },
+    handleAddTask() {
+      this.$emit('addTask')
+    },
+    // 初始化当前时间
+    getNowDate() {
+      const date = new Date();
+      const str = formatTime(date);
+      console.log(str);
+      const [t1, t2] = str.split(" ");
+      const [year, month, day] = t1.split("/");
+      const [hour, minute, second] = t2.split(":");
+      this.startTime = {
+        date: [year, month, day],
+        time: [hour, minute, second],
+        t1: [year, month, day].join('-'),
+        t2
+      };
+      this.endTime = {
+        date: [year, month, day],
+        time: [formatNumber((Number(hour) + 1) % 24), minute, second],
+        t1: [year, month, day].join('-'),
+        t2: [formatNumber((Number(hour) + 1) % 24), minute, second].join(':')
+      };
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`;
     }
-  }
+  },
+  created() {
+    // this.getNowDate()
+  },
 };
 </script>
 
@@ -285,7 +307,6 @@ export default {
       text-align: center;
     }
   }
-
 
   .avatar {
     width: 1.5em;

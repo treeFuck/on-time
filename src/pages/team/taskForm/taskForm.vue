@@ -56,7 +56,6 @@
           <span class="second input">{{startTime.time[2]}}</span>
           <span>秒</span>
         </picker>
-        {{startTime.date}}
       </div>
     </div>
     <div class="time-box">
@@ -94,10 +93,10 @@
         <span class="red" @click="selectPriority(4)">{{p[3]}}</span>
       </div>
     </div>
-    <!-- <div class="icon">
-      <p class="icon-btn">-</p>
-      <p class="icon-btn">+</p>
-    </div> -->
+    <div class="icon">
+      <p class="icon-btn" @click="handleRemoveTask">-</p>
+      <p class="icon-btn" @click="handleAddTask">+</p>
+    </div>
   </div>
 </template>
 
@@ -150,7 +149,7 @@ export default {
       console.log(this.endTime);
       this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`
     },
-    getNowDate(time) {
+    getNowDate() {
       const date = new Date();
       const str = formatTime(date);
       console.log(str);
@@ -159,14 +158,18 @@ export default {
       const [hour, minute, second] = t2.split(":");
       this.startTime = {
         date: [year, month, day],
-        time: [hour, minute, second]
+        time: [hour, minute, second],
+        t1: [year, month, day].join('-'),
+        t2
       };
       this.endTime = {
         date: [year, month, day],
-        time: [formatNumber((Number(hour) + 1) % 24), minute, second]
+        time: [formatNumber((Number(hour) + 1) % 24), minute, second],
+        t1: [year, month, day].join('-'),
+        t2: [formatNumber((Number(hour) + 1) % 24), minute, second].join(':')
       };
-      this.formData.startTime = this.startTime;
-      this.formData.endTime = this.endTime;
+      this.formData.startTime = `${this.startTime.t1} ${this.startTime.t2}`;
+      this.formData.endTime = `${this.endTime.t1} ${this.endTime.t2}`;
     },
     setLeader(member) {
       this.formData.userId = member.userId;
@@ -175,10 +178,16 @@ export default {
       this.formData.priority = value;
       this.p = ["", "", "", ""]
       this.p[value-1] = "√"
+    },
+    handleRemoveTask() {
+      this.$emit('removeTask')
+    },
+    handleAddTask() {
+      this.$emit('addTask')
     }
   },
   created() {
-    this.getNowDate(this.startTime);
+    this.getNowDate();
   }
 };
 </script>

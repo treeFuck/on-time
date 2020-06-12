@@ -125,7 +125,7 @@ const store = new Vuex.Store({
     async UpdateGroupPlan({ commit }, groupPlan) {
       try {
         const res = await updateGroupPlan(groupPlan)
-        if (res.data.message === "success") {
+        if (res.data.code == 1) {
           await commit("UPDATE_PLAN_LIST", res.data.data)
         }
         console.log('更新res :>> ', res);
@@ -134,6 +134,7 @@ const store = new Vuex.Store({
         console.log('error :>> ', error);
       }
     },
+    // 删除大计划
     async DeleteGroupPlan({ commit }, planId) {
       try {
         const result = await deleteGroupPlan(planId)
@@ -168,14 +169,27 @@ const store = new Vuex.Store({
       teamData.taskList.push(task)
       commit("ADD_TASK_FOMR", teamData)
     },
-    // 删除子计划
+    // 删除编辑页面中的子计划
     async RemoveTask({ commit }, taskId) {
       try {
         const { data } = await deleteGroupTask(taskId)
         console.log('res :>> ', data);
-        commit("REMOVE_TASK", taskId)
+        if (data.code == 1) {
+          commit("REMOVE_TASK", taskId)
+        } else {
+          wx.showToast({
+            title: data.message,
+            icon: "none",
+            duration: 2000
+          })
+        }
       } catch (error) {
         console.log('error :>> ', error);
+        wx.showToast({
+          title: '删除错误，请重新尝试',
+          icon: "none",
+          duration: 2000
+        })
       }
     },
 

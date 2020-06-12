@@ -152,7 +152,7 @@
       <div class="handle">
         <div class="add" @click="handleAdd(team)"></div>
         <div class="del" @click="handleDelete(team)"></div>
-        <div class="edit" @click="handleEdit(team)"></div>
+        <div class="edit" @click="handleAdd(team)"></div>
       </div>
       <div class="top">
         <div class="fish">{{team.groupName}}</div>
@@ -231,7 +231,7 @@ export default {
     },
     handleChangeStatus(task) {
       console.log('task :>> ', task);
-      task.status = !task.status
+      // task.status = !task.status
     },
     confirm() {
       store.dispatch("DeleteGroupPlan", this.temp.planId)

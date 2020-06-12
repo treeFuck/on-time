@@ -135,7 +135,6 @@ export default {
   },
   mounted() {
     this.getTeamData();
-    console.log("planList :>> ", this.planList);
   }
 };
 </script>

@@ -97,7 +97,7 @@ export default {
   },
   data() {
     return {
-      isShowLoading: false
+      isShowLoading: false,
     };
   },
   methods: {
@@ -114,9 +114,10 @@ export default {
           console.log("登录成功");
 
           // 如果是通过分享链接进来的，则其链接上应该携带着被分享的团队ID
-          const shareGroupId = this.$root.$mp.query.shareGroupId || 0
-          if(shareGroupId !== 0) {
-            await this.$store.dispatch('setShareGroupId', shareGroupId)
+          const groupId = this.$root.$mp.query.groupId || 0
+          const groupName = this.$root.$mp.query.groupName || '闲鱼特工队'
+          if(groupId !== 0) {
+            await this.$store.dispatch('setSharedGroup', { groupId, groupName })
             await wx.switchTab({
               url: `/pages/team/main`
             })
@@ -137,6 +138,8 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    
+  }
 };
 </script>

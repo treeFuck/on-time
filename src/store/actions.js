@@ -1,5 +1,4 @@
 import { getOpenid, login } from "../api/login"
-import { getTeamList, deleteGroup } from '../api/team'
 
 const actions = {
     async Login({ commit }, userInfo) {
@@ -22,8 +21,8 @@ const actions = {
             console.error(error);
         }
     },
-    async setShareGroupId({ commit }, shareGroupId) {
-        commit('SET_SHARE_GROUPID', shareGroupId)
+    async setSharedGroup({ commit }, sharedGroup) {
+        commit('SET_SHARED_GROUP', sharedGroup)
     }
 }
 

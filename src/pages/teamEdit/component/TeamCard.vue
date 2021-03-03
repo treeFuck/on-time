@@ -18,7 +18,12 @@
         </div>
         <div class="input-box" v-if="state !== 'create'">
           <label for="invite">成员列表 :</label>
-          <button open-type="share" class="share" @click="invite">邀请成员</button>
+          <button
+            :data-groupName="teamData.groupName"
+            :data-groupId="teamData.groupId"
+            open-type="share"
+            class="share"
+          >邀请成员</button>
         </div>
       </div>
       <div class="right">
@@ -26,13 +31,8 @@
         <img :src="avatar" alt />
       </div>
     </div>
-    <div class="avatarList">
-      <img
-        v-for="(user, index) in teamData.groupMemberList"
-        :key="index"
-        :src="user.wechatIcon"
-        alt
-      />
+    <div class="avatarList" v-if="state !== 'create'">
+      <img v-for="(user, index) in teamData.groupMemberList" :key="index" :src="user.wechatIcon" />
     </div>
     <div v-if="state === 'create'" class="btn-box">
       <my-button @click="createTeam" :color="'red'">完成</my-button>
@@ -47,7 +47,7 @@
 <script>
 import myButton from "../../../components/myButton";
 import store from "../store";
-import { deleteGroup } from "../../../api/team";
+import { deleteGroup, updateMember } from "../../../api/team";
 
 export default {
   name: "TeamCard",
@@ -75,47 +75,136 @@ export default {
     };
   },
   methods: {
-    invite() {
-      // 设置你想分享的团队的ID
-      store.dispatch("setShareGroupId", this.teamData.groupId);
-    },
     async createTeam() {
       console.log("创建按钮");
       const teamName = this.groupName;
       const limit = this.limit;
-      await store.dispatch("AddTeam", { groupName: teamName, limit });
+      // 验证输入是否正确
+      if(teamName.trim() == '') {
+        wx.showToast({
+          title: '请输入正确的队名',
+          icon: "none",
+          duration: 1500
+        });
+        return
+      }
+      if(teamName.length > 6) {
+        wx.showToast({
+          title: '队名长度最大为6，请重新输入',
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
+      if(parseInt(limit) == 0 || parseInt(limit) == NaN) {
+        wx.showToast({
+          title: '请输入正确的人数限制',
+          icon: "none",
+          duration: 1500
+        });
+        return
+      }
+      if(parseInt(limit) > 8) {
+        wx.showToast({
+          title: '最大人数限制为8，请重新输入',
+          icon: "none",
+          duration: 2000
+        });
+        return
+      }
+
+      const data = await store.dispatch("AddTeam", {
+        groupName: teamName,
+        limit
+      });
+
+      if (data.code != 1) {
+        wx.showToast({
+          title: data.message,
+          icon: "none",
+          duration: 1500
+        });
+        return;
+      }
       wx.switchTab({ url: "/pages/team/main" });
     },
     async deleteTeam() {
       console.log("当前的信息 :>> ", this.teamData);
-      const { groupId, groupName } = this.teamData;
-      wx.showModal({
-        title: "提示",
-        content: `确定退出队伍"${groupName}"？`,
-        success: async res => {
-          try {
-            if (res.confirm) {
-              const { data } = await deleteGroup(groupId);
-              if (data.code == 1) {
-                wx.showToast({
-                  title: "退出成功",
-                  icon: "none",
-                  duration: 2000
-                });
-                // 刷新计划数据
-                this.$emit("Refresh");
+      const userId = this.$store.state.userInfo.userId;
+      const { groupId, groupName, creatorId } = this.teamData;
+      console.log(userId);
+
+      // 如果用户就是队长，则直接解散团队
+      if (userId === creatorId) {
+        wx.showModal({
+          title: "提示",
+          content: `确定删除队伍"${groupName}"？`,
+          success: async res => {
+            try {
+              if (res.confirm) {
+                const { data } = await deleteGroup(groupId);
+                if (data.code == 1) {
+                  wx.showToast({
+                    title: "删除成功",
+                    icon: "none",
+                    duration: 2000
+                  });
+                  // 刷新计划数据
+                  this.$emit("Refresh");
+                }
               }
+            } catch (error) {
+              console.log("error :>> ", error);
+              wx.showToast({
+                title: "删除失败",
+                icon: "none",
+                duration: 2000
+              });
             }
-          } catch (error) {
-            console.log("error :>> ", error);
-            wx.showToast({
-              title: "退出失败",
-              icon: "none",
-              duration: 2000
-            });
           }
-        }
-      });
+        });
+      }
+      // 如果不是，则退出团队
+      else {
+        wx.showModal({
+          title: "提示",
+          content: `确定退出队伍"${groupName}"？`,
+          success: async res => {
+            try {
+              if (res.confirm) {
+                const { data } = await updateMember({
+                  groupId,
+                  userId,
+                  type: "delete"
+                });
+                console.log(data);
+                if (data.code == 1) {
+                  wx.showToast({
+                    title: "退出成功",
+                    icon: "success",
+                    duration: 2000
+                  });
+                  // 刷新计划数据
+                  this.$emit("Refresh");
+                } else if (data.code == -1) {
+                  wx.showToast({
+                    title: data.message,
+                    icon: "none",
+                    duration: 2000
+                  });
+                }
+              }
+            } catch (error) {
+              console.log("error :>> ", error);
+              wx.showToast({
+                title: "退出失败",
+                icon: "none",
+                duration: 2000
+              });
+            }
+          }
+        });
+      }
     },
     editTeam() {
       const teamName = this.teamData.groupName;
@@ -208,8 +297,8 @@ export default {
         text-align: center;
       }
       img {
-        width: 36pt;
-        height: 36pt;
+        width: 34pt;
+        height: 34pt;
         border-radius: 100%;
       }
     }
@@ -225,7 +314,7 @@ export default {
     }
   }
   .btn-box {
-    padding-top: 1em;
+    padding: 0.5em;
     display: flex;
     justify-content: center;
   }

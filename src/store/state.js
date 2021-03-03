@@ -6,7 +6,10 @@ const state = {
         teamId: '123',
         userId: ''
     },
-    shareGroupId: 0
+    sharedGroup: {
+        groupId: 0,
+        groupName: '哈哈哈'
+    }
 }
 
 export default state

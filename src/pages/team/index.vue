@@ -40,8 +40,8 @@
       <div class="line"></div>
       <img class="gou" src="../../../static/images/gou.png" />
     </div>
-    <team-list v-if="planList" :teamList="planList"></team-list>
     <mypicker :state="pickerState"></mypicker>
+    <team-list v-if="planList" :teamList="planList"></team-list>
     <div v-if="planList.length == 0" class="null"></div>
   </div>
 </template>
@@ -58,9 +58,6 @@ export default {
     pickerState() {
       return store.state.pickerState;
     },
-    team() {
-      return this.$store.state.teamList;
-    },
     planList() {
       return store.state.planList;
     }
@@ -70,34 +67,27 @@ export default {
       console.log("刷新");
       await store.dispatch("getTeamList"); // 获取所有团队
       await store.dispatch("getAllTeamPlan"); // 获取所有团队的任务
-    }
-  },
-  data() {
-    return {
-      shareGroupId: 0,
-      userId: 0
-    };
+    } 
   },
   components: {
     teamList,
     mypicker
   },
   onShow() {
-    // 如果有shareGroupId，则保存下来，并提示是否加入队伍
-    this.shareGroupId = this.$store.state.shareGroupId;
-    this.userId = this.$store.state.userInfo.userId || 0;
-    console.log("this.shareGroupId :>> ", this.shareGroupId);
+    // 如果有sharedGroup，则保存下来，并提示是否加入队伍
     // 在wx.showModal中定义会导致this指向错误，所以直接在这里定义
     const value = {
-      groupId: this.shareGroupId,
-      userId: this.userId,
+      groupId: this.$store.state.sharedGroup.groupId,
+      groupName: this.$store.state.sharedGroup.groupName,
+      userId: this.$store.state.userInfo.userId || 0,
       type: "add"
     };
-
-    if (this.shareGroupId !== 0) {
+    
+    if (value.groupId !== 0) {
+      let that = this
       wx.showModal({
         title: "提示",
-        content: `确定加入队伍`,
+        content: `确定加入队伍"${value.groupName}"吗`,
         success: async function(res) {
           try {
             // 发送请求，将成员添加进团队
@@ -107,27 +97,26 @@ export default {
                 mask: true
               });
               const result = await updateMember(value);
-              if (result.data.code == 1)
+              if (result.data.code == 1) {
                 wx.showToast({
                   title: "加入成功",
                   icon: "success",
                   duration: 2000
                 });
+              }
               else {
                 wx.showToast({
-                  title: "加入失败",
+                  title: `加入失败, ${result.data.message}`,
                   icon: "none",
                   duration: 2000
                 });
               }
-              console.log("添加成功");
+              wx.hideLoading()
             }
+            that.$store.dispatch('setSharedGroup', { groupId: 0, groupName: "" })
+            await that.getTeamData();
           } catch (error) {
-            wx.showToast({
-              title: "加入失败",
-              icon: "none",
-              duration: 2000
-            });
+            console.log('error :>> ', error);
           }
         }
       });
@@ -136,7 +125,6 @@ export default {
   },
   mounted() {
     this.getTeamData();
-    console.log("planList :>> ", this.planList);
   }
 };
 </script>

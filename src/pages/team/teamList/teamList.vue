@@ -152,7 +152,7 @@
       <div class="handle">
         <div class="add" @click="handleAdd(team)"></div>
         <div class="del" @click="handleDelete(team)"></div>
-        <div class="edit" @click="handleEdit(team)"></div>
+        <div class="edit" @click="handleAdd(team)"></div>
       </div>
       <div class="top">
         <div class="fish">{{team.groupName}}</div>
@@ -197,6 +197,7 @@
 <script>
 import store from "../store";
 import mpModal from 'mpvue-weui/src/modal';
+import { updateTaskStatus } from '../../../api/team'
 
 export default {
   props: {
@@ -212,31 +213,33 @@ export default {
     };
   },
   methods: {
-    handleAdd(teamData) {
+    async handleAdd(teamData) {
       const data = JSON.parse(JSON.stringify(teamData))
-      const userVo = this.$store.state.userInfo
-      store.dispatch('changePicker', 'update')
-      store.dispatch('setMyPickerIsShow')
-      store.dispatch('setTaskForm_addTask', { teamData: data, userVo })
-    },
-    handleEdit(teamData) {
-      const data = JSON.parse(JSON.stringify(teamData))
-      store.dispatch('changePicker', 'update')
-      store.dispatch('setMyPickerIsShow')
-      store.dispatch('setTaskFormList', data)
+      await store.dispatch('changePicker', 'update')
+      await store.dispatch('setMyPickerIsShow')
+      await store.dispatch('setTaskFormList', data)
     },
     handleDelete(teamData) {
       this.temp = teamData
       this.$refs.mpModal.show();
     },
-    handleChangeStatus(task) {
+    async handleChangeStatus(task) {
       console.log('task :>> ', task);
-      task.status = !task.status
+      const { taskId, status } = task
+      // 发送请求，修改task状态
+      const { data } = await updateTaskStatus({ taskId, status: status ? 0 : 1 })
+      if(data.code == 1)
+        task.status = !task.status
+      else
+        wx.showToast({
+          title: `${data.message}`,
+          icon: "none",
+          duration: 2000
+        });
     },
     confirm() {
       store.dispatch("DeleteGroupPlan", this.temp.planId)
-    },
-    cancel(){}
+    }
   },
 };
 </script>
